@@ -39,7 +39,7 @@ def main():
 		else:
 			print "Input file does not exist."
 	else:
-		print "Usage: <input> <output>"
+		print "Usage: cybergis-script-hide-no-data.py <input_file> <output_file>"
 
 def hideNoData(inBand,outBand):
 	noData = inBand.GetNoDataValue()
