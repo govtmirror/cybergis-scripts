@@ -3,9 +3,27 @@ cybergis-scripts
 
 ## Description
 
+This repository contains scripts used in the CyberGIS.  The scripts contained herein are written in BASH and python.  They have been developed on and for Ubuntu; however, they may work on other systems.
+
+### CyberGIS
+The Humanitarian Information Unit has been developing a sophisticated geographic computing infrastructure referred to as the CyberGIS. The CyberGIS provides highly available, scalable, reliable, and timely geospatial services capable of supporting multiple concurrent projects.  The CyberGIS relies on primarily open source projects, such as PostGIS, GeoServer, GDAL, OGR, and OpenLayers.  The name CyberGIS is dervied from the term geospatial cyberinfrastructure.
+
 ## Installation
 
+These installation instructions are subject to change.  Right now, since there are non-debian package dependencies, you can really extract the scripts to whatever directory you want.  The instructions below are suggested as they mirror Linux best practices for external packages.  Please be careful when installing gdal-bin and python-gdal packages as they may require different version of some packages than other programs, such as the OpenGeo Suite.  It is recommended to test this and other GDAL scripts within a vagrant environment first.
+
+As root, execute the following commands:
+```
+apt-get instal gdal-bin python-gdal
+cd /opt
+git clone https://github.com/state-hiu/cybergis-scripts.git cybergis-scripts.git
+cp cybergis-scripts.git/profile/cybergis.sh /etc/profile.d/
+```
+Logout and Login
+
 ## Usage
+
+cybergis-script-stretch.py <input_file> <breakpoints_file> <output_file> <rows>
 
 ## Contributing
 
