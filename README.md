@@ -14,7 +14,7 @@ These installation instructions are subject to change.  Right now, since there a
 
 As root, execute the following commands:
 ```
-apt-get instal gdal-bin python-gdal
+apt-get install gdal-bin python-gdal
 cd /opt
 git clone https://github.com/state-hiu/cybergis-scripts.git cybergis-scripts.git
 cp cybergis-scripts.git/profile/cybergis-scripts.sh /etc/profile.d/
