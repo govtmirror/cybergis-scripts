@@ -40,7 +40,7 @@ def main():
 		else:
 			print "Input file does not exist."
 	else:
-		print "Usage: cybergis-script-burn-alpha.py <input_file> <alpha_file> <alpha_index> <output>"
+		print "Usage: cybergis-script-burn-alpha.py <input_file> <alpha_file> <alpha_band_index> <output_file>"
 
 def burn(inBand,outBand):
 	for y in range(inBand.YSize):
