@@ -23,7 +23,9 @@ Logout and Login
 
 ## Usage
 
+```
 cybergis-script-stretch.py <input_file> <breakpoints_file> <output_file> <rows>
+```
 
 ## Contributing
 
