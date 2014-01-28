@@ -27,6 +27,8 @@ cybergis-script-stretch.py <input_file> <breakpoints_file> <output_file> <rows>
 
 ## Contributing
 
+HIU is currently not soliciting pull requests for this repository.
+
 ## License
 This project constitutes a work of the United States Government and is not subject to domestic copyright protection under 17 USC § 105.
 
