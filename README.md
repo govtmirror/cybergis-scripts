@@ -26,6 +26,9 @@ Logout and Login
 ```
 cybergis-script-stretch.py <input_file> <breakpoints_file> <output_file> <rows>
 ```
+```
+cybergis-script-burn-alpha.py <input_file> <alpha_file> <alpha_band_index> <output_file>
+```
 
 ## Contributing
 
