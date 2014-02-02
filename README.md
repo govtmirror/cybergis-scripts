@@ -35,6 +35,9 @@ cybergis-script-hide-no-data.py <input_file> <output_file>
 ```
 cybergis-script-pull-wfs.sh <wfs> <namespace> <featuretype> <dbname> <dbuser> <dbpass> <table>
 ```
+```
+cybergis-script-pull-arcgis.sh <service> <field> <dbname> <dbuser> <dbpass> <table>
+```
 
 ## Contributing
 
