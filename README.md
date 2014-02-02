@@ -33,7 +33,7 @@ cybergis-script-burn-alpha.py <input_file> <alpha_file> <alpha_band_index> <outp
 cybergis-script-hide-no-data.py <input_file> <output_file>
 ```
 ```
-cybergis-script-pull-wfs.sh wfs namespace featuretype dbname dbuser dbpass table"
+cybergis-script-pull-wfs.sh <wfs> <namespace> <featuretype> <dbname> <dbuser> <dbpass> <table>
 ```
 
 ## Contributing
