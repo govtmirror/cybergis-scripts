@@ -38,6 +38,9 @@ cybergis-script-pull-wfs.sh <wfs> <namespace> <featuretype> <dbname> <dbuser> <d
 ```
 cybergis-script-pull-arcgis.sh <service> <field> <dbname> <dbuser> <dbpass> <table>
 ```
+```
+cybergis-script-pull-shapefile.sh <url> <shapefile> <dbname> <dbuser> <dbpass> <table>
+```
 
 ## Contributing
 
