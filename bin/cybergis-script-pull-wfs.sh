@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [[ $# -ne 7 ]]; then
-	echo "Usage: cybergis-script-pull-wfs.sh wfs namespace featuretype dbname dbuser dbpass table"
+	echo "Usage: cybergis-script-pull-wfs.sh <wfs> <namespace> <featuretype> <dbname> <dbuser> <dbpass> <table>"
 	exit
 fi
 DATE=$(date)
