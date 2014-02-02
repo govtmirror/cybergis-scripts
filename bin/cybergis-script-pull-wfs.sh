@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 if [[ $# -ne 7 ]]; then
 	echo "Usage: cybergis-script-pull-wfs.sh wfs namespace featuretype dbname dbuser dbpass table"
 	exit
@@ -16,8 +15,6 @@ DBPASS=$6
 TABLE=$7
 URL="$WFS?typename=$NAMESPACE%3A$FEATURETYPE&outputFormat=$FORMAT&version=1.0.0&request=GetFeature&service=WFS"
 TEMP=/tmp/cybergis-pull
-
-echo "URL: "$URL
 
 if [[ $EUID -ne 0 ]]; then
   echo "You must be a root user" 2>&1
