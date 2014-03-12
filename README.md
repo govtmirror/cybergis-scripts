@@ -14,7 +14,8 @@ These installation instructions are subject to change.  Right now, since there a
 
 As root, execute the following commands:
 ```
-apt-get install gdal-bin python-gdal
+apt-get update
+apt-get install git-core gdal-bin python-gdal python-numpy
 cd /opt
 git clone https://github.com/state-hiu/cybergis-scripts.git cybergis-scripts.git
 cp cybergis-scripts.git/profile/cybergis-scripts.sh /etc/profile.d/
