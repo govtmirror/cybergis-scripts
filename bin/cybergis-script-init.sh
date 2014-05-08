@@ -3,7 +3,7 @@
 #This script requires curl and git to be installed
 #Run this script using rogue's login shell under: sudo su - <user>
 
-if [[ $# -ne 1 ]]; then
+if [[ $# -ne 2 ]]; then
 	echo "Usage: cybergis-script-init.sh [rogue] [rvm|gems]"
 	exit
 fi
