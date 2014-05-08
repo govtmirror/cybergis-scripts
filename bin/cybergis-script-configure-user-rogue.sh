@@ -18,7 +18,7 @@ install_gems(){
   #
   rvm get stable
   rvm list known
-  rvm install ruby-2.0.0-p35
+  rvm install ruby-2.0.0-p353
   rvm --default use 2.0.0-p353
   ruby -v
   #
