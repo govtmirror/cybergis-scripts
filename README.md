@@ -45,6 +45,9 @@ cybergis-script-pull-arcgis.sh <service> <field> <dbname> <dbuser> <dbpass> <tab
 ```
 cybergis-script-pull-shapefile.sh <url> <shapefile> <dbname> <dbuser> <dbpass> <table>
 ```
+```
+cybergis-script-install-rogue-geonode.sh <fqdn>
+```
 
 ## Contributing
 
