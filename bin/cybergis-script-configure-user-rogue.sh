@@ -1,20 +1,20 @@
 #!/bin/bash
 #This script is a work in development and is not stable.
 #This script requires curl and git to be installed
-#Run this script using rogue's login shell under: sudo su - rogue
+#Run this script using rogue's login shell under: sudo su - <user>
 
 if [[ $# -ne 2 ]]; then
-	echo "Usage: cybergis-script-configure-user-rogue.sh <fqdn> <user>"
+	echo "Usage: cybergis-script-configure-user-rogue.sh [rvm|gems]"
 	exit
 fi
 
 DATE=$(date)
-FQDN=$1
-USER=$2
+
+install_rvm(){
+  curl -L https://get.rvm.io | bash -s stable
+}
 
 install_gems(){
-  #
-  curl -L https://get.rvm.io | bash -s stable
   #
   rvm get stable
   rvm list known
@@ -30,7 +30,13 @@ install_gems(){
 }
 
 #Load Functions
+export -f install_rvm
 export -f install_gems
 
-#Install Gems
-su rogue -c "bash -c install_gems"
+if [[ "$1" -eq "rvm" ]]; then
+    install_rvm
+fi
+
+if [[ "$1" -eq "gems" ]]; then
+    install_gems
+fi
