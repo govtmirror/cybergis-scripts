@@ -4,7 +4,7 @@
 #Run this script using rogue's login shell under: sudo su - <user>
 
 if [[ $# -ne 1 ]]; then
-	echo "Usage: cybergis-script-configure-user-rogue.sh [rvm|gems]"
+	echo "Usage: cybergis-script-init.sh [rogue] [rvm|gems]"
 	exit
 fi
 
@@ -30,12 +30,15 @@ install_gems(){
   gem list
 }
 
-if [[ "$1" -eq "rvm" ]]; then
-    export -f install_rvm
-    install_rvm
+if [[ "$1" -eq "rogue" ]]; then
+    if [[ "$2" -eq "rvm" ]]; then
+        export -f install_rvm
+        install_rvm
+    fi
+
+    if [[ "$2" -eq "gems" ]]; then
+        export -f install_gems
+        install_gems
+    fi
 fi
 
-if [[ "$1" -eq "gems" ]]; then
-    export -f install_gems
-    install_gems
-fi
