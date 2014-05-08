@@ -29,14 +29,12 @@ install_gems(){
   gem list
 }
 
-#Load Functions
-export -f install_rvm
-export -f install_gems
-
 if [[ "$1" -eq "rvm" ]]; then
+    export -f install_rvm
     install_rvm
 fi
 
 if [[ "$1" -eq "gems" ]]; then
+    export -f install_gems
     install_gems
 fi
