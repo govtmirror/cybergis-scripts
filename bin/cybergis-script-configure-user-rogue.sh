@@ -9,6 +9,7 @@ if [[ $# -ne 1 ]]; then
 fi
 
 DATE=$(date)
+RUBY_VERSION="2.0.0-p353"
 
 install_rvm(){
   curl -L https://get.rvm.io | bash -s stable
@@ -18,8 +19,8 @@ install_gems(){
   #
   rvm get stable
   rvm list known
-  rvm install ruby-2.0.0-p353
-  rvm --default use 2.0.0-p353
+  rvm install "ruby-$RUBY_VERSION"
+  rvm --default use $RUBY_VERSION
   ruby -v
   #
   gem install chef --version 11.8.0 --no-rdoc --no-ri --conservative
