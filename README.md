@@ -15,10 +15,10 @@ These installation instructions are subject to change.  Right now, since there a
 As root, execute the following commands:
 ```
 apt-get update
-apt-get install curl vim git
+apt-get install -y curl vim git
 #Only install gdal and numpy if it is needed and won't conflict with a different installation.
 #gdal and numpy are only needed for cybergis-script-stretch.py, cybergis-script-burn-alpha.py, cybergis-script-hide-no-data.py, cybergis-script-pull-wfs.sh, cybergis-script-pull-arcgis.sh, and cybergis-script-pull-shapefile.sh
-apt-get install gdal-bin python-gdal python-numpy
+apt-get install -y gdal-bin python-gdal python-numpy
 #==#
 cd /opt
 git clone https://github.com/state-hiu/cybergis-scripts.git cybergis-scripts.git
