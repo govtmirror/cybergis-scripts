@@ -3,11 +3,6 @@
 #This script requires curl and git to be installed
 #Run this script using rogue's login shell under: sudo su - <user>
 
-if [[ $# -ne 2 ]]; then
-	echo "Usage: cybergis-script-init-rogue.sh [prod|dev] [user|rvm|gems|geonode|remotes]"
-	exit
-fi
-
 DATE=$(date)
 RUBY_VERSION="2.0.0-p353"
 FQDN="example.com"
@@ -72,29 +67,43 @@ init_remote(){
 if [[ "$INIT_ENV" = "prod" ]]; then
     
     if [[ "$INIT_CMD" == "user" ]]; then
-        export -f init_user
-        bash --login -c init_user
-    fi
+        
+        if [[ $# -ne 2 ]]; then
+	    echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD"
+        else
+            export -f init_user
+            bash --login -c init_user
+        fi
     
-    if [[ "$INIT_CMD" == "rvm" ]]; then
-        export -f install_rvm
-        bash --login -c install_rvm
+    elif [[ "$INIT_CMD" == "rvm" ]]; then
+        
+        if [[ $# -ne 2 ]]; then
+	    echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD"
+        else
+            export -f install_rvm
+            bash --login -c install_rvm
+        fi
+    
+    elif [[ "$INIT_CMD" == "gems" ]]; then
+        
+        if [[ $# -ne 2 ]]; then
+	    echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD"
+        else
+            export -f install_gems
+            bash --login -c install_gems
+        fi
+    
+    elif [[ "$INIT_CMD" == "geonode" ]]; then
+        
+        if [[ $# -ne 2 ]]; then
+	    echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD"
+        else
+            export -f install_geonode
+            bash --login -c install_geonode
+        fi
     fi
 
-    if [[ "$INIT_CMD" == "gems" ]]; then
-        export -f install_gems
-        bash --login -c install_gems
-    fi
-    
-    if [[ "$INIT_CMD" == "geonode" ]]; then
-        export -f install_geonode
-        bash --login -c install_geonode
-    fi
-    
-    #if [[ "$INIT_CMD" == "remote" ]]; then
-    #    export -f init_remote
-    #    bash --login -c init_remote
-    #fi
-    
+else
+    echo "Usage: cybergis-script-init-rogue.sh [prod|dev] [use|rvm|gems|geonode]"
 fi
 
