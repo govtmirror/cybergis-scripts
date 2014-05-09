@@ -74,7 +74,7 @@ add_server(){
       URL=$5
       if [[ "$TYPE" == "tms" ]]; then
           JSON="{\"source\":{\"ptype\":\"gxp_tmssource\",\"name\":\"$NAME\",\"url\":\"$URL\"},\"visibility\":True}"
-          LINE="MAP_BASELAYERS.APPEND($json)"
+          LINE="MAP_BASELAYERS.APPEND($JSON)"
           echo $LINE
           #bash --login -c "echo \"$LINE\" >> $FILE_SETTINGS"
       else
