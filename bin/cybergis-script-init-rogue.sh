@@ -119,6 +119,8 @@ if [[ "$INIT_ENV" = "prod" ]]; then
             export -f init_server
             bash --login -c init_server
         fi
+    else
+        echo "Usage: cybergis-script-init-rogue.sh prod [use|rvm|gems|geonode|server]"
     fi
 
 else
