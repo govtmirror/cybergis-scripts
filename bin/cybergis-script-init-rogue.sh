@@ -78,9 +78,10 @@ add_server(){
           #JSON='{\\"source\\":{\\"ptype\\":\\"gxp_tmssource\\",\\"name\\":\\"'$NAME'\\",\\"url\\":\\"'$URL'\\"},\\"visibility\\":True}'
           JSON='{\"source\":{\"ptype\":\"gxp_tmssource\",\"name\":\"'$NAME'\",\"url\":\"'$URL'\"},\"visibility\":True}'
           LINE="MAP_BASELAYERS.append($JSON)"
-          CMD='echo "'$LINE'" >> "'$FILE_SETTINGS'"'
-          bash --login -c "echo -e \"\n\""
-          bash --login -c "$CMD"
+          CMD1='echo "\n" >> "'$FILE_SETTINGS'"'
+          CMD2='echo "'$LINE'" >> "'$FILE_SETTINGS'"'
+          bash --login -c "$CMD1"
+          bash --login -c "$CMD2"
       else
           echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD [tms] <name> <url>"
       fi
