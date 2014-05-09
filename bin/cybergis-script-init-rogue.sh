@@ -126,7 +126,7 @@ if [[ "$INIT_ENV" = "prod" ]]; then
 
     elif [[ "$INIT_CMD" == "server" ]]; then
         
-        if [[ $# -ne 6 ]]; then
+        if [[ $# -ne 5 ]]; then
 	    echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD [tms] <name> <url>"
         else
             export -f add_server
