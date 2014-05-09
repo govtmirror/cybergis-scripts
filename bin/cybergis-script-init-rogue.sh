@@ -87,8 +87,8 @@ add_server(){
           CMD2='echo "'$LINE'" >> "'$FILE_SETTINGS'"'
           bash --login -c "$CMD1"
           bash --login -c "$CMD2"
-      
-          echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD [tms] <name> <url>"
+      else
+          echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD [tms|geonode] <name> <url>"
       fi
   fi
 }
