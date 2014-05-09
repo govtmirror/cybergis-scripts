@@ -46,6 +46,7 @@ install_geonode(){
   git clone https://github.com/ROGUE-JCTD/rogue-chef-repo.git
   mkdir chef-run
   cp -r /opt/rogue-chef-repo/solo/* chef-run/
+  cd chef-run
   sed -i "s/dev.rogue.lmnsolutions.com/$FQDN/g" dna.json
 }
 
