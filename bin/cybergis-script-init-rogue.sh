@@ -36,6 +36,7 @@ install_gems(){
 }
 
 install_geonode(){
+  echo "install_geonode"
   #
   #cd /opt/
   #git clone https://github.com/ROGUE-JCTD/rogue-chef-repo.git
@@ -53,24 +54,24 @@ install_geonode(){
   #
 }
 
-if [[ "$1" -eq "prod" ]]; then
+if [[ "$1" = "prod" ]]; then
     
-    if [[ "$2" -eq "user" ]]; then
+    if [[ "$2" == "user" ]]; then
         export -f init_user
         bash -c init_user --login
     fi
     
-    if [[ "$2" -eq "rvm" ]]; then
+    if [[ "$2" == "rvm" ]]; then
         export -f install_rvm
         bash -c install_rvm --login
     fi
 
-    if [[ "$2" -eq "gems" ]]; then
+    if [[ "$2" == "gems" ]]; then
         export -f install_gems
         bash -c install_gems --login
     fi
     
-    if [[ "$2" -eq "geonode" ]]; then
+    if [[ "$2" == "geonode" ]]; then
         export -f install_geonode
         bash -c install_geonode --login
     fi
