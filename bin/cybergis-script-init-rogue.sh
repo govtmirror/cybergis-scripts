@@ -11,6 +11,9 @@ fi
 DATE=$(date)
 RUBY_VERSION="2.0.0-p353"
 
+INIT_ENV=$1
+INIT_CMD=$2
+
 init_user(){
   adduser rogue --disabled-password --home /home/rogue --shell /bin/bash
 }
@@ -54,24 +57,24 @@ install_geonode(){
   #
 }
 
-if [[ "$1" = "prod" ]]; then
+if [[ "$INIT_ENV" = "prod" ]]; then
     
-    if [[ "$2" == "user" ]]; then
+    if [[ "$INIT_CMD" == "user" ]]; then
         export -f init_user
         bash -c init_user --login
     fi
     
-    if [[ "$2" == "rvm" ]]; then
+    if [[ "$INIT_CMD" == "rvm" ]]; then
         export -f install_rvm
         bash -c install_rvm --login
     fi
 
-    if [[ "$2" == "gems" ]]; then
+    if [[ "$INIT_CMD" == "gems" ]]; then
         export -f install_gems
         bash -c install_gems --login
     fi
     
-    if [[ "$2" == "geonode" ]]; then
+    if [[ "$INIT_CMD" == "geonode" ]]; then
         export -f install_geonode
         bash -c install_geonode --login
     fi
