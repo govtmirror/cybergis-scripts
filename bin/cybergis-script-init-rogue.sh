@@ -125,7 +125,7 @@ if [[ "$INIT_ENV" = "prod" ]]; then
 	    echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD [tms] <name> <url>"
         else
             export -f init_server
-            bash --login -c init_server "$INIT_ENV $INIT_CMD $3 \"$4\" \"$5\""
+            bash --login -c "init_server $INIT_ENV $INIT_CMD $3 \"$4\" \"$5\""
 
         fi
     else
