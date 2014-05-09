@@ -49,6 +49,8 @@ install_geonode(){
   cd chef-run
   sed -i "s/dev.rogue.lmnsolutions.com/$FQDN/g" dna.json
   chmod 755 run.sh
+  #
+  #bash --login run.sh
 }
 
 if [[ "$INIT_ENV" = "prod" ]]; then
