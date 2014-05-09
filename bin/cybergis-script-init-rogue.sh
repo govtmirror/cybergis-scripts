@@ -75,8 +75,8 @@ add_server(){
       if [[ "$TYPE" == "tms" ]]; then
           JSON="{\"source\":{\"ptype\":\"gxp_tmssource\",\"name\":\"$NAME\",\"url\":\"$URL\"},\"visibility\":True}"
           LINE="MAP_BASELAYERS.APPEND($JSON)"
-          echo $LINE
-          #bash --login -c "echo \"$LINE\" >> $FILE_SETTINGS"
+          #echo $LINE
+          bash --login -c "echo \"$LINE\" >> $FILE_SETTINGS"
       else
           echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD [tms] <name> <url>"
       fi
