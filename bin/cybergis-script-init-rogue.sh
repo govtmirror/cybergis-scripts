@@ -81,7 +81,7 @@ add_server(){
           bash --login -c "$CMD1"
           bash --login -c "$CMD2"
       elif [[ "$TYPE" == "geonode" ]]; then
-          JSON='{\"source\":{\"ptype\":\"gxp_wmscsource\",\"restUrl\":\"/gs/rest\",\"name\":\"'$NAME'\",\"url\":\"'$URL'\"},\"visibility\":True}'
+          JSON='{\"source\":{\"ptype\":\"gxp_wmscsource\",\"restUrl\":\"/gs/rest\",\"name\":\"'$NAME'\",\"url\":\"'$URL'/geoserver/wms\"},\"visibility\":True}'
           LINE="MAP_BASELAYERS.append($JSON)"
           CMD1='echo "" >> "'$FILE_SETTINGS'"'
           CMD2='echo "'$LINE'" >> "'$FILE_SETTINGS'"'
