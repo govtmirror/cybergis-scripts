@@ -38,17 +38,17 @@ if [[ "$1" -eq "rogue" ]]; then
     
     if [[ "$2" -eq "rvm" ]]; then
         export -f install_rvm
-        init_user
+        bash -c init_user --login
     fi
     
     if [[ "$2" -eq "rvm" ]]; then
         export -f install_rvm
-        install_rvm
+        bash -c install_rvm --login
     fi
 
     if [[ "$2" -eq "gems" ]]; then
         export -f install_gems
-        install_gems
+        bash -c install_gems --login
     fi
     
 fi
