@@ -11,6 +11,10 @@ fi
 DATE=$(date)
 RUBY_VERSION="2.0.0-p353"
 
+init_user(){
+  adduser rogue --disabled-password --home /home/rogue --shell /bin/bash
+}
+
 install_rvm(){
   curl -L https://get.rvm.io | bash -s stable
 }
@@ -31,6 +35,12 @@ install_gems(){
 }
 
 if [[ "$1" -eq "rogue" ]]; then
+    
+    if [[ "$2" -eq "rvm" ]]; then
+        export -f install_rvm
+        init_user
+    fi
+    
     if [[ "$2" -eq "rvm" ]]; then
         export -f install_rvm
         install_rvm
@@ -40,5 +50,6 @@ if [[ "$1" -eq "rogue" ]]; then
         export -f install_gems
         install_gems
     fi
+    
 fi
 
