@@ -79,7 +79,7 @@ add_server(){
           LINE="MAP_BASELAYERS.append($JSON)"
           #echo $LINE
           #echo $FILE_SETTINGS
-          bash --login -c "echo \"$LINE\" >> \"$FILE_SETTINGS\""
+          bash --login -c "echo \""$LINE"\" >> \"$FILE_SETTINGS\""
       else
           echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD [tms] <name> <url>"
       fi
