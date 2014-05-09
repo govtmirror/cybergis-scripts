@@ -68,7 +68,12 @@ init_server(){
   if [[ $# -ne 5 ]]; then
       echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD [tms] <name> <url>"
   else
-      echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD [tms] <name> <url>"
+      INIT_ENV=$1
+      INIT_CMD=$2
+      TYPE=$3
+      NAME=$4
+      URL=$5
+      echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD $TYPE $NAME $URL"
   fi
 }
 
@@ -117,7 +122,8 @@ if [[ "$INIT_ENV" = "prod" ]]; then
 	    echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD [tms] <name> <url>"
         else
             export -f init_server
-            bash --login -c init_server
+            bash --login -c init_server INIT_ENV INIT_CMD $3 $4 $5
+
         fi
     else
         echo "Usage: cybergis-script-init-rogue.sh prod [use|rvm|gems|geonode|server]"
