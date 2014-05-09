@@ -64,6 +64,15 @@ init_remote(){
   echo $URL
 }
 
+init_server(){
+  if [[ $# -ne 5 ]]; then
+      echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD [tms] <name> <url>"
+  else
+      echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD [tms] <name> <url>"
+  fi
+}
+
+
 if [[ "$INIT_ENV" = "prod" ]]; then
     
     if [[ "$INIT_CMD" == "user" ]]; then
@@ -101,9 +110,18 @@ if [[ "$INIT_ENV" = "prod" ]]; then
             export -f install_geonode
             bash --login -c install_geonode
         fi
+
+    elif [[ "$INIT_CMD" == "server" ]]; then
+        
+        if [[ $# -ne 5 ]]; then
+	    echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD [tms] <name> <url>"
+        else
+            export -f init_server
+            bash --login -c init_server
+        fi
     fi
 
 else
-    echo "Usage: cybergis-script-init-rogue.sh [prod|dev] [use|rvm|gems|geonode]"
+    echo "Usage: cybergis-script-init-rogue.sh [prod|dev] [use|rvm|gems|geonode|server]"
 fi
 
