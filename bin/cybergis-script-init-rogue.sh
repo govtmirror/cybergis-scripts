@@ -77,7 +77,7 @@ add_server(){
           #JSON="{\\\\"source\\\\":{\\\\"ptype\\\\":\\\\"gxp_tmssource\\\\",\\\\"name\\\\":\\\\"$NAME\\\\",\\\\"url\\\\":\\\\"$URL\\\\"},\\\\"visibility\\\\":True}"
           #JSON='{\\"source\\":{\\"ptype\\":\\"gxp_tmssource\\",\\"name\\":\\"'$NAME'\\",\\"url\\":\\"'$URL'\\"},\\"visibility\\":True}'
           JSON='{\"source\":{\"ptype\":\"gxp_tmssource\",\"name\":\"'$NAME'\",\"url\":\"'$URL'\"},\"visibility\":True}'
-          LINE="MAP_BASELAYERS.append($JSON)"
+          LINE="\nMAP_BASELAYERS.append($JSON)"
           CMD='echo "'$LINE'" >> "'$FILE_SETTINGS'"'
           #echo $LINE
           #echo $FILE_SETTINGS
