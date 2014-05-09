@@ -64,7 +64,7 @@ init_remote(){
 }
 
 add_server(){
-  if [[ $# -ne 5 ]]; then
+  if [[ $# -ne 6 ]]; then
       echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD [tms] <name> <url>"
   else
       INIT_ENV=$1
@@ -72,6 +72,7 @@ add_server(){
       TYPE=$3
       NAME=$4
       URL=$5
+      FILE_SETTINGS=$6
       if [[ "$TYPE" == "tms" ]]; then
           JSON="{\"source\":{\"ptype\":\"gxp_tmssource\",\"name\":\"$NAME\",\"url\":\"$URL\"},\"visibility\":True}"
           LINE="MAP_BASELAYERS.APPEND($JSON)"
@@ -125,11 +126,11 @@ if [[ "$INIT_ENV" = "prod" ]]; then
 
     elif [[ "$INIT_CMD" == "server" ]]; then
         
-        if [[ $# -ne 5 ]]; then
+        if [[ $# -ne 6 ]]; then
 	    echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD [tms] <name> <url>"
         else
             export -f add_server
-            bash --login -c "add_server $INIT_ENV $INIT_CMD $3 \"$4\" \"$5\""
+            bash --login -c "add_server $INIT_ENV $INIT_CMD $3 \"$4\" \"$5\" \"$FILE_SETTINGS\""
         fi
     else
         echo "Usage: cybergis-script-init-rogue.sh prod [use|rvm|gems|geonode|server]"
