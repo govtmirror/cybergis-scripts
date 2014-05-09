@@ -47,7 +47,7 @@ cybergis-script-pull-arcgis.sh <service> <field> <dbname> <dbuser> <dbpass> <tab
 cybergis-script-pull-shapefile.sh <url> <shapefile> <dbname> <dbuser> <dbpass> <table>
 ```
 ```
-cybergis-script-init-rogue.sh [prod|dev] [user|rvm|gems|geonode]
+Usage: cybergis-script-init-rogue.sh [prod|dev] [use|rvm|gems|geonode|server]
 ```
 
 ## Contributing
