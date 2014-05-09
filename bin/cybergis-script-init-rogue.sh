@@ -48,6 +48,7 @@ install_geonode(){
   cp -r /opt/rogue-chef-repo/solo/* chef-run/
   cd chef-run
   sed -i "s/dev.rogue.lmnsolutions.com/$FQDN/g" dna.json
+  chmod 755 run.sh
 }
 
 if [[ "$INIT_ENV" = "prod" ]]; then
