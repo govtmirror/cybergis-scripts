@@ -10,6 +10,7 @@ fi
 
 DATE=$(date)
 RUBY_VERSION="2.0.0-p353"
+FQDN="hiu-maps.net"
 
 INIT_ENV=$1
 INIT_CMD=$2
@@ -41,42 +42,33 @@ install_gems(){
 install_geonode(){
   echo "install_geonode"
   #
-  #cd /opt/
-  #git clone https://github.com/ROGUE-JCTD/rogue-chef-repo.git
-  #mkdir chef-run
-  #cp -r /opt/rogue-chef-repo/solo/* chef-run/
-  #cd /opt/chef-run
-  #cd /opt/rogue-chef-repo
-  #source /home/rogue/.rvm/scripts/rvm
-  #type rvm | head -1
-  #git pull
-  #berks update
-  #berks install --path /opt/chef-run/cookbooks
-  #
-  #rvmsudo chef-solo -c /opt/chef-run/solo.rb -j /opt/chef-run/dna.json
-  #
+  cd /opt
+  git clone https://github.com/ROGUE-JCTD/rogue-chef-repo.git
+  mkdir chef-run
+  cp -r /opt/rogue-chef-repo/solo/* chef-run/
+  sed -i "s/dev.rogue.lmnsolutions.com/$FQDN/g" dna.json
 }
 
 if [[ "$INIT_ENV" = "prod" ]]; then
     
     if [[ "$INIT_CMD" == "user" ]]; then
         export -f init_user
-        bash -c init_user --login
+        bash --login -c init_user
     fi
     
     if [[ "$INIT_CMD" == "rvm" ]]; then
         export -f install_rvm
-        bash -c install_rvm --login
+        bash --login -c install_rvm
     fi
 
     if [[ "$INIT_CMD" == "gems" ]]; then
         export -f install_gems
-        bash -c install_gems --login
+        bash --login -c install_gems
     fi
     
     if [[ "$INIT_CMD" == "geonode" ]]; then
         export -f install_geonode
-        bash -c install_geonode --login
+        bash --login -c install_geonode
     fi
     
 fi
