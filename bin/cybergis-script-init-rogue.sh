@@ -6,9 +6,7 @@
 DATE=$(date)
 RUBY_VERSION="2.0.0-p353"
 FQDN="example.com"
-
 CTX_GEOGIT="/geoserver/geogit/"
-
 
 INIT_ENV=$1
 INIT_CMD=$2
@@ -73,7 +71,12 @@ init_server(){
       TYPE=$3
       NAME=$4
       URL=$5
-      echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD $TYPE $NAME $URL"
+      if [[ "$TYPE" == "tms" ]]; then
+          JSON="{\"source\":{\"ptype\":\"gxp_tmssource\",\"name\":\"$NAME\",\"url\":\"$URL\"},\"visibility\":True}"
+          echo $JSON
+      else
+          echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD [tms] <name> <url>"
+      fi
   fi
 }
 
@@ -122,7 +125,7 @@ if [[ "$INIT_ENV" = "prod" ]]; then
 	    echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD [tms] <name> <url>"
         else
             export -f init_server
-            bash --login -c init_server INIT_ENV INIT_CMD $3 $4 $5
+            bash --login -c init_server "$INIT_ENV $INIT_CMD $3 \"$4\" \"$5\""
 
         fi
     else
