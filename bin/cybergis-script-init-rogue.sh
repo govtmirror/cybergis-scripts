@@ -7,6 +7,7 @@ DATE=$(date)
 RUBY_VERSION="2.0.0-p353"
 FQDN="example.com"
 CTX_GEOGIT="/geoserver/geogit/"
+FILE_SETTINGS="/var/lib/geonode/rogue_geonode/rogue_geonode/settings.py"
 
 INIT_ENV=$1
 INIT_CMD=$2
@@ -62,7 +63,7 @@ init_remote(){
   echo $URL
 }
 
-init_server(){
+add_server(){
   if [[ $# -ne 5 ]]; then
       echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD [tms] <name> <url>"
   else
@@ -73,7 +74,9 @@ init_server(){
       URL=$5
       if [[ "$TYPE" == "tms" ]]; then
           JSON="{\"source\":{\"ptype\":\"gxp_tmssource\",\"name\":\"$NAME\",\"url\":\"$URL\"},\"visibility\":True}"
-          echo $JSON
+          LINE="MAP_BASELAYERS.APPEND($json)"
+          echo $LINE
+          #bash --login -c "echo \"$LINE\" >> $FILE_SETTINGS"
       else
           echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD [tms] <name> <url>"
       fi
@@ -124,9 +127,8 @@ if [[ "$INIT_ENV" = "prod" ]]; then
         if [[ $# -ne 5 ]]; then
 	    echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD [tms] <name> <url>"
         else
-            export -f init_server
-            bash --login -c "init_server $INIT_ENV $INIT_CMD $3 \"$4\" \"$5\""
-
+            export -f add_server
+            bash --login -c "add_server $INIT_ENV $INIT_CMD $3 \"$4\" \"$5\""
         fi
     else
         echo "Usage: cybergis-script-init-rogue.sh prod [use|rvm|gems|geonode|server]"
