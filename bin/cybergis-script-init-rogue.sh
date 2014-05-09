@@ -74,15 +74,20 @@ add_server(){
       URL=$5
       FILE_SETTINGS=$6
       if [[ "$TYPE" == "tms" ]]; then
-          #JSON="{\\\\"source\\\\":{\\\\"ptype\\\\":\\\\"gxp_tmssource\\\\",\\\\"name\\\\":\\\\"$NAME\\\\",\\\\"url\\\\":\\\\"$URL\\\\"},\\\\"visibility\\\\":True}"
-          #JSON='{\\"source\\":{\\"ptype\\":\\"gxp_tmssource\\",\\"name\\":\\"'$NAME'\\",\\"url\\":\\"'$URL'\\"},\\"visibility\\":True}'
           JSON='{\"source\":{\"ptype\":\"gxp_tmssource\",\"name\":\"'$NAME'\",\"url\":\"'$URL'\"},\"visibility\":True}'
           LINE="MAP_BASELAYERS.append($JSON)"
           CMD1='echo "" >> "'$FILE_SETTINGS'"'
           CMD2='echo "'$LINE'" >> "'$FILE_SETTINGS'"'
           bash --login -c "$CMD1"
           bash --login -c "$CMD2"
-      else
+      elif [[ "$TYPE" == "geonode" ]]; then
+          JSON='{\"source\":{\"ptype\":\"gxp_wmscsource\",\"restUrl\":\"/gs/rest\",\"name\":\"'$NAME'\",\"url\":\"'$URL'\"},\"visibility\":True}'
+          LINE="MAP_BASELAYERS.append($JSON)"
+          CMD1='echo "" >> "'$FILE_SETTINGS'"'
+          CMD2='echo "'$LINE'" >> "'$FILE_SETTINGS'"'
+          bash --login -c "$CMD1"
+          bash --login -c "$CMD2"
+      
           echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD [tms] <name> <url>"
       fi
   fi
@@ -130,7 +135,7 @@ if [[ "$INIT_ENV" = "prod" ]]; then
     elif [[ "$INIT_CMD" == "server" ]]; then
         
         if [[ $# -ne 5 ]]; then
-	    echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD [tms] <name> <url>"
+	    echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD [tms|geonode] <name> <url>"
         else
             export -f add_server
             bash --login -c "add_server $INIT_ENV $INIT_CMD $3 \"$4\" \"$5\" \"$FILE_SETTINGS\""
