@@ -4,7 +4,7 @@
 #Run this script using rogue's login shell under: sudo su - <user>
 
 if [[ $# -ne 2 ]]; then
-	echo "Usage: cybergis-script-init-rogue.sh [prod|dev] [user|rvm|gems]"
+	echo "Usage: cybergis-script-init-rogue.sh [prod|dev] [user|rvm|gems|geonode]"
 	exit
 fi
 
@@ -32,6 +32,25 @@ install_gems(){
   gem install nokogiri --version 1.6.1
   gem install berkshelf --version 2.0.14 --no-rdoc --no-ri
   gem list
+  #
+}
+
+install_geonode(){
+  #
+  #cd /opt/
+  #git clone https://github.com/ROGUE-JCTD/rogue-chef-repo.git
+  #mkdir chef-run
+  #cp -r /opt/rogue-chef-repo/solo/* chef-run/
+  #cd /opt/chef-run
+  #cd /opt/rogue-chef-repo
+  #source /home/rogue/.rvm/scripts/rvm
+  #type rvm | head -1
+  #git pull
+  #berks update
+  #berks install --path /opt/chef-run/cookbooks
+  #
+  #rvmsudo chef-solo -c /opt/chef-run/solo.rb -j /opt/chef-run/dna.json
+  #
 }
 
 if [[ "$1" -eq "prod" ]]; then
@@ -49,6 +68,11 @@ if [[ "$1" -eq "prod" ]]; then
     if [[ "$2" -eq "gems" ]]; then
         export -f install_gems
         bash -c install_gems --login
+    fi
+    
+    if [[ "$2" -eq "geonode" ]]; then
+        export -f install_geonode
+        bash -c install_geonode --login
     fi
     
 fi
