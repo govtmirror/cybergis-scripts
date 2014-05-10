@@ -50,6 +50,7 @@ cybergis-script-pull-shapefile.sh <url> <shapefile> <dbname> <dbuser> <dbpass> <
 cybergis-script-init-rogue.sh [prod|dev] [use|rvm|gems|geonode|server|remote|remote2]
     cybergis-script-init-rogue.sh prod server [tms|geonode] <name> <url>
     cybergis-script-init-rogue.sh prod remote <user:password> <localRepoName> <localGeonodeURL> <remoteName> <remoteRepoName> <remoteGeoNodeURL> <remoteUser> <remotePassword>
+    cybergis-script-init-rogue.sh prod remote2 <user:password> <repoURL> <remoteName> <remoteURL> <remoteUser> <remotePassword>
 ```
 
 ## Contributing
