@@ -85,7 +85,6 @@ add_server(){
 }
 
 add_remote(){
-  #URL = "http://$FQDN$CTX_GEOGIT$1/remote?user=$1&password=$2&output_format=JSON&remoteName=$3&remoteURL=$4"
   echo $URL  
   if [[ $# -ne 10 ]]; then
       echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD <user:password> <localRepoName> <localGeonodeURL> <remoteName> <remoteRepoName> <remoteGeoNodeURL> <remoteUser> <remotePassword>"
