@@ -54,15 +54,6 @@ install_geonode(){
   fi
 }
 
-init_remote(){
-  if [[ $# -ne 5 ]]; then
-    echo "Usage: init_remotes <user> <password> <repo_name> <remote_name> <remote_url>"
-    return
-  fi
-  URL = "http://$FQDN$CTX_GEOGIT$1/remote?user=$1&password=$2&output_format=JSON&remoteName=$3&remoteURL=$4"
-  echo $URL
-}
-
 add_server(){
   if [[ $# -ne 6 ]]; then
       echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD [tms] <name> <url>"
@@ -90,6 +81,53 @@ add_server(){
       else
           echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD [tms|geonode] <name> <url>"
       fi
+  fi
+}
+
+add_remote(){
+  #URL = "http://$FQDN$CTX_GEOGIT$1/remote?user=$1&password=$2&output_format=JSON&remoteName=$3&remoteURL=$4"
+  echo $URL  
+  if [[ $# -ne 10 ]]; then
+      echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD <user:password> <localRepoName> <localGeonodeURL> <remoteName> <remoteRepoName> <remoteGeoNodeURL> <remoteUser> <remotePassword>"
+  else
+      INIT_ENV=$1
+      INIT_CMD=$2
+      USERPASS=$3
+      LOCAL_REPO_NAME=$4
+      LOCAL_GEONODE_URL=$5
+      REMOTE_NAME=$6
+      REMOTE_REPO_NAME=$7
+      REMOTE_GEONODE_URL=$8
+      REMOTE_USER=$9
+      REMOTE_PASS=$10
+      
+      REPO_URL="$LOCAL_GEONODE_URL/geoserver/geogit/$LOCAL_REPO_NAME"
+      REMOTE_URL="$REMOTE_GEONODE_URL/geoserver/geogit/$REMOTE_REPO_NAME"
+      CMD="add_remote_2 $USERPASS $REPO_URL $REMOTE_NAME $REMOTE_URL $REMOTE_USER $REMOTE_PASS"
+      bash --login -c "$CMD"
+  fi
+}
+
+add_remote_2(){
+  if [[ $# -ne 8 ]]; then
+      echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD <user:password> <repoURL> <remoteName> <remoteURL> <remoteUser> <remotePassword>"
+  else
+      INIT_ENV=$1
+      INIT_CMD=$2
+      USERPASS=$3
+      REPO_URL=$4
+      REMOTE_NAME=$5
+      REMOTE_URL=$6
+      REMOTE_USER=$7
+      REMOTE_PASS=$8
+      
+      CTX="/remote"
+      QS="user=$REMOTE_USER&password=$REMOTE_PASS&output_format=JSON&remoteName=$REMOTE_NAME&remoteURL=$REMOTE_URL"
+      URL="$REPO_URL$CTX?$QS"
+      
+      CMD='curl -u '$USERPASS' '$URL
+      echo $CMD
+      #bash --login -c "$CMD"
   fi
 }
 
@@ -140,11 +178,28 @@ if [[ "$INIT_ENV" = "prod" ]]; then
             export -f add_server
             bash --login -c "add_server $INIT_ENV $INIT_CMD $3 \"$4\" \"$5\" \"$FILE_SETTINGS\""
         fi
+    elif [[ "$INIT_CMD" == "remote" ]]; then
+        
+        if [[ $# -ne 10 ]]; then
+	    echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD <user:password> <localRepoName> <localGeonodeURL> <remoteName> <remoteRepoName> <remoteGeoNodeURL> <remoteUser> <remotePassword>"
+        else
+            export -f add_remote
+            export -f add_remote_2
+            bash --login -c "add_remote $INIT_ENV $INIT_CMD \"$3\" \"$4\" \"$5\" \"$6\" \"$7\" \"$8\" \"$9\" \"$10\""
+        fi
+    elif [[ "$INIT_CMD" == "remote2" ]]; then
+        
+        if [[ $# -ne 8 ]]; then
+	    echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD <user:password> <repoURL> <remoteName> <remoteURL> <remoteUser> <remotePassword>"
+        else
+            export -f add_remote_2
+            bash --login -c "add_remote_2 $INIT_ENV $INIT_CMD \"$3\" \"$4\" \"$5\" \"$6\" \"$7\" \"$8\""
+        fi
     else
         echo "Usage: cybergis-script-init-rogue.sh prod [use|rvm|gems|geonode|server]"
     fi
 
 else
-    echo "Usage: cybergis-script-init-rogue.sh [prod|dev] [use|rvm|gems|geonode|server]"
+    echo "Usage: cybergis-script-init-rogue.sh [prod|dev] [use|rvm|gems|geonode|server|remote|remote2]"
 fi
 
