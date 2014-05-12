@@ -124,7 +124,7 @@ add_remote_2(){
       QS="user=$REMOTE_USER&password=$REMOTE_PASS&output_format=JSON&remoteName=$REMOTE_NAME&remoteURL=$REMOTE_URL"
       URL="$REPO_URL$CTX?$QS"
       
-      CMD='curl -u '$USERPASS' '$URL
+      CMD='curl -u '$USERPASS' "'$URL'"'
       #echo $CMD
       bash --login -c "$CMD"
   fi
