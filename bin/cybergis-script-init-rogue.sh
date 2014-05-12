@@ -100,8 +100,8 @@ add_remote(){
       REMOTE_USER=$9
       REMOTE_PASS=${10}
       
-      REPO_URL="$LOCAL_GEONODE_URL/geoserver/geogit/$LOCAL_REPO_NAME"
-      REMOTE_URL="$REMOTE_GEONODE_URL/geoserver/geogit/$REMOTE_REPO_NAME"
+      REPO_URL="$LOCAL_GEONODE_URL/geoserver/geogit/$LOCAL_REPO_NAME/"
+      REMOTE_URL="$REMOTE_GEONODE_URL/geoserver/geogit/$REMOTE_REPO_NAME/"
       CMD="add_remote_2 $INIT_ENV $INIT_CMD \"$USERPASS\" \"$REPO_URL\" \"$REMOTE_NAME\" \"$REMOTE_URL\" \"$REMOTE_USER\" \"$REMOTE_PASS\""
       bash --login -c "$CMD"
   fi
@@ -120,7 +120,7 @@ add_remote_2(){
       REMOTE_USER=$7
       REMOTE_PASS=$8
       
-      CTX="/remote"
+      CTX="remote"
       QS="user=$REMOTE_USER&password=$REMOTE_PASS&output_format=JSON&remoteName=$REMOTE_NAME&remoteURL=$REMOTE_URL"
       URL="$REPO_URL$CTX?$QS"
       
