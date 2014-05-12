@@ -102,7 +102,7 @@ add_remote(){
       
       REPO_URL="$LOCAL_GEONODE_URL/geoserver/geogit/$LOCAL_REPO_NAME"
       REMOTE_URL="$REMOTE_GEONODE_URL/geoserver/geogit/$REMOTE_REPO_NAME"
-      CMD="add_remote_2 $USERPASS $REPO_URL $REMOTE_NAME $REMOTE_URL $REMOTE_USER $REMOTE_PASS"
+      CMD="add_remote_2 $INIT_ENV $INIT_CMD $USERPASS $REPO_URL $REMOTE_NAME $REMOTE_URL $REMOTE_USER $REMOTE_PASS"
       bash --login -c "$CMD"
   fi
 }
