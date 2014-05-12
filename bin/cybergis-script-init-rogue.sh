@@ -184,7 +184,7 @@ if [[ "$INIT_ENV" = "prod" ]]; then
         else
             export -f add_remote
             export -f add_remote_2
-            bash --login -c "add_remote $INIT_ENV $INIT_CMD \"$3\" \"$4\" \"$5\" \"$6\" \"$7\" \"$8\" \"$9\" \"$10\""
+            bash --login -c "add_remote $INIT_ENV $INIT_CMD \"$3\" \"$4\" \"$5\" \"$6\" \"$7\" \"$8\" \"$9\" \"${10}\""
         fi
     elif [[ "$INIT_CMD" == "remote2" ]]; then
         
