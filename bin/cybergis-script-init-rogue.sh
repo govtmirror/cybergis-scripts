@@ -125,8 +125,8 @@ add_remote_2(){
       URL="$REPO_URL$CTX?$QS"
       
       CMD='curl -u '$USERPASS' '$URL
-      echo $CMD
-      #bash --login -c "$CMD"
+      #echo $CMD
+      bash --login -c "$CMD"
   fi
 }
 
