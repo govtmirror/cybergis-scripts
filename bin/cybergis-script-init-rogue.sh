@@ -5,7 +5,6 @@
 
 DATE=$(date)
 RUBY_VERSION="2.0.0-p353"
-FQDN="example.com"
 CTX_GEOGIT="/geoserver/geogit/"
 FILE_SETTINGS="/var/lib/geonode/rogue_geonode/rogue_geonode/settings.py"
 
@@ -38,7 +37,12 @@ install_gems(){
 
 install_geonode(){
   echo "install_geonode"
-  if [[ "$FQDN" != "example.com" ]]; then
+  if [[ $# -ne 3 ]]; then
+    echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD <fqdn>"
+  else
+    INIT_ENV=$1
+    INIT_CMD=$2
+    FQDN=$3
     #
     cd /opt
     git clone https://github.com/ROGUE-JCTD/rogue-chef-repo.git
@@ -48,9 +52,7 @@ install_geonode(){
     sed -i "s/dev.rogue.lmnsolutions.com/$FQDN/g" dna.json
     chmod 755 run.sh
     #
-    bash --login run.sh
-  else
-    echo "You need to set the FQDN variable before continuing."
+    #bash --login run.sh
   fi
 }
 
@@ -162,11 +164,11 @@ if [[ "$INIT_ENV" = "prod" ]]; then
     
     elif [[ "$INIT_CMD" == "geonode" ]]; then
         
-        if [[ $# -ne 2 ]]; then
-	    echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD"
+        if [[ $# -ne 3 ]]; then
+	    echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD <fqdn>"
         else
             export -f install_geonode
-            bash --login -c install_geonode
+            bash --login -c "install_geonode $INIT_ENV $INIT_CMD \"$3\""
         fi
 
     elif [[ "$INIT_CMD" == "server" ]]; then
