@@ -52,7 +52,7 @@ install_geonode(){
     sed -i "s/dev.rogue.lmnsolutions.com/$FQDN/g" dna.json
     chmod 755 run.sh
     #
-    #bash --login run.sh
+    bash --login run.sh
   fi
 }
 
