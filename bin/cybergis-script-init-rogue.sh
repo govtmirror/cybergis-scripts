@@ -81,7 +81,7 @@ install_aws(){
 #     Thes following functions are for configuration #
 
 add_sns(){
-  if [[ $# -ne 5 ]]; then
+  if [[ $# -ne 6 ]]; then
       echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD <aws_access_key_id> <aws_secret_access_key> <sns_topic>"
   else
       INIT_ENV=$1
@@ -89,6 +89,7 @@ add_sns(){
       AWS_ACCESS_KEY_ID=$3
       AWS_SECRET_ACCESS_KEY=$4
       SNS_TOPIC=$5
+      FILE_SETTINGS=$6
       CMD1='echo "" >> "'$FILE_SETTINGS'"'
       CMD2='echo "AWS_ACCESS_KEY_ID = \"'$AWS_ACCESS_KEY_ID'\"" >> "'$FILE_SETTINGS'"'
       CMD3='echo "AWS_SECRET_ACCESS_KEY = \"'$AWS_SECRET_ACCESS_KEY'\"" >> "'$FILE_SETTINGS'"'
@@ -261,7 +262,7 @@ if [[ "$INIT_ENV" = "prod" ]]; then
 	    echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD <aws_access_key_id> <aws_secret_access_key> <sns_topic>"
         else
             export -f add_sns
-            bash --login -c "add_sns $INIT_ENV $INIT_CMD \"$3\" \"$4\" \"$5\""
+            bash --login -c "add_sns $INIT_ENV $INIT_CMD \"$3\" \"$4\" \"$5\" \"$FILE_SETTINGS\""
         fi
     else
         echo "Usage: cybergis-script-init-rogue.sh prod [use|rvm|gems|geonode|server|aws|sns]"
