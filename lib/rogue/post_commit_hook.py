@@ -4,6 +4,9 @@ import boto
 
 from django.conf import settings
 
+log = open("/var/log/tomcat/post_commit_hook_2.out","w")
+log.write("Log 2 opened")
+
 if len(sys.argv) == 2:
     msg_geogit = sys.argv[1]
     sns = boto.connect_sns(aws_access_key_id=settings.AWS_ACCESS_KEY_ID,aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY)
@@ -14,6 +17,8 @@ if len(sys.argv) == 2:
         sns = boto.connect_sns(aws_access_key_id=id,aws_secret_access_key=key)
         res = sns.publish(topic, msg_sns)
     else:
-        print "Topic was invalid"
+        log.write( "Topic was invalid")
 else:
-    print "Invalid program call"
+    log.write("Invalid program call")
+
+log.close()
