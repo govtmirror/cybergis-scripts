@@ -3,7 +3,9 @@ cybergis-scripts
 
 ## Description
 
-This repository contains scripts used in the CyberGIS.  The scripts contained herein are written in BASH and python.  They have been developed on and for Ubuntu; however, they may work on other systems.
+This repository contains scripts used in the CyberGIS.  The scripts contained herein are written in BASH and python.  They have been developed on and for Ubuntu; however, they may work on other systems.  The bin folder includes all the scripts that will be added to the path.  The lib folder includes scripts that are not designed to be called directly off the command line.
+
+See the guides in the cybergis-guides repo at [https://github.com/state-hiu/cybergis-guides/](https://github.com/state-hiu/cybergis-guides), for examples on using the scripts.
 
 ### CyberGIS
 The Humanitarian Information Unit has been developing a sophisticated geographic computing infrastructure referred to as the CyberGIS. The CyberGIS provides highly available, scalable, reliable, and timely geospatial services capable of supporting multiple concurrent projects.  The CyberGIS relies on primarily open source projects, such as PostGIS, GeoServer, GDAL, OGR, and OpenLayers.  The name CyberGIS is dervied from the term geospatial cyberinfrastructure.
