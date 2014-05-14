@@ -101,6 +101,22 @@ add_sns(){
   fi	
 }
 
+add_cron_sync(){
+  if [[ $# -ne 6 ]]; then
+      echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD <localRepoName> <remoteName> [hourly|daily|weekly|monthly]"
+  else
+      echo "add_cron_sync"
+  fi
+}
+
+add_cron_sync_2(){
+  if [[ $# -ne 6 ]]; then
+      echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD <localRepoName> <remoteName> <frequency>"
+  else
+      echo "add_cron_sync_2"
+  fi
+}
+
 add_server(){
   if [[ $# -ne 6 ]]; then
       echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD [tms] <name> <url>"
