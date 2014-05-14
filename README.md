@@ -49,11 +49,17 @@ cybergis-script-pull-arcgis.sh <service> <field> <dbname> <dbuser> <dbpass> <tab
 cybergis-script-pull-shapefile.sh <url> <shapefile> <dbname> <dbuser> <dbpass> <table>
 ```
 ```
-cybergis-script-init-rogue.sh [prod|dev] [use|rvm|gems|geonode|server|remote|remote2]
+cybergis-script-init-rogue.sh [prod|dev] [use|rvm|gems|geonode|server|remote|remote2|aws|sns]
     
     cybergis-script-init-rogue.sh prod server [tms|geonode] <name> <url>
     cybergis-script-init-rogue.sh prod remote <user:password> <localRepoName> <localGeonodeURL> <remoteName> <remoteRepoName> <remoteGeoNodeURL> <remoteUser> <remotePassword>
     cybergis-script-init-rogue.sh prod remote2 <user:password> <repoURL> <remoteName> <remoteURL> <remoteUser> <remotePassword>
+```
+
+To manually execute the post_commit_hook.py script that automates notification of GeoGit commits, you need to use GeoNode's pyton interpreter and not the system default.  This script requires that the AWS tools are installed and SNS is configured.  As root (`sudo su -`) run:
+```
+export DJANGO_SETTINGS_MODULE=rogue_geonode.settings
+/var/lib/geonode/bin/python /opt/cybergis-scripts.git/lib/rogue/post_commit_hook.py "test now"
 ```
 
 ## Contributing
