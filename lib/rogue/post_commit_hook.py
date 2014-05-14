@@ -5,7 +5,6 @@ import boto
 from django.conf import settings
 
 log = open("/var/log/tomcat7/post_commit_hook.out","w")
-log.write("Log 2 opened")
 
 if len(sys.argv) == 2:
     msg_geogit = sys.argv[1]
@@ -16,8 +15,8 @@ if len(sys.argv) == 2:
 
         res = sns.publish(topic, msg_sns)
     else:
-        log.write( "Topic was invalid")
+        log.write("Topic was invalid")
 else:
-    log.write("Invalid program call")
+    log.write("Usage: var/lib/geonode/bin/python /opt/cybergis-scripts.git/lib/rogue/post_commit_hook.py <commit_message>")
 
 log.close()
