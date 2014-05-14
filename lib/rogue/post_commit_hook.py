@@ -4,7 +4,7 @@ import boto
 
 from django.conf import settings
 
-log = open("/var/log/tomcat7/post_commit_hook_2.out","w")
+log = open("/var/log/tomcat7/post_commit_hook.out","w")
 log.write("Log 2 opened")
 
 if len(sys.argv) == 2:
