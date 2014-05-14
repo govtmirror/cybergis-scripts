@@ -59,20 +59,45 @@ install_geonode(){
   fi
 }
 
-install_awscli(){
+install_aws(){
+  if [[ $# -ne 2 ]]; then
+    echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD"
+  else
     #
-    if ! type "pip" &> /dev/null; then
-        apt-get install python-pip
-    fi
-    pip install awscli
+    #if ! type "pip" &> /dev/null; then
+    #    apt-get install python-pip
+    #fi
+    #pip install awscli
     #
-    aws configure
-    #
+    #The GeoGit Hook scripts uses the config info stored in settings.py instead of ~/.aws/config
+    #aws configure
+    #Install boto 9https://github.com/boto/boto) into Django's environment
+    /var/lib/geonode/bin/pip install -U boto
 }
 
 
 #==================================#
 #     Thes following functions are for configuration #
+
+add_sns(){
+  if [[ $# -ne 5 ]]; then
+      echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD <aws_access_key_id> <aws_secret_access_key> <sns_topic>"
+  else
+      INIT_ENV=$1
+      INIT_CMD=$2
+      AWS_ACCESS_KEY_ID=$3
+      AWS_SECRET_ACCESS_KEY=$4
+      SNS_TOPIC=$5
+      CMD1='echo "" >> "'$FILE_SETTINGS'"'
+      CMD2='echo "AWS_ACCESS_KEY_ID = \"'$AWS_ACCESS_KEY_ID'\"" >> "'$FILE_SETTINGS'"'
+      CMD3='echo "AWS_SECRET_ACCESS_KEY = \"'$AWS_SECRET_ACCESS_KEY'\"" >> "'$FILE_SETTINGS'"'
+      CMD4='echo "AWS_SNS_TOPIC = \"'$SNS_TOPIC'\"" >> "'$FILE_SETTINGS'"'
+      bash --login -c "$CMD1"
+      bash --login -c "$CMD2"
+      bash --login -c "$CMD3"
+      bash --login -c "$CMD4"
+  fi	
+}
 
 add_server(){
   if [[ $# -ne 6 ]]; then
@@ -221,11 +246,27 @@ if [[ "$INIT_ENV" = "prod" ]]; then
             export -f add_remote_2
             bash --login -c "add_remote_2 $INIT_ENV $INIT_CMD \"$3\" \"$4\" \"$5\" \"$6\" \"$7\" \"$8\""
         fi
+    elif [[ "$INIT_CMD" == "aws" ]]; then
+        
+        if [[ $# -ne 2 ]]; then
+	    echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD"
+        else
+            export -f install_aws
+            bash --login -c "install_aws $INIT_ENV $INIT_CMD"
+        fi
+    elif [[ "$INIT_CMD" == "sns" ]]; then
+        
+        if [[ $# -ne 5 ]]; then
+	    echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD <aws_access_key_id> <aws_secret_access_key> <sns_topic>"
+        else
+            export -f add_sns
+            bash --login -c "add_sns $INIT_ENV $INIT_CMD \"$3\" \"$4\" \"$5\""
+        fi
     else
-        echo "Usage: cybergis-script-init-rogue.sh prod [use|rvm|gems|geonode|server]"
+        echo "Usage: cybergis-script-init-rogue.sh prod [use|rvm|gems|geonode|server|aws|sns]"
     fi
 
 else
-    echo "Usage: cybergis-script-init-rogue.sh [prod|dev] [use|rvm|gems|geonode|server|remote|remote2]"
+    echo "Usage: cybergis-script-init-rogue.sh [prod|dev] [use|rvm|gems|geonode|server|remote|remote2|aws|sns]"
 fi
 
