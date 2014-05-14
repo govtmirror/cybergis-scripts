@@ -72,7 +72,8 @@ install_aws(){
     #The GeoGit Hook scripts uses the config info stored in settings.py instead of ~/.aws/config
     #aws configure
     #Install boto 9https://github.com/boto/boto) into Django's environment
-    /var/lib/geonode/bin/pip install -U boto
+    bash --login -c "/var/lib/geonode/bin/pip install -U boto"
+  fi
 }
 
 
