@@ -66,6 +66,8 @@ install_awscli(){
     fi
     pip install awscli
     #
+    aws configure
+    #
 }
 
 
