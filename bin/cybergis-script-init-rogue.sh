@@ -105,7 +105,13 @@ add_cron_sync(){
   if [[ $# -ne 5 ]]; then
       echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD <localRepoName> <remoteName> [hourly|daily|weekly|monthly]"
   else
-      echo "add_cron_sync"
+      INIT_ENV=$1
+      INIT_CMD=$2
+      REPO=$3
+      REMOTE=$4
+      FREQUENCY=$5
+      
+
   fi
 }
 
@@ -113,7 +119,12 @@ add_cron_sync_2(){
   if [[ $# -ne 5 ]]; then
       echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD <localRepoName> <remoteName> <frequency>"
   else
-      echo "add_cron_sync_2"
+      INIT_ENV=$1
+      INIT_CMD=$2
+      REPO=$3
+      REMOTE=$4
+      FREQUENCY=$5
+
   fi
 }
 
