@@ -11,6 +11,9 @@ FILE_SETTINGS="/var/lib/geonode/rogue_geonode/rogue_geonode/settings.py"
 INIT_ENV=$1
 INIT_CMD=$2
 
+#==================================#
+#     Thes following functions are for installation #
+
 init_user(){
   adduser rogue --disabled-password --home /home/rogue --shell /bin/bash
 }
@@ -55,6 +58,19 @@ install_geonode(){
     bash --login run.sh
   fi
 }
+
+install_awscli(){
+    #
+    if ! type "$foobar_command_name" &> /dev/null; then
+        apt-get install python-pip
+    fi
+    pip install awscli
+    #
+}
+
+
+#==================================#
+#     Thes following functions are for configuration #
 
 add_server(){
   if [[ $# -ne 6 ]]; then
