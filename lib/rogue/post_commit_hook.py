@@ -1,5 +1,5 @@
 #!/var/lib/geonode/bin/python
-
+import sys, os
 import boto
 
 from django.conf import settings
