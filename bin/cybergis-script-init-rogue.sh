@@ -61,7 +61,7 @@ install_geonode(){
 
 install_awscli(){
     #
-    if ! type "$foobar_command_name" &> /dev/null; then
+    if ! type "pip" &> /dev/null; then
         apt-get install python-pip
     fi
     pip install awscli
