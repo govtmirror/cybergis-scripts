@@ -102,16 +102,22 @@ add_sns(){
 }
 
 add_cron_sync(){
-  if [[ $# -ne 5 ]]; then
-      echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD <localRepoName> <remoteName> [hourly|daily|weekly|monthly]"
+  if [[ $# -ne 7 ]]; then
+      echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD <user> <password> <localRepoName> <remoteName> [hourly|daily|weekly|monthly]"
   else
       INIT_ENV=$1
       INIT_CMD=$2
-      REPO=$3
-      REMOTE=$4
-      FREQUENCY=$5
-      
+      USER=$3
+      PASSWORD=$4
+      REPO=$5
+      REMOTE=$6
+      FREQUENCY=$7
 
+      CMD=' echo "/opt/cybergis-scripts.git/lib/rogue/geogit_sync.sh '$USER' '$PASSWORD' \"'$REPO'\" '$REMOTE
+
+      if [[ "$FREQUENCY" == "hourly" ]]; then
+          bash --login -c "$CMD"
+      fi
   fi
 }
 
@@ -293,19 +299,19 @@ if [[ "$INIT_ENV" = "prod" ]]; then
         fi
     elif [[ "$INIT_CMD" == "cron" ]]; then
         
-        if [[ $# -ne 5 ]]; then
-	    echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD <localRepoName> <remoteName> [hourly|daily|weekly|monthly]"
+        if [[ $# -ne 7 ]]; then
+	    echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD <user> <password> <localRepoName> <remoteName> [hourly|daily|weekly|monthly]"
         else
             export -f add_cron_sync
-            bash --login -c "add_cron_sync $INIT_ENV $INIT_CMD \"$3\" \"$4\" \"$5\""
+            bash --login -c "add_cron_sync $INIT_ENV $INIT_CMD \"$3\" \"$4\" \"$5\" \"$6\" \"$7\""
         fi
     elif [[ "$INIT_CMD" == "cron2" ]]; then
         
-        if [[ $# -ne 5 ]]; then
-	    echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD <localRepoName> <remoteName> <frequency>"
+        if [[ $# -ne 7 ]]; then
+	    echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD <user> <password> <localRepoName> <remoteName> <frequency>"
         else
             export -f add_cron_sync_2
-            bash --login -c "add_cron_sync_2 $INIT_ENV $INIT_CMD \"$3\" \"$4\" \"$5\""
+            bash --login -c "add_cron_sync_2 $INIT_ENV $INIT_CMD \"$3\" \"$4\" \"$5\" \"$6\" \"$7\""
         fi
     else
         echo "Usage: cybergis-script-init-rogue.sh prod [use|rvm|gems|geonode|server|aws|sns|cron|cron2]"
