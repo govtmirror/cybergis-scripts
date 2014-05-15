@@ -114,12 +114,21 @@ add_cron_sync(){
       FREQUENCY=$7
 
       CRON_FILE="/etc/cron.d/geogit_sync"
-      LOG_FILE="/var/log/rogue/cron_geogit_sync"
+      LOG_FILE="/var/log/rogue/cron_geogit_sync.log"
 
       CMD='root /bin/bash /opt/cybergis-scripts.git/lib/rogue/geogit_sync.sh '$USER' '$PASSWORD' \"'$REPO'\" '$REMOTE' >> '$LOG_FILE'" >> '$CRON_FILE
 
       if [[ "$FREQUENCY" == "hourly" ]]; then
           CMD='echo "@hourly '$CMD
+          bash --login -c "$CMD"
+      elif [[ "$FREQUENCY" == "daily" ]]; then
+          CMD='echo "@daily '$CMD
+          bash --login -c "$CMD"
+      elif [[ "$FREQUENCY" == "weekly" ]]; then
+          CMD='echo "@weekly '$CMD
+          bash --login -c "$CMD"
+      elif [[ "$FREQUENCY" == "monthly" ]]; then
+          CMD='echo "@monthly '$CMD
           bash --login -c "$CMD"
       fi
       chmod 755 $CRON_FILE
