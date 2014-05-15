@@ -113,7 +113,7 @@ add_cron_sync(){
       REMOTE=$6
       FREQUENCY=$7
 
-      CMD=' echo "/opt/cybergis-scripts.git/lib/rogue/geogit_sync.sh '$USER' '$PASSWORD' \"'$REPO'\" '$REMOTE
+      CMD=' echo "/opt/cybergis-scripts.git/lib/rogue/geogit_sync.sh '$USER' '$PASSWORD' \"'$REPO'\" '$REMOTE'"'
 
       if [[ "$FREQUENCY" == "hourly" ]]; then
           bash --login -c "$CMD"
@@ -314,7 +314,7 @@ if [[ "$INIT_ENV" = "prod" ]]; then
             bash --login -c "add_cron_sync_2 $INIT_ENV $INIT_CMD \"$3\" \"$4\" \"$5\" \"$6\" \"$7\""
         fi
     else
-        echo "Usage: cybergis-script-init-rogue.sh prod [use|rvm|gems|geonode|server|aws|sns|cron|cron2]"
+        echo "Usage: cybergis-script-init-rogue.sh prod [use|rvm|gems|geonode|server|remote|remote2|aws|sns|cron|cron2]"
     fi
 
 else
