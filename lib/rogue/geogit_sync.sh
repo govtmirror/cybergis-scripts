@@ -13,8 +13,8 @@ else
     PASSWORD=$2
     REPO=$3
     REMOTE=$4
-    echo "Running: "$PYTHON manage.py geogit-sync --username $ADMIN --password $PASSWORD --url "$GEONODE_LOCAL$CTX_GEOGIT$REPO/" --remote $REMOT
+    echo "Running: "$PYTHON manage.py geogit-sync --username $USER --password $PASSWORD --url "$GEONODE_LOCAL$CTX_GEOGIT$REPO/" --remote $REMOTE
     #==#
     cd $DIR
-    $PYTHON manage.py geogit-sync --username $ADMIN --password $PASSWORD --url "$GEONODE_LOCAL$CTX_GEOGIT$REPO/" --remote $REMOTE
+    $PYTHON manage.py geogit-sync --username $USER --password $PASSWORD --url "$GEONODE_LOCAL$CTX_GEOGIT$REPO/" --remote $REMOTE
 fi
