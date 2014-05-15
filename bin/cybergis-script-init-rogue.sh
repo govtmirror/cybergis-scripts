@@ -138,13 +138,26 @@ add_cron_sync(){
 add_cron_sync_2(){
   if [[ $# -ne 5 ]]; then
       echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD <localRepoName> <remoteName> <frequency>"
+      echo 'frequency = a string in the crontab format = \"minute hour dayofmonth month dayofweek\"'
   else
       INIT_ENV=$1
       INIT_CMD=$2
-      REPO=$3
-      REMOTE=$4
-      FREQUENCY=$5
+      USER=$3
+      PASSWORD=$4
+      REPO=$5
+      REMOTE=$6
+      FREQUENCY=$7
 
+      CRON_FILE="/etc/cron.d/geogit_sync"
+      LOG_FILE="/var/log/rogue/cron_geogit_sync.log"
+
+      CMD='root /bin/bash /opt/cybergis-scripts.git/lib/rogue/geogit_sync.sh '$USER' '$PASSWORD' \"'$REPO'\" '$REMOTE' >> '$LOG_FILE'" >> '$CRON_FILE
+
+      if [[ "$FREQUENCY" != "" ]]; then
+          CMD='echo "'$FREQUENCY' '$CMD
+          bash --login -c "$CMD"
+      fi
+      chmod 755 $CRON_FILE
   fi
 }
 
