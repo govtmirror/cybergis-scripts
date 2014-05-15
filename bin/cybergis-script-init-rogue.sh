@@ -113,13 +113,16 @@ add_cron_sync(){
       REMOTE=$6
       FREQUENCY=$7
 
-      CMD='root /bin/bash /opt/cybergis-scripts.git/lib/rogue/geogit_sync.sh '$USER' '$PASSWORD' \"'$REPO'\" '$REMOTE'" >> /etc/cron.d/geogit_sync'
+      CRON_FILE="/etc/cron.d/geogit_sync"
+      LOG_FILE="/var/log/rogue/cron_geogit_sync"
+
+      CMD='root /bin/bash /opt/cybergis-scripts.git/lib/rogue/geogit_sync.sh '$USER' '$PASSWORD' \"'$REPO'\" '$REMOTE' >> '$LOG_FILE'" >> '$CRON_FILE
 
       if [[ "$FREQUENCY" == "hourly" ]]; then
-          CMD='echo " @hourly '$CMD
-          echo $CMD
-          #bash --login -c "$CMD"
+          CMD='echo "@hourly '$CMD
+          bash --login -c "$CMD"
       fi
+      chmod 755 $CRON_FILE
   fi
 }
 
