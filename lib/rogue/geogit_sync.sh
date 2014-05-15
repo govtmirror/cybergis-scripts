@@ -3,7 +3,8 @@ DATE=$(date)
 CTX_GEOGIT="/geoserver/geogit/"
 GEONODE_LOCAL="http://localhost"
 PYTHON=/var/lib/geonode/bin/python
-MANAGE=/var/lib/geonode/rogue_geonode/manage.py
+#MANAGE=/var/lib/geonode/rogue_geonode/manage.py
+DIR=/var/lib/geonode/rogue_geonode
 #==#
 if [[ $# -ne 4 ]]; then
     echo "Usage: geogit_sync.sh <user> <password> <repo> <remote>"
@@ -13,5 +14,6 @@ else
     REPO=$3
     REMOTE=$4
     #==#
+    cd $DIR
     $PYTHON manage.py geogit-sync --username $ADMIN --password $PASSWORD --url "$GEONODE_LOCAL$CTX_GEOGIT$REPO/" --remote $REMOTE
 fi
