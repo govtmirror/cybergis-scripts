@@ -102,21 +102,22 @@ add_sns(){
 }
 
 add_cron_sync(){
-  if [[ $# -ne 7 ]]; then
-      echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD <user> <password> <localRepoName> <remoteName> [hourly|daily|weekly|monthly]"
+  if [[ $# -ne 8 ]]; then
+      echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD <direction> <user> <password> <localRepoName> <remoteName> [hourly|daily|weekly|monthly]"
   else
       INIT_ENV=$1
       INIT_CMD=$2
-      USER=$3
-      PASSWORD=$4
-      REPO=$5
-      REMOTE=$6
-      FREQUENCY=$7
+      DIRECTION=$3
+      USER=$4
+      PASSWORD=$5
+      REPO=$6
+      REMOTE=$7
+      FREQUENCY=$8
 
       CRON_FILE="/etc/cron.d/geogit_sync"
       LOG_FILE="/var/log/rogue/cron_geogit_sync.log"
 
-      CMD='root /bin/bash /opt/cybergis-scripts.git/lib/rogue/geogit_sync.sh '$USER' '$PASSWORD' \"'$REPO'\" '$REMOTE' >> '$LOG_FILE'" >> '$CRON_FILE
+      CMD='root /bin/bash /opt/cybergis-scripts.git/lib/rogue/geogit_sync.sh '$DIRECTION' '$USER' '$PASSWORD' \"'$REPO'\" '$REMOTE' >> '$LOG_FILE'" >> '$CRON_FILE
 
       if [[ "$FREQUENCY" == "hourly" ]]; then
           CMD='echo "@hourly '$CMD
@@ -136,22 +137,23 @@ add_cron_sync(){
 }
 
 add_cron_sync_2(){
-  if [[ $# -ne 7 ]]; then
+  if [[ $# -ne 8 ]]; then
       echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD <user> <password> <localRepoName> <remoteName> <frequency>"
       echo 'frequency = a string in the crontab format = \"minute hour dayofmonth month dayofweek\"'
   else
       INIT_ENV=$1
       INIT_CMD=$2
-      USER=$3
-      PASSWORD=$4
-      REPO=$5
-      REMOTE=$6
-      FREQUENCY=$7
+      DIRECTION=$3
+      USER=$4
+      PASSWORD=$5
+      REPO=$6
+      REMOTE=$7
+      FREQUENCY=$8
 
       CRON_FILE="/etc/cron.d/geogit_sync"
       LOG_FILE="/var/log/rogue/cron_geogit_sync.log"
 
-      CMD='root /bin/bash /opt/cybergis-scripts.git/lib/rogue/geogit_sync.sh '$USER' '$PASSWORD' \"'$REPO'\" '$REMOTE' >> '$LOG_FILE'" >> '$CRON_FILE
+      CMD='root /bin/bash /opt/cybergis-scripts.git/lib/rogue/geogit_sync.sh '$DIRECTION' '$USER' '$PASSWORD' \"'$REPO'\" '$REMOTE' >> '$LOG_FILE'" >> '$CRON_FILE
 
       if [[ "$FREQUENCY" != "" ]]; then
           CMD='echo "'$FREQUENCY' '$CMD
@@ -326,19 +328,19 @@ if [[ "$INIT_ENV" = "prod" ]]; then
         fi
     elif [[ "$INIT_CMD" == "cron" ]]; then
         
-        if [[ $# -ne 7 ]]; then
-	    echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD <user> <password> <localRepoName> <remoteName> [hourly|daily|weekly|monthly]"
+        if [[ $# -ne 8 ]]; then
+	    echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD <direction> <user> <password> <localRepoName> <remoteName> [hourly|daily|weekly|monthly]"
         else
             export -f add_cron_sync
-            bash --login -c "add_cron_sync $INIT_ENV $INIT_CMD \"$3\" \"$4\" \"$5\" \"$6\" \"$7\""
+            bash --login -c "add_cron_sync $INIT_ENV $INIT_CMD \"$3\" \"$4\" \"$5\" \"$6\" \"$7\" \"$8\""
         fi
     elif [[ "$INIT_CMD" == "cron2" ]]; then
         
-        if [[ $# -ne 7 ]]; then
-	    echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD <user> <password> <localRepoName> <remoteName> <frequency>"
+        if [[ $# -ne 8 ]]; then
+	    echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD <direction> <user> <password> <localRepoName> <remoteName> <frequency>"
         else
             export -f add_cron_sync_2
-            bash --login -c "add_cron_sync_2 $INIT_ENV $INIT_CMD \"$3\" \"$4\" \"$5\" \"$6\" \"$7\""
+            bash --login -c "add_cron_sync_2 $INIT_ENV $INIT_CMD \"$3\" \"$4\" \"$5\" \"$6\" \"$7\" \"$8\""
         fi
     else
         echo "Usage: cybergis-script-init-rogue.sh prod [use|rvm|gems|geonode|server|remote|remote2|aws|sns|cron|cron2]"
