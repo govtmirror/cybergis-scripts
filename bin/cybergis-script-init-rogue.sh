@@ -138,7 +138,7 @@ add_cron_sync(){
 
 add_cron_sync_2(){
   if [[ $# -ne 8 ]]; then
-      echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD <user> <password> <localRepoName> <remoteName> <frequency>"
+      echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD <direction> <user> <password> <localRepoName> <remoteName> <frequency>"
       echo 'frequency = a string in the crontab format = \"minute hour dayofmonth month dayofweek\"'
   else
       INIT_ENV=$1
