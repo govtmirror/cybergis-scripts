@@ -43,7 +43,7 @@ class Line:
 	def calc(self, x):
 		if self.d != 0:
 			return int(round(self.m*x+self.b))
-		elif seld.d == 0 and self.y1 == self.y0:
+		elif self.d == 0 and self.y1 == self.y0:
 			return self.y1
 		else:
 			return x
