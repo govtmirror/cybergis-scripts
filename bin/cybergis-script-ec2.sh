@@ -28,7 +28,7 @@ if [[ "$INIT_ENV" = "prod" ]]; then
     
     if [[ "$INIT_CMD" == "resize" ]]; then
         
-        if [[ $# -ne 2 ]]; then
+        if [[ $# -ne 3 ]]; then
             echo "Usage: cybergis-script-ec2.sh $INIT_ENV $INIT_CMD"
         else
             export -f resize_volume
