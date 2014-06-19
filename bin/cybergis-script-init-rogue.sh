@@ -154,7 +154,7 @@ add_cron_sync_2(){
       REMOTE=$7
       AUTHORNAME=$8
       AUTHOREMAIL=$9
-      FREQUENCY=$10
+      FREQUENCY=${10}
 
       CRON_FILE="/etc/cron.d/geogit_sync"
       LOG_FILE="/var/log/rogue/cron_geogit_sync.log"
