@@ -78,7 +78,7 @@ install_aws(){
 
 
 #==================================#
-#     Thes following functions are for configuration #
+#     The following functions are for configuration #
 
 add_sns(){
   if [[ $# -ne 6 ]]; then
