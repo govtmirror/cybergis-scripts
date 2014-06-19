@@ -31,7 +31,7 @@ else
 	
 	cd $TEMP
 
-	echo "Retreiving data from "$URL
+	echo "Retrieving data from "$URL
 	wget $URL -O pull.geojson
 	ogr2ogr -overwrite -a_srs EPSG:900913 -f "PostgreSQL" PG:"host=localhost user=$DBUSER dbname=$DBNAME password=$DBPASS" pull.geojson -nln "$TABLE"
 	echo "Pull completed"

@@ -30,7 +30,7 @@ else
 	
 	cd $TEMP
 
-	echo "Retreiving data from "$URL
+	echo "Retrieving data from "$URL
 	wget $URL -O pull_arcgis.json
         ogr2ogr -overwrite -s_srs EPSG:900913 -a_srs EPSG:900913 -f GeoJSON pull.geojson pull_arcgis.json OGRGeoJSON
 	ogr2ogr -overwrite -a_srs EPSG:900913 -f "PostgreSQL" PG:"host=localhost user=$DBUSER dbname=$DBNAME password=$DBPASS" pull.geojson -nln "$TABLE"
