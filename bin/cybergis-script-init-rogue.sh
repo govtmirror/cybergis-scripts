@@ -53,9 +53,9 @@ install_geonode(){
     cp -r /opt/rogue-chef-repo/solo/* chef-run/
     cd chef-run
     sed -i "s/dev.rogue.lmnsolutions.com/$FQDN/g" dna.json
-    chmod 755 run.sh
+    chmod 755 provision.sh
     #
-    bash --login run.sh
+    bash --login provision.sh
   fi
 }
 
