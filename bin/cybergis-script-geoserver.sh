@@ -33,6 +33,8 @@ tune(){
     #
     #Rebuild /etc/default/tomcat6
     rm $DEFAULTS_TOMCAT6
+    touch $DEFAULTS_TOMCAT6
+    chmod 644 $DEFAULTS_TOMCAT6
     echo 'TOMCAT6_USER=tomcat6' >> $DEFAULTS_TOMCAT6
     echo 'TOMCAT6_GROUP=tomcat6' >> $DEFAULTS_TOMCAT6
     echo 'JAVA_OPTS="-Djava.awt.headless=true"' >> $DEFAULTS_TOMCAT6
