@@ -12,7 +12,7 @@ INIT_CMD=$2
 
 tune(){
   echo "tune"
-  if [[ $# -ne 3 ]]; then
+  if [[ $# -ne 4 ]]; then
     echo "Usage: cybergis-script-geoserver.sh $INIT_ENV $INIT_CMD <repo> <Xmx>"
     echo "Xmx = maximum heap size for JVM."
   else
@@ -56,7 +56,7 @@ if [[ "$INIT_ENV" = "prod" ]]; then
     
     if [[ "$INIT_CMD" == "tune" ]]; then
         
-        if [[ $# -ne 3 ]]; then
+        if [[ $# -ne 4 ]]; then
             echo "Usage: cybergis-script-geoserver.sh $INIT_ENV $INIT_CMD <repo> <Xmx>"
         else
             export -f tune
