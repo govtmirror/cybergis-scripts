@@ -11,7 +11,7 @@ INIT_CMD=$2
 #==================================#
 
 tune(){
-  echo "resize_volume"
+  echo "tune"
   if [[ $# -ne 3 ]]; then
     echo "Usage: cybergis-script-geoserver.sh $INIT_ENV $INIT_CMD <repo>"
   else
