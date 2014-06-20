@@ -55,7 +55,7 @@ if [[ "$INIT_ENV" = "prod" ]]; then
     if [[ "$INIT_CMD" == "tune" ]]; then
         
         if [[ $# -ne 3 ]]; then
-            echo "Usage: cybergis-script-geoserver.sh $INIT_ENV $INIT_CMD"
+            echo "Usage: cybergis-script-geoserver.sh $INIT_ENV $INIT_CMD <repo> <Xmx>"
         else
             export -f tune
             bash --login -c tune
