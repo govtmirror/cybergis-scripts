@@ -27,7 +27,7 @@ tune(){
     mkdir -p $REPO
     cd $REPO
     git init
-    cp /etc/defaults/* .
+    cp /etc/default/* .
     git add .
     git commit -m "update to /etc/defaults repo"
     #
@@ -44,7 +44,7 @@ tune(){
     #
     #Copy over any changes
     cd $REPO
-    cp /etc/defaults/* .
+    cp /etc/default/* .
     git add .
     git commit -m "update to /etc/defaults repo"
     #
