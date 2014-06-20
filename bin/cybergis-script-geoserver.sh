@@ -35,8 +35,14 @@ tune(){
     rm $DEFAULTS_TOMCAT6
     touch $DEFAULTS_TOMCAT6
     chmod 644 $DEFAULTS_TOMCAT6
+    echo '# Run Tomcat as this user ID. Not setting this or leaving it blank will use the' >> $DEFAULTS_TOMCAT6
+    echo '# default of tomcat6.' >> $DEFAULTS_TOMCAT6
     echo 'TOMCAT6_USER=tomcat6' >> $DEFAULTS_TOMCAT6
+    echo '' >> $DEFAULTS_TOMCAT6
+    echo '# Run Tomcat as this group ID. Not setting this or leaving it blank will use' >> $DEFAULTS_TOMCAT6
+    echo '# the default of tomcat6.' >> $DEFAULTS_TOMCAT6 
     echo 'TOMCAT6_GROUP=tomcat6' >> $DEFAULTS_TOMCAT6
+    echo '' >> $DEFAULTS_TOMCAT6
     echo 'JAVA_OPTS="-Djava.awt.headless=true"' >> $DEFAULTS_TOMCAT6
     echo 'unset LC_ALL' >> $DEFAULTS_TOMCAT6
     echo 'OPENGEO_OPTS="-Djava.awt.headless=true -Xms512M -Xmx'$XMX' -XX:+UseParallelOldGC -XX:+UseParallelGC -XX:NewRatio=2 -XX:+AggressiveOpts -Xrs -XX:PerfDataSamplingInterval=500 -XX:MaxPermSize=256m -Dorg.geotools.referencing.forceXY=true -DGEOEXPLORER_DATA=/var/lib/opengeo/geoexplorer"'  >> $DEFAULTS_TOMCAT6
