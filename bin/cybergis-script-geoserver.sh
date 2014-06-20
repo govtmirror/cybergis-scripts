@@ -13,13 +13,15 @@ INIT_CMD=$2
 tune(){
   echo "tune"
   if [[ $# -ne 3 ]]; then
-    echo "Usage: cybergis-script-geoserver.sh $INIT_ENV $INIT_CMD <repo>"
+    echo "Usage: cybergis-script-geoserver.sh $INIT_ENV $INIT_CMD <repo> <Xmx>"
+    echo "Xmx = maximum heap size for JVM."
   else
     DEFAULTS_TOMCAT6='/etc/default/tomcat6'
     #
     INIT_ENV=$1
     INIT_CMD=$2
     REPO=$3
+    XMX=$4
     #
     #Initialize Git Repo Defaults
     mkdir -p $REPO
@@ -30,12 +32,19 @@ tune(){
     git commit -m "update to /etc/defaults repo"
     #
     #Rebuild /etc/default/tomcat6
+    rm $DEFAULTS_TOMCAT6
     echo 'TOMCAT6_USER=tomcat6' >> $DEFAULTS_TOMCAT6
     echo 'TOMCAT6_GROUP=tomcat6' >> $DEFAULTS_TOMCAT6
     echo 'JAVA_OPTS="-Djava.awt.headless=true"' >> $DEFAULTS_TOMCAT6
     echo 'unset LC_ALL' >> $DEFAULTS_TOMCAT6
-    echo 'OPENGEO_OPTS="-Djava.awt.headless=true -Xms512M -Xmx12G -XX:+UseParallelOldGC -XX:+UseParallelGC -XX:NewRatio=2 -XX:+AggressiveOpts -Xrs -XX:PerfDataSamplingInterval=500 -XX:MaxPermSize=256m -Dorg.geotools.referencing.forceXY=true -DGEOEXPLORER_DATA=/var/lib/opengeo/geoexplorer"'  >> $DEFAULTS_TOMCAT6
+    echo 'OPENGEO_OPTS="-Djava.awt.headless=true -Xms512M -Xmx'$XMX' -XX:+UseParallelOldGC -XX:+UseParallelGC -XX:NewRatio=2 -XX:+AggressiveOpts -Xrs -XX:PerfDataSamplingInterval=500 -XX:MaxPermSize=256m -Dorg.geotools.referencing.forceXY=true -DGEOEXPLORER_DATA=/var/lib/opengeo/geoexplorer"'  >> $DEFAULTS_TOMCAT6
     echo 'JAVA_OPTS="$JAVA_OPTS $OPENGEO_OPTS"' >> $DEFAULTS_TOMCAT6
+    #
+    #Copy over any changes
+    cd $REPO
+    cp /etc/defaults/* .
+    git add .
+    git commit -m "update to /etc/defaults repo"
     #
     /etc/init.d/tomcat6 restart
   fi
