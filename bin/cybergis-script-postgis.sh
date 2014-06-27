@@ -28,10 +28,9 @@ install(){
     #
     CMD_1="CREATE DATABASE "$DATABASE" ENCODING 'UTF8' TEMPLATE "$TEMPLATE";"
     PGPASSWORD=$PASS psql --host=$HOST --port=$PORT --username $USER -c "$CMD_1"
-    #PGPASSWORD=$PASS psql --host=$HOST --port=$PORT --username $USER --password -d $DATABASE -f lib/postgis/postgis_install.sql
+    PGPASSWORD=$PASS psql --host=$HOST --port=$PORT --username $USER -d $DATABASE -f lib/postgis/postgis_install.sql
     if [[ "$TYPE" = "rds" ]]; then
-      #PGPASSWORD=$PASS psql --host=$HOST --port=$PORT --username $USER --password -d $DATABASE -f lib/postgis/postgis_install_rds.sql
-      echo "skipping rds install"
+      PGPASSWORD=$PASS psql --host=$HOST --port=$PORT --username $USER -d $DATABASE -f lib/postgis/postgis_install_rds.sql
     fi
   fi
 }
