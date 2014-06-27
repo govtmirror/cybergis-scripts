@@ -11,7 +11,6 @@ INIT_CMD=$2
 #==================================#
 
 install(){
-  echo "install"
   if [[ $# -ne 9 ]]; then
     echo "Usage: cybergis-script-postgis.sh prod install [rds|local] <host> <port> <user> <password> <database> <template>"
   else
