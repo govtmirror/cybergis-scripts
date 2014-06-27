@@ -43,8 +43,8 @@ if [[ "$INIT_ENV" = "prod" ]]; then
         if [[ $# -ne 9 ]]; then
             echo "Usage: cybergis-script-postgis.sh $INIT_ENV $INIT_CMD [rds|local] <host> <port> <user> <password> <database> <template>"
         else
-            export -f tune
-            bash --login -c "tune $INIT_ENV $INIT_CMD \"$3\" \"$4\" \"$5\" \"$6\" \"$7\" \"$8\" \"$9\""
+            export -f install
+            bash --login -c "install $INIT_ENV $INIT_CMD \"$3\" \"$4\" \"$5\" \"$6\" \"$7\" \"$8\" \"$9\""
         fi
     else
         echo "Usage: cybergis-script-postgis.sh prod [install]"
