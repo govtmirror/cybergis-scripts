@@ -26,7 +26,7 @@ install(){
     DATABASE=$8 #likely template_postgis
     TEMPLATE=$9 #likely tempalte0
     #
-    CMD_1="DATABASE "$DATABASE" ENCODING 'UTF8' TEMPLATE "$TEMPLATE";"
+    CMD_1="CREATE DATABASE "$DATABASE" ENCODING 'UTF8' TEMPLATE "$TEMPLATE";"
     PGPASSWORD=$PASS psql --host=$HOST --port=$PORT --username $USER -c "$CMD_1"
     #PGPASSWORD=$PASS psql --host=$HOST --port=$PORT --username $USER --password -d $DATABASE -f lib/postgis/postgis_install.sql
     if [[ "$TYPE" = "rds" ]]; then
