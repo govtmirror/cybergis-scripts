@@ -30,6 +30,8 @@ Logout and Login
 
 ## Usage
 
+### Imagery Processing
+
 ```
 cybergis-script-stretch.py <input_file> <breakpoints_file> <output_file> <rows>
 ```
@@ -39,15 +41,9 @@ cybergis-script-burn-alpha.py <input_file> <alpha_file> <alpha_band_index> <outp
 ```
 cybergis-script-hide-no-data.py <input_file> <output_file>
 ```
-```
-cybergis-script-pull-wfs.sh <wfs> <namespace> <featuretype> <dbname> <dbuser> <dbpass> <table>
-```
-```
-cybergis-script-pull-arcgis.sh <service> <field> <dbname> <dbuser> <dbpass> <table>
-```
-```
-cybergis-script-pull-shapefile.sh <url> <shapefile> <dbname> <dbuser> <dbpass> <table>
-```
+
+### ROGUE
+
 ```
 cybergis-script-init-rogue.sh [prod|dev] [use|rvm|gems|geonode|server|remote|remote2|aws|sns]
     
@@ -63,6 +59,22 @@ To manually execute the post_commit_hook.py script that automates notification o
 export DJANGO_SETTINGS_MODULE=rogue_geonode.settings
 /var/lib/geonode/bin/python /opt/cybergis-scripts.git/lib/rogue/post_commit_hook.py "test now"
 ```
+
+### PostGIS
+
+### Replication
+
+```
+cybergis-script-pull-wfs.sh <wfs> <namespace> <featuretype> <dbname> <dbuser> <dbpass> <table>
+```
+```
+cybergis-script-pull-arcgis.sh <service> <field> <dbname> <dbuser> <dbpass> <table>
+```
+```
+cybergis-script-pull-shapefile.sh <url> <shapefile> <dbname> <dbuser> <dbpass> <table>
+```
+
+
 
 ## Contributing
 
