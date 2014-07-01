@@ -30,6 +30,15 @@ Logout and Login
 
 ## Usage
 
+### EC2
+
+```
+cybergis-script-ec2.sh [prod|dev] [resize]
+
+    cybergis-script-postgis.sh prod resize <dev>
+    
+```
+
 ### Imagery Processing
 
 ```
