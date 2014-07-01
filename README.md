@@ -62,6 +62,13 @@ export DJANGO_SETTINGS_MODULE=rogue_geonode.settings
 
 ### PostGIS
 
+```
+cybergis-script-postgis.sh [prod|dev] [install]
+
+    cybergis-script-postgis.sh prod install [rds|local] <host> <port> <user> <password> <database> <template>
+    
+```
+
 ### Replication
 
 ```
