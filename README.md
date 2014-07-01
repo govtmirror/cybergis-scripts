@@ -1,4 +1,4 @@
-cybergis-scripts
+CyberGIS Scripts (cybergis-scripts)
 ================
 
 ## Description
