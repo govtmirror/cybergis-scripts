@@ -42,6 +42,13 @@ cybergis-script-ec2.sh [prod|dev] [resize]
     
 ```
 
+### GeoServer
+```
+cybergis-script-geoserver.sh [prod|dev] [tune]
+
+    cybergis-script-geoserver.sh prod tune <repo> <Xmx>
+```
+
 ### Imagery Processing
 
 ```
