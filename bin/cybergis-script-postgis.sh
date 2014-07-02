@@ -25,17 +25,17 @@ install(){
     DATABASE=$8 #likely template_postgis
     TEMPLATE=$9 #likely tempalte0
     #
-    ST_0="SELECT 'test';"
-    CMD_0="PGPASSWORD='$PASS' psql --host=$HOST --port=$PORT --username $USER -c \"$ST_0\""
-    bash --login -c $CMD_0
-    STATEMENT="CREATE DATABASE "$DATABASE" ENCODING 'UTF8' TEMPLATE "$TEMPLATE";"
-    #PGPASSWORD=$PASS psql --host=$HOST --port=$PORT --username $USER -c "$STATEMENT"
-    #ibash --login -c $CMD_1
-    #PGPASSWORD=$PASS psql --host=$HOST --port=$PORT --username $USER -d $DATABASE -f lib/postgis/postgis_install.sql
+    #ST_0="SELECT 'test';"
+    #CMD_0="PGPASSWORD='$PASS' psql --host=$HOST --port=$PORT --username $USER -c \"$ST_0\""
+    #bash --login -c $CMD_0
+    ST_1="CREATE DATABASE "$DATABASE" ENCODING 'UTF8' TEMPLATE "$TEMPLATE";"
+    CMD_1="PGPASSWORD='$PASS' psql --host=$HOST --port=$PORT --username $USER -c \"$ST_1\""
+    bash --login -c $CMD_1
+    CMD_2="PGPASSWORD='$PASS' psql --host=$HOST --port=$PORT --username $USER -d $DATABASE -f lib/postgis/postgis_install.sql"
+    bash --login -c $CMD_2
     if [[ "$TYPE" = "rds" ]]; then
-      echo "rds"
-      #PGPASSWORD=$PASS psql --host=$HOST --port=$PORT --username $USER -d $DATABASE -f lib/postgis/postgis_install_rds.sql
-      #bash --login -c $CMD_3
+      CMD_3="PGPASSWORD='$PASS' psql --host=$HOST --port=$PORT --username $USER -d $DATABASE -f lib/postgis/postgis_install_rds.sql"
+      bash --login -c $CMD_3
     fi
   fi
 }
