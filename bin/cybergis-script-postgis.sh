@@ -21,7 +21,7 @@ install(){
     HOST=$4
     PORT=$5
     USER=$6
-    PASS=$7
+    PASS=${7}
     DATABASE=$8 #likely template_postgis
     TEMPLATE=$9 #likely tempalte0
     #
@@ -30,7 +30,7 @@ install(){
     #bash --login -c $CMD_0
     ST_1="CREATE DATABASE "$DATABASE" ENCODING 'UTF8' TEMPLATE "$TEMPLATE";"
     CMD_1="PGPASSWORD='$PASS' psql --host=$HOST --port=$PORT --username $USER -c \"$ST_1\""
-    bash --login -c $CMD_1
+    bash --login -c "$CMD_1"
     CMD_2="PGPASSWORD='$PASS' psql --host=$HOST --port=$PORT --username $USER -d $DATABASE -f lib/postgis/postgis_install.sql"
     bash --login -c $CMD_2
     if [[ "$TYPE" = "rds" ]]; then
@@ -48,7 +48,7 @@ if [[ "$INIT_ENV" = "prod" ]]; then
             echo "Usage: cybergis-script-postgis.sh $INIT_ENV $INIT_CMD [rds|local] <host> <port> <user> <password> <database> <template>"
         else
             export -f install
-            bash --login -c "install $INIT_ENV $INIT_CMD \"$3\" \"$4\" \"$5\" \"$6\" \"$7\" \"$8\" \"$9\""
+            bash --login -c "install $INIT_ENV $INIT_CMD \"$3\" \"$4\" \"$5\" \"$6\" '${7}' \"$8\" \"$9\""
         fi
     else
         echo "Usage: cybergis-script-postgis.sh prod [install]"
