@@ -32,10 +32,10 @@ install(){
     CMD_1="PGPASSWORD='$PASS' psql --host=$HOST --port=$PORT --username $USER -c \"$ST_1\""
     bash --login -c "$CMD_1"
     CMD_2="PGPASSWORD='$PASS' psql --host=$HOST --port=$PORT --username $USER -d $DATABASE -f lib/postgis/postgis_install.sql"
-    bash --login -c $CMD_2
+    bash --login -c "$CMD_2"
     if [[ "$TYPE" = "rds" ]]; then
       CMD_3="PGPASSWORD='$PASS' psql --host=$HOST --port=$PORT --username $USER -d $DATABASE -f lib/postgis/postgis_install_rds.sql"
-      bash --login -c $CMD_3
+      bash --login -c "$CMD_3"
     fi
   fi
 }
