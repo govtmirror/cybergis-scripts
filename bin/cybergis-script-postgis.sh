@@ -32,6 +32,7 @@ install(){
     #ibash --login -c $CMD_1
     #PGPASSWORD=$PASS psql --host=$HOST --port=$PORT --username $USER -d $DATABASE -f lib/postgis/postgis_install.sql
     if [[ "$TYPE" = "rds" ]]; then
+      echo "rds"
       #PGPASSWORD=$PASS psql --host=$HOST --port=$PORT --username $USER -d $DATABASE -f lib/postgis/postgis_install_rds.sql
       #bash --login -c $CMD_3
     fi
