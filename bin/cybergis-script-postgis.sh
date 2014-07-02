@@ -25,7 +25,8 @@ install(){
     DATABASE=$8 #likely template_postgis
     TEMPLATE=$9 #likely tempalte0
     #
-    CMD_0="PGPASSWORD='$PASS' psql --host=$HOST --port=$PORT --username $USER"
+    ST_0="SELECT 'test';"
+    CMD_0="PGPASSWORD='$PASS' psql --host=$HOST --port=$PORT --username $USER -c \"$ST_0\""
     bash --login -c $CMD_0
     STATEMENT="CREATE DATABASE "$DATABASE" ENCODING 'UTF8' TEMPLATE "$TEMPLATE";"
     #PGPASSWORD=$PASS psql --host=$HOST --port=$PORT --username $USER -c "$STATEMENT"
