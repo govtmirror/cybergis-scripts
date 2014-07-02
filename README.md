@@ -1,4 +1,4 @@
-cybergis-scripts
+CyberGIS Scripts (cybergis-scripts)
 ================
 
 ## Description
@@ -8,7 +8,10 @@ This repository contains scripts used in the CyberGIS.  The scripts contained he
 See the guides in the cybergis-guides repo at [https://github.com/state-hiu/cybergis-guides/](https://github.com/state-hiu/cybergis-guides), for examples on using the scripts.
 
 ### CyberGIS
-The Humanitarian Information Unit has been developing a sophisticated geographic computing infrastructure referred to as the CyberGIS. The CyberGIS provides highly available, scalable, reliable, and timely geospatial services capable of supporting multiple concurrent projects.  The CyberGIS relies on primarily open source projects, such as PostGIS, GeoServer, GDAL, OGR, and OpenLayers.  The name CyberGIS is derived from the term geospatial cyberinfrastructure.
+The Humanitarian Information Unit has been developing a sophisticated geographic computing infrastructure referred to as the CyberGIS. The CyberGIS provides highly available, scalable, reliable, and timely geospatial services capable of supporting multiple concurrent projects.  The CyberGIS relies on primarily open source projects, such as PostGIS, GeoServer, GDAL, GeoGit, OGR, and OpenLayers.  The name CyberGIS is dervied from the term geospatial cyberinfrastructure.
+
+### ROGUE
+The Rapid Opensource Geospatial User-Driven Enterprise (ROGUE) Joint Capabilities Technology Demonstration (JCTD) is a two-year research & development project developing the technology for distributed geographic data creation and synchronization in a disconnected environement.  See [http://rogue.lmnsolutions.com](http://rogue.lmnsolutions.com) for more information.  HIU is leveraging the technology developed through ROGUE to build out the CyberGIS into a robust globally distributed infrastruture.
 
 ## Installation
 
@@ -30,6 +33,24 @@ Logout and Login
 
 ## Usage
 
+### EC2
+
+```
+cybergis-script-ec2.sh [prod|dev] [resize]
+
+    cybergis-script-postgis.sh prod resize <dev>
+    
+```
+
+### GeoServer
+```
+cybergis-script-geoserver.sh [prod|dev] [tune]
+
+    cybergis-script-geoserver.sh prod tune <repo> <Xmx>
+```
+
+### Imagery Processing
+
 ```
 cybergis-script-stretch.py <input_file> <breakpoints_file> <output_file> <rows>
 ```
@@ -39,15 +60,9 @@ cybergis-script-burn-alpha.py <input_file> <alpha_file> <alpha_band_index> <outp
 ```
 cybergis-script-hide-no-data.py <input_file> <output_file>
 ```
-```
-cybergis-script-pull-wfs.sh <wfs> <namespace> <featuretype> <dbname> <dbuser> <dbpass> <table>
-```
-```
-cybergis-script-pull-arcgis.sh <service> <field> <dbname> <dbuser> <dbpass> <table>
-```
-```
-cybergis-script-pull-shapefile.sh <url> <shapefile> <dbname> <dbuser> <dbpass> <table>
-```
+
+### ROGUE
+
 ```
 cybergis-script-init-rogue.sh [prod|dev] [use|rvm|gems|geonode|server|remote|remote2|aws|sns]
     
@@ -63,6 +78,29 @@ To manually execute the post_commit_hook.py script that automates notification o
 export DJANGO_SETTINGS_MODULE=rogue_geonode.settings
 /var/lib/geonode/bin/python /opt/cybergis-scripts.git/lib/rogue/post_commit_hook.py "test now"
 ```
+
+### PostGIS
+
+```
+cybergis-script-postgis.sh [prod|dev] [install]
+
+    cybergis-script-postgis.sh prod install [rds|local] <host> <port> <user> <password> <database> <template>
+    
+```
+
+### Replication
+
+```
+cybergis-script-pull-wfs.sh <wfs> <namespace> <featuretype> <dbname> <dbuser> <dbpass> <table>
+```
+```
+cybergis-script-pull-arcgis.sh <service> <field> <dbname> <dbuser> <dbpass> <table>
+```
+```
+cybergis-script-pull-shapefile.sh <url> <shapefile> <dbname> <dbuser> <dbpass> <table>
+```
+
+
 
 ## Contributing
 
