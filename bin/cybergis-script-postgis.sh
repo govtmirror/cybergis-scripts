@@ -1,13 +1,12 @@
 #!/bin/bash
 #This script is a work in development and is not stable.
-#This script requires curl and git to be installed
+#Dependencies: postgresql-client-common postgresql-client-9.1
 #Run this script using root's login shell under: sudo su -
-
+#==================================#
 DATE=$(date)
-
+#==================================#
 INIT_ENV=$1
 INIT_CMD=$2
-
 #==================================#
 
 install(){
@@ -19,15 +18,12 @@ install(){
     INIT_CMD=$2
     TYPE=$3
     HOST=$4
-    PORT=$5
-    USER=$6
+    PORT=$5 #likely 5432
+    USER=$6 #likely postgres
     PASS=${7}
     DATABASE=$8 #likely template_postgis
     TEMPLATE=$9 #likely tempalte0
     #
-    #ST_0="SELECT 'test';"
-    #CMD_0="PGPASSWORD='$PASS' psql --host=$HOST --port=$PORT --username $USER -c \"$ST_0\""
-    #bash --login -c $CMD_0
     ST_1="CREATE DATABASE "$DATABASE" ENCODING 'UTF8' TEMPLATE "$TEMPLATE";"
     CMD_1="PGPASSWORD='$PASS' psql --host=$HOST --port=$PORT --username $USER -c \"$ST_1\""
     bash --login -c "$CMD_1"

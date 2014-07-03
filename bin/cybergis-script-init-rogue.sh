@@ -1,16 +1,15 @@
 #!/bin/bash
 #This script is a work in development and is not stable.
-#This script requires curl and git to be installed
-#Run this script using rogue's login shell under: sudo su - <user>
-
+#Dependencies: curl git
+#Run this script using root's login shell under: sudo su -
+#==================================#
 DATE=$(date)
 RUBY_VERSION="2.0.0-p353"
 CTX_GEOGIT="/geoserver/geogit/"
 FILE_SETTINGS="/var/lib/geonode/rogue_geonode/rogue_geonode/settings.py"
-
+#==================================#
 INIT_ENV=$1
 INIT_CMD=$2
-
 #==================================#
 #     Thes following functions are for installation #
 
@@ -38,23 +37,45 @@ install_gems(){
   #
 }
 
-install_geonode(){
-  echo "install_geonode"
+conf(){
+  echo "conf"
+  INIT_ENV=$1
+  INIT_CMD=$2
+  ROLE=$3
+
   if [[ $# -ne 3 ]]; then
-    echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD <fqdn>"
-  else
-    INIT_ENV=$1
-    INIT_CMD=$2
-    FQDN=$3
+    echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD [database|web|both]"
+    ROLE=$3
     #
     cd /opt
-    git clone https://github.com/ROGUE-JCTD/rogue-chef-repo.git
-    mkdir chef-run
+    if [ ! -d "/opt/rogue-chef-repo" ]; then
+      git clone https://github.com/ROGUE-JCTD/rogue-chef-repo.git
+    else
+      cd /opt/rogue-chef-repo
+      git pull
+    fi
+    if [ -d "/opt/chef-run" ]; then
+      rm -fr /opt/chef-run
+    fi
+    mkdir /opt/chef-run
     cp -r /opt/rogue-chef-repo/solo/* chef-run/
     cd chef-run
     sed -i "s/dev.rogue.lmnsolutions.com/$FQDN/g" dna.json
-    chmod 755 provision.sh
+  else
+     echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD [database|web|both]"
+  fi
+}
+
+provision(){
+  echo "provision"
+  if [[ $# -ne 2 ]]; then
+    echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD"
+  else
+    INIT_ENV=$1
+    INIT_CMD=$2
     #
+    cd /opt/chef-run
+    chmod 755 provision.sh
     bash --login provision.sh
   fi
 }
@@ -281,14 +302,23 @@ if [[ "$INIT_ENV" = "prod" ]]; then
             export -f install_gems
             bash --login -c install_gems
         fi
+
+    elif [[ "$INIT_CMD" == "conf" ]]; then
+
+        if [[ $# -ne 3 ]]; then
+            echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD [database|application|both]"
+        else
+            export -f conf
+            bash --login -c "conf $INIT_ENV $INIT_CMD \"$3\""
+        fi
     
-    elif [[ "$INIT_CMD" == "geonode" ]]; then
+    elif [[ "$INIT_CMD" == "provision" ]]; then
         
         if [[ $# -ne 3 ]]; then
-	    echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD <fqdn>"
+	    echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD"
         else
-            export -f install_geonode
-            bash --login -c "install_geonode $INIT_ENV $INIT_CMD \"$3\""
+            export -f provision
+            bash --login -c "provision $INIT_ENV $INIT_CMD"
         fi
 
     elif [[ "$INIT_CMD" == "server" ]]; then
