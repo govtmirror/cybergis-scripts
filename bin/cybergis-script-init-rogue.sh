@@ -44,25 +44,35 @@ conf(){
   ROLE=$3
 
   if [[ $# -ne 3 ]]; then
-    echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD [database|web|both]"
+    echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD [database|application|both]"
     ROLE=$3
     #
     cd /opt
     if [ ! -d "/opt/rogue-chef-repo" ]; then
       git clone https://github.com/ROGUE-JCTD/rogue-chef-repo.git
-    else
-      cd /opt/rogue-chef-repo
-      git pull
     fi
+    #
+    cd /opt/rogue-chef-repo
+    #Checkout right branch for server's role
+    if [[ "$ROLE" == "database" ]]; then
+        git checkout -b hiu_database
+    elif [[ "$FREQUENCY" == "application" ]]; then
+        git checkout -b hiu_application
+    elif [[ "$FREQUENCY" == "both" ]]; then
+        git checkout -b hiu_baseline
+    fi
+    #
+    git pull
+    #
     if [ -d "/opt/chef-run" ]; then
       rm -fr /opt/chef-run
     fi
     mkdir /opt/chef-run
     cp -r /opt/rogue-chef-repo/solo/* chef-run/
     cd chef-run
-    sed -i "s/dev.rogue.lmnsolutions.com/$FQDN/g" dna.json
+    #sed -i "s/{{fqdn}}/$FQDN/g" dna.json
   else
-     echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD [database|web|both]"
+     echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD [database|application|both]"
   fi
 }
 
@@ -379,10 +389,10 @@ if [[ "$INIT_ENV" = "prod" ]]; then
             bash --login -c "add_cron_sync_2 $INIT_ENV $INIT_CMD \"$3\" \"$4\" \"$5\" \"$6\" \"$7\" \"$8\" \"$9\" \"${10}\""
         fi
     else
-        echo "Usage: cybergis-script-init-rogue.sh prod [use|rvm|gems|geonode|server|remote|remote2|aws|sns|cron|cron2]"
+        echo "Usage: cybergis-script-init-rogue.sh prod [use|rvm|gems|conf|provision|server|remote|remote2|aws|sns|cron|cron2]"
     fi
 
 else
-    echo "Usage: cybergis-script-init-rogue.sh [prod|dev] [use|rvm|gems|geonode|server|remote|remote2|aws|sns|cron|cron2]"
+    echo "Usage: cybergis-script-init-rogue.sh [prod|dev] [use|rvm|gems|conf|provision|server|remote|remote2|aws|sns|cron|cron2]"
 fi
 
