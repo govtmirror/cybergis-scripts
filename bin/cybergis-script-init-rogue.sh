@@ -316,11 +316,11 @@ if [[ "$INIT_ENV" = "prod" ]]; then
 
     elif [[ "$INIT_CMD" == "conf" ]]; then
 
-        if [[ $# -ne 3 ]]; then
+        if [[ $# -ge 3 ]]; then
             echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD [database|application|both]"
         else
             export -f conf
-            bash --login -c "conf $INIT_ENV $INIT_CMD \"$3\""
+            bash --login -c "conf $INIT_ENV $INIT_CMD '${3}' '${4}' '${5}' '${6}' '${7}'"
         fi
     
     elif [[ "$INIT_CMD" == "provision" ]]; then
