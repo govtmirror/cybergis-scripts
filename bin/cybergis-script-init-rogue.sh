@@ -55,15 +55,15 @@ conf(){
     cd /opt/rogue-chef-repo
     #Checkout right branch for server's role
     if [[ "$ROLE" == "database" ]]; then
-        git checkout -b hiu_database
+        git checkout -b hiu_database origin/hiu_database
+        git pull origin hiu_database
     elif [[ "$FREQUENCY" == "application" ]]; then
-        git checkout -b hiu_application
+        git checkout -b hiu_application origin/hiu_application
+        git pull origin hiu_application
     elif [[ "$FREQUENCY" == "both" ]]; then
-        git checkout -b hiu_baseline
+        git checkout -b hiu_baseline origin/hiu_baseline
+        git pull origin hiu_baseline
     fi
-    #
-    git pull
-    #
     if [ -d "/opt/chef-run" ]; then
       rm -fr /opt/chef-run
     fi
