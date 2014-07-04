@@ -60,7 +60,11 @@ conf_app(){
     mkdir /opt/chef-run
     cp -r /opt/rogue-chef-repo/solo/* /opt/chef-run/
     cd /opt/chef-run
-    #sed -i "s/{{fqdn}}/$FQDN/g" dna.json
+    #
+    sed -i "s/{{fqdn}}/$FQDN/g" dna.json
+    sed -i "s/{{db-addr}}/$DB_ADDR/g" dna.json
+    sed -i "s/{{db-pass}}/$DB_PASS/g" dna.json
+    sed -i "s/{{db-port}}/$DB_PORT/g" dna.json
   fi
 }
 
