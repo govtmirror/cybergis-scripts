@@ -37,7 +37,7 @@ install_gems(){
   #
 }
 
-conf_application(){
+conf_app(){
   if [[ $# -ne 6 ]]; then
     echo "Usage: cybergis-script-init-rogue.sh prod conf_application <fqdn> <db_addr> <db_pass> <db_port>"
   else
@@ -306,8 +306,8 @@ if [[ "$INIT_ENV" = "prod" ]]; then
         if [[ $# -ne 6 ]]; then
             echo "Usage: cybergis-script-init-rogue.sh prod conf_application <fqdn> <db_addr> <db_pass> <db_port>"
         else
-            export -f conf
-            bash --login -c "conf $INIT_ENV $INIT_CMD '${3}' '${4}' '${5}' '${6}'"
+            export -f conf_app
+            bash --login -c "conf_app $INIT_ENV $INIT_CMD '${3}' '${4}' '${5}' '${6}'"
         fi
     
     elif [[ "$INIT_CMD" == "provision" ]]; then
