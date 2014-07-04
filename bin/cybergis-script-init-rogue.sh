@@ -37,42 +37,29 @@ install_gems(){
   #
 }
 
-conf(){
-  echo "conf"
-  INIT_ENV=$1
-  INIT_CMD=$2
-
-  if [[ $# -lt 3 ]]; then
-    echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD [database|application|both]"
+conf_application(){
+  if [[ $# -ne 6 ]]; then
+    echo "Usage: cybergis-script-init-rogue.sh prod conf_application <fqdn> <db_addr> <db_pass> <db_port>"
   else
-    ROLE=$3
-    if [[ "$ROLE" == "database" ]]; then
-      echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD database"
-    elif [[ "$ROLE" == "application" ]]; then
-      if [[ $# -ne 7 ]]; then
-        echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD application <fqdn> <db_addr> <db_pass> <db_port>"
-      else
-        FQDN=$4
-        DB_ADDR=$5
-        DB_PASS=$6
-        DB_PORT=$7
-        cd /opt
-        if [ ! -d "/opt/rogue-chef-repo" ]; then
-          git clone https://github.com/state-hiu/rogue-chef-repo.git
-        fi
-        cd /opt/rogue-chef-repo
-        git checkout -b hiu_application origin/hiu_application
-        git pull origin hiu_application
-        if [ -d "/opt/chef-run" ]; then
-          rm -fr /opt/chef-run
-        fi
-        mkdir /opt/chef-run
-        cp -r /opt/rogue-chef-repo/solo/* /opt/chef-run/
-        cd /opt/chef-run
-      fi
-    elif [[ "$ROLE" == "application" ]]; then
-      echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD both"
+    INIT_ENV=$1
+    INIT_CMD=$2
+    FQDN=$3
+    DB_ADDR=$4
+    DB_PASS=$5
+    DB_PORT=$6
+    cd /opt
+    if [ ! -d "/opt/rogue-chef-repo" ]; then
+      git clone https://github.com/state-hiu/rogue-chef-repo.git
     fi
+    cd /opt/rogue-chef-repo
+    git checkout -b hiu_application origin/hiu_application
+    git pull origin hiu_application
+    if [ -d "/opt/chef-run" ]; then
+      rm -fr /opt/chef-run
+    fi
+    mkdir /opt/chef-run
+    cp -r /opt/rogue-chef-repo/solo/* /opt/chef-run/
+    cd /opt/chef-run
     #sed -i "s/{{fqdn}}/$FQDN/g" dna.json
   fi
 }
@@ -314,13 +301,13 @@ if [[ "$INIT_ENV" = "prod" ]]; then
             bash --login -c install_gems
         fi
 
-    elif [[ "$INIT_CMD" == "conf" ]]; then
+    elif [[ "$INIT_CMD" == "conf_application" ]]; then
 
-        if [[ $# -lt 3 ]]; then
-            echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD [database|application|both]"
+        if [[ $# -ne 6 ]]; then
+            echo "Usage: cybergis-script-init-rogue.sh prod conf_application <fqdn> <db_addr> <db_pass> <db_port>"
         else
             export -f conf
-            bash --login -c "conf $INIT_ENV $INIT_CMD '${3}' '${4}' '${5}' '${6}' '${7}'"
+            bash --login -c "conf $INIT_ENV $INIT_CMD '${3}' '${4}' '${5}' '${6}'"
         fi
     
     elif [[ "$INIT_CMD" == "provision" ]]; then
@@ -390,10 +377,10 @@ if [[ "$INIT_ENV" = "prod" ]]; then
             bash --login -c "add_cron_sync_2 $INIT_ENV $INIT_CMD \"$3\" \"$4\" \"$5\" \"$6\" \"$7\" \"$8\" \"$9\" \"${10}\""
         fi
     else
-        echo "Usage: cybergis-script-init-rogue.sh prod [use|rvm|gems|conf|provision|server|remote|remote2|aws|sns|cron|cron2]"
+        echo "Usage: cybergis-script-init-rogue.sh prod [use|rvm|gems|conf_application|provision|server|remote|remote2|aws|sns|cron|cron2]"
     fi
 
 else
-    echo "Usage: cybergis-script-init-rogue.sh [prod|dev] [use|rvm|gems|conf|provision|server|remote|remote2|aws|sns|cron|cron2]"
+    echo "Usage: cybergis-script-init-rogue.sh [prod|dev] [use|rvm|gems|conf_application|provision|server|remote|remote2|aws|sns|cron|cron2]"
 fi
 
