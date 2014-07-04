@@ -49,7 +49,7 @@ conf(){
     #
     cd /opt
     if [ ! -d "/opt/rogue-chef-repo" ]; then
-      git clone https://github.com/ROGUE-JCTD/rogue-chef-repo.git
+      git clone https://github.com/state-hiu/rogue-chef-repo.git
     fi
     #
     cd /opt/rogue-chef-repo
