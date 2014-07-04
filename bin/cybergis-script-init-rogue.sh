@@ -316,7 +316,7 @@ if [[ "$INIT_ENV" = "prod" ]]; then
     
     elif [[ "$INIT_CMD" == "provision" ]]; then
         
-        if [[ $# -ne 3 ]]; then
+        if [[ $# -ne 2 ]]; then
 	    echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD"
         else
             export -f provision
