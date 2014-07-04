@@ -42,34 +42,37 @@ conf(){
   INIT_ENV=$1
   INIT_CMD=$2
 
-  if [[ $# -ne 3 ]]; then
+  if [[ $# -ge 3 ]]; then
     echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD [database|application|both]"
   else
     ROLE=$3
-    #
-    cd /opt
-    if [ ! -d "/opt/rogue-chef-repo" ]; then
-      git clone https://github.com/state-hiu/rogue-chef-repo.git
-    fi
-    #
-    cd /opt/rogue-chef-repo
-    #Checkout right branch for server's role
     if [[ "$ROLE" == "database" ]]; then
-        git checkout -b hiu_database origin/hiu_database
-        git pull origin hiu_database
+      echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD database"
     elif [[ "$ROLE" == "application" ]]; then
+      if [[ $# -ne 7 ]]; then
+        echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD application <fqdn> <db_addr> <db_pass> <db_port>"
+      else
+        FQDN=$4
+        DB_ADDR=$5
+        DB_PASS=$6
+        DB_PORT=$7
+        cd /opt
+        if [ ! -d "/opt/rogue-chef-repo" ]; then
+          git clone https://github.com/state-hiu/rogue-chef-repo.git
+        fi
+        cd /opt/rogue-chef-repo
         git checkout -b hiu_application origin/hiu_application
         git pull origin hiu_application
-    elif [[ "$ROLE" == "both" ]]; then
-        git checkout -b hiu_baseline origin/hiu_baseline
-        git pull origin hiu_baseline
+        if [ -d "/opt/chef-run" ]; then
+          rm -fr /opt/chef-run
+        fi
+        mkdir /opt/chef-run
+        cp -r /opt/rogue-chef-repo/solo/* /opt/chef-run/
+        cd /opt/chef-run
+      fi
+    elif [[ "$ROLE" == "application" ]]; then
+      echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD both"
     fi
-    if [ -d "/opt/chef-run" ]; then
-      rm -fr /opt/chef-run
-    fi
-    mkdir /opt/chef-run
-    cp -r /opt/rogue-chef-repo/solo/* /opt/chef-run/
-    cd /opt/chef-run
     #sed -i "s/{{fqdn}}/$FQDN/g" dna.json
   fi
 }
