@@ -41,10 +41,10 @@ conf(){
   echo "conf"
   INIT_ENV=$1
   INIT_CMD=$2
-  ROLE=$3
 
   if [[ $# -ne 3 ]]; then
     echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD [database|application|both]"
+  else
     ROLE=$3
     #
     cd /opt
@@ -71,8 +71,6 @@ conf(){
     cp -r /opt/rogue-chef-repo/solo/* chef-run/
     cd chef-run
     #sed -i "s/{{fqdn}}/$FQDN/g" dna.json
-  else
-     echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD [database|application|both]"
   fi
 }
 
