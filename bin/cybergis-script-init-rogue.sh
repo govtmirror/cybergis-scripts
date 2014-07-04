@@ -68,8 +68,8 @@ conf(){
       rm -fr /opt/chef-run
     fi
     mkdir /opt/chef-run
-    cp -r /opt/rogue-chef-repo/solo/* chef-run/
-    cd chef-run
+    cp -r /opt/rogue-chef-repo/solo/* /opt/chef-run/
+    cd /opt/chef-run
     #sed -i "s/{{fqdn}}/$FQDN/g" dna.json
   fi
 }
