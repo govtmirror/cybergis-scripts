@@ -42,7 +42,7 @@ conf(){
   INIT_ENV=$1
   INIT_CMD=$2
 
-  if [[ $# -ge 3 ]]; then
+  if [[ $# -lt 3 ]]; then
     echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD [database|application|both]"
   else
     ROLE=$3
@@ -316,7 +316,7 @@ if [[ "$INIT_ENV" = "prod" ]]; then
 
     elif [[ "$INIT_CMD" == "conf" ]]; then
 
-        if [[ $# -ge 3 ]]; then
+        if [[ $# -lt 3 ]]; then
             echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD [database|application|both]"
         else
             export -f conf
