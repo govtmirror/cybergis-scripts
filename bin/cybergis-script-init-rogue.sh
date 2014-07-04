@@ -57,10 +57,10 @@ conf(){
     if [[ "$ROLE" == "database" ]]; then
         git checkout -b hiu_database origin/hiu_database
         git pull origin hiu_database
-    elif [[ "$FREQUENCY" == "application" ]]; then
+    elif [[ "$ROLE" == "application" ]]; then
         git checkout -b hiu_application origin/hiu_application
         git pull origin hiu_application
-    elif [[ "$FREQUENCY" == "both" ]]; then
+    elif [[ "$ROLE" == "both" ]]; then
         git checkout -b hiu_baseline origin/hiu_baseline
         git pull origin hiu_baseline
     fi
