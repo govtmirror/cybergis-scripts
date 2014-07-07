@@ -65,7 +65,7 @@ conf_application(){
     sed -i "s/{{fqdn}}/$FQDN/g" dna.json
     sed -i "s/{{db-host}}/$DB_HOST/g" dna.json
     if [[ "$DB_IP" == "nil" ]]; then
-      sed -i "s/{{db-ip}}/nill/g" dna.json
+      sed -i "s/{{db-ip}}/nil/g" dna.json
     else
       sed -i "s/{{db-ip}}/\"$DB_IP\"/g" dna.json
     fi
