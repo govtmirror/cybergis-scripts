@@ -38,8 +38,8 @@ install_gems(){
 }
 
 conf_application(){
-  if [[ $# -ne 7 ]]; then
-    echo "Usage: cybergis-script-init-rogue.sh prod conf_application <fqdn> <db_host> <db_ip> <db_port> <db_pass>"
+  if [[ $# -ne 8 ]]; then
+    echo "Usage: cybergis-script-init-rogue.sh prod conf_application <fqdn> <db_host> <db_ip> <db_port> <db_pass> <gs_baseline>"
   else
     INIT_ENV=$1
     INIT_CMD=$2
@@ -48,6 +48,7 @@ conf_application(){
     DB_IP=$5
     DB_PORT=$6
     DB_PASS=$7
+    GS_BASELINE=$8
     cd /opt
     if [ ! -d "/opt/rogue-chef-repo" ]; then
       git clone https://github.com/state-hiu/rogue-chef-repo.git
@@ -71,6 +72,7 @@ conf_application(){
     fi
     sed -i "s/{{db-pass}}/$DB_PASS/g" dna.json
     sed -i "s/{{db-port}}/$DB_PORT/g" dna.json
+    sed -i "s/{{gs-baseline}}/$GS_BASELINE/g" dna.json
   fi
 }
 
@@ -313,11 +315,11 @@ if [[ "$INIT_ENV" = "prod" ]]; then
 
     elif [[ "$INIT_CMD" == "conf_application" ]]; then
 
-        if [[ $# -ne 7 ]]; then
-            echo "Usage: cybergis-script-init-rogue.sh prod conf_application <fqdn> <db_host> <db_ip> <db_port> <db_pass>"
+        if [[ $# -ne 8 ]]; then
+            echo "Usage: cybergis-script-init-rogue.sh prod conf_application <fqdn> <db_host> <db_ip> <db_port> <db_pass> <gs_baseline>"
         else
             export -f conf_application
-            bash --login -c "conf_application $INIT_ENV $INIT_CMD '${3}' '${4}' '${5}' '${6}' '${7}'"
+            bash --login -c "conf_application $INIT_ENV $INIT_CMD '${3}' '${4}' '${5}' '${6}' '${7}' '${8}'"
         fi
     
     elif [[ "$INIT_CMD" == "provision" ]]; then
