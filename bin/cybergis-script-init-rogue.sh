@@ -316,8 +316,8 @@ if [[ "$INIT_ENV" = "prod" ]]; then
         if [[ $# -ne 7 ]]; then
             echo "Usage: cybergis-script-init-rogue.sh prod conf_application <fqdn> <db_host> <db_ip> <db_port> <db_pass>"
         else
-            export -f conf_app
-            bash --login -c "conf_app $INIT_ENV $INIT_CMD '${3}' '${4}' '${5}' '${6}' '${7}'"
+            export -f conf_application
+            bash --login -c "conf_application $INIT_ENV $INIT_CMD '${3}' '${4}' '${5}' '${6}' '${7}'"
         fi
     
     elif [[ "$INIT_CMD" == "provision" ]]; then
@@ -389,7 +389,6 @@ if [[ "$INIT_ENV" = "prod" ]]; then
     else
         echo "Usage: cybergis-script-init-rogue.sh prod [use|rvm|gems|conf_application|provision|server|remote|remote2|aws|sns|cron|cron2]"
     fi
-
 else
     echo "Usage: cybergis-script-init-rogue.sh [prod|dev] [use|rvm|gems|conf_application|provision|server|remote|remote2|aws|sns|cron|cron2]"
 fi
