@@ -100,7 +100,7 @@ if [[ "$INIT_ENV" = "prod" ]]; then
         fi
     else 
     
-        echo "Usage: cybergis-script-geoserver.sh prod [tune]"
+        echo "Usage: cybergis-script-geoserver.sh prod [backup|tune]"
     fi
 
 else
