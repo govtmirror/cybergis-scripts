@@ -9,7 +9,29 @@ INIT_ENV=$1
 INIT_CMD=$2
 
 #==================================#
-
+backup(){
+  echo "backup"
+  if [[ $# -ne 3 ]]; then
+    echo "Usage: cybergis-script-geoserver.sh $INIT_ENV $INIT_CMD <repo>"
+  else
+    GEOSERVER_DATA='/var/lib/opengeo/geoserver'
+    #
+    INIT_ENV=$1
+    INIT_CMD=$2
+    REPO=$3
+    #
+    #Initialize Git Repo Defaults
+    /etc/init.d/tomcat6 stop
+    mkdir -p $REPO
+    cd $REPO
+    git init
+    cp -R $GEOSERVER_DATA/* .
+    git add .
+    git commit -m "update to $GEOSERVER_DATA repo"
+    #
+    /etc/init.d/tomcat6 start
+  fi
+}
 tune(){
   echo "tune"
   if [[ $# -ne 4 ]]; then
@@ -60,7 +82,15 @@ tune(){
 
 if [[ "$INIT_ENV" = "prod" ]]; then
     
-    if [[ "$INIT_CMD" == "tune" ]]; then
+    if [[ "$INIT_CMD" == "backup" ]]; then
+        
+        if [[ $# -ne 3 ]]; then
+            echo "Usage: cybergis-script-geoserver.sh $INIT_ENV $INIT_CMD <repo>"
+        else
+            export -f backup
+            bash --login -c "backup $INIT_ENV $INIT_CMD \"$3\""
+        fi
+    elif [[ "$INIT_CMD" == "tune" ]]; then
         
         if [[ $# -ne 4 ]]; then
             echo "Usage: cybergis-script-geoserver.sh $INIT_ENV $INIT_CMD <repo> <Xmx>"
@@ -68,10 +98,11 @@ if [[ "$INIT_ENV" = "prod" ]]; then
             export -f tune
             bash --login -c "tune $INIT_ENV $INIT_CMD \"$3\" \"$4\""
         fi
-    else
+    else 
+    
         echo "Usage: cybergis-script-geoserver.sh prod [tune]"
     fi
 
 else
-    echo "Usage: cybergis-script-geoserver.sh [prod|dev] [tune]"
+    echo "Usage: cybergis-script-geoserver.sh [prod|dev] [backup|tune]"
 fi
