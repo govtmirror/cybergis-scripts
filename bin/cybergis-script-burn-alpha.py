@@ -49,8 +49,8 @@ def main():
 		alphaIndex = int(sys.argv[4])
 		outputFile = sys.argv[5]
 		rows = int(sys.argv[6])
-		threads = int(sys.argv[7])
-		if threads > 0:
+		numberOfThreads = int(sys.argv[7])
+		if numberOfThreads > 0:
 			if(os.path.exists(inputFile) and os.path.exists(alphaFile)):
 				if(not os.path.exists(outputFile)):
 					inputDataset = gdal.Open(inputFile,GA_ReadOnly)
@@ -65,7 +65,7 @@ def main():
 						outputDataset.SetGeoTransform(list(inputDataset.GetGeoTransform()))
 						outputDataset.SetProjection(inputDataset.GetProjection())
 					
-						if threads == 1:
+						if numberOfThreads == 1:
 							for b in range(inputBands):
 								inBand = inputDataset.GetRasterBand(b+1)
 								outBand = outputDataset.GetRasterBand(b+1)
@@ -79,7 +79,7 @@ def main():
 								
 							burn(alphaDataset.GetRasterBand(alphaIndex),outputDataset.GetRasterBand(numberOfBands),r)
 					
-						elif threads > 1:
+						elif numberOfThreads > 1:
 							
 							exitFlag = 0
 							queueLock = threading.Lock()
@@ -87,7 +87,7 @@ def main():
 							threads = []
 							threadID = 1
 							
-							for threadID in range(threads):
+							for threadID in range(numberOfThreads):
 								thread = RenderThread(threadID, ("Thread "+threadID), workQueue)
     								thread.start()
     								threads.append(thread)
