@@ -24,29 +24,15 @@ class RenderThread(threading.Thread):
         self.queue = queue
         #Variable#
         self.strip = None
-        self.b = None
-        self.inBand = None
-        self.outBand = None
-        self.y0 = None
-        self.y = None
-        self.r = None
-        self.t = None
+        self.task = None
         
     def run(self):
     	while not exitFlag:
     		if self.strip is None:
     			queueLock.acquire()
         		if not workQueue.empty():
-            			b, inBand, outBand, y0, y, r, t = self.queue.get()
+            			b, inBand, outBand, y0, y, r, t = self.task = self.queue.get()
             			queueLock.release()
-            			#==#
-            			self.b = b
-            			self.inBand = inBand
-            			self.outBand = outBand
-            			self.y0 = y0
-            			self.y = y
-            			self.r = r
-            			self.t = t
             			#==#
             			if t==1:
 			            	print self.threadName+" reading rows "+str(y*r)+" to "+str((y*r)+r)+" in band "+str(b)+"."
@@ -58,13 +44,14 @@ class RenderThread(threading.Thread):
             			queueLock.release()
         		#==#
         	else:
+        		b, inBand, outBand, y0, y, r, t = self.task
         		if t==1:
-		            	print self.threadName+" writing rows "+str(self.y*self.r)+" to "+str((self.y*self.r)+self.r-1)+" in band "+str(self.b)+"."
-            			self.outBand.WriteArray(self.strip,0,self.y*self.r)
+		            	print self.threadName+" writing rows "+str(y*r)+" to "+str((y*r)+r-1)+" in band "+str(b)+"."
+            			outBand.WriteArray(self.strip,0,y*r)
             			self.strip = None
             		elif t==2:
-		            	print self.threadName+" writing row "+str(self.y0+self.y)+" in band "+str(self.b)+"."
-            			self.outBand.WriteArray(self.strip,0,self.y0+self.y)
+		            	print self.threadName+" writing row "+str(y0+y)+" in band "+str(b)+"."
+            			outBand.WriteArray(self.strip,0,y0+y)
             			self.strip = None
         	time.sleep(1)
 
