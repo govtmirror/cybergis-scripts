@@ -79,7 +79,7 @@ class RenderSubprocess(object):
         			writeLock.acquire()
         			b, inBand, outBand, y0, y, r, t = self.task
         			if t==1:
-			            	print self.processName+" writing rows "+str(y*r)+" to "+str((y*r)+r-1)+" in band "+str(b)+"."
+			            	#print self.processName+" writing rows "+str(y*r)+" to "+str((y*r)+r-1)+" in band "+str(b)+"."
             				try:
 	            				outBand.WriteArray(self.strip,0,y*r)
             					self.strip = None
@@ -87,7 +87,7 @@ class RenderSubprocess(object):
 	            				self.tries = self.tries - 1
             					print "write failed.  "+str(self.tries)+" more tries."
             			elif t==2:
-			            	print self.processName+" writing row "+str((y0*r)+y)+" in band "+str(b)+"."
+			            	#print self.processName+" writing row "+str((y0*r)+y)+" in band "+str(b)+"."
             				try:
             					outBand.WriteArray(self.strip,0,(y0*r)+y)
             					self.strip = None
