@@ -117,10 +117,10 @@ def main():
 								outBand = outputDataset.GetRasterBand(b+1)
 								y0 = inBand.YSize/r
 								for y in range(int(inBand.YSize/r)):
-									task = b, inBand, outBand, y0, y, r, 1
+									task = b+1, inBand, outBand, y0, y, r, 1
 									workQueue.put(task)
 								for y in range(inBand.YSize%r):
-									task = b, inBand, outBand, y0, y, r, 2
+									task = b+1, inBand, outBand, y0, y, r, 2
 									workQueue.put(task)
 							print "Adding tasks for alpha band"
 							inBand = alphaDataset.GetRasterBand(alphaIndex)
