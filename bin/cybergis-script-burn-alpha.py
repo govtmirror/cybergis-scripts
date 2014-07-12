@@ -22,27 +22,51 @@ class RenderThread(threading.Thread):
         self.threadID = threadID
         self.threadName = threadName
         self.queue = queue
+        #Variable#
+        self.strip = None
+        self.b = None
+        self.inBand = None
+        self.outBand = None
+        self.y0 = None
+        self.y = None
+        self.r = None
+        self.t = None
         
     def run(self):
-    	process(self.name,self.queue)
-
-def process(threadName, q):
-    while not exitFlag:
-        queueLock.acquire()
-        if not workQueue.empty():
-            b, inBand, outBand, y0, y, r, t = q.get()
-            queueLock.release()
-            #==#
-            if t==1:
-            	print threadName+" rendering rows "+str(y*r)+" to "+str((y*r)+r)+" in band "+str(b)+"."
-            	outBand.WriteArray(inBand.ReadAsArray(0,y*r,inBand.XSize,r,inBand.XSize,r),0,y*r)
-            elif t==2:
-            	print threadName+" rendering row "+str(y0+y)+" in band "+str(b)+"."
-            	outBand.WriteArray(inBand.ReadAsArray(0,y0+y,inBand.XSize,1,inBand.XSize,1),0,y0+y)
-        else:
-            queueLock.release()
-        #==#
-        time.sleep(1)
+    	while not exitFlag:
+    		if self.strip is None:
+    			queueLock.acquire()
+        		if not workQueue.empty():
+            			b, inBand, outBand, y0, y, r, t = self.queue.get()
+            			queueLock.release()
+            			#==#
+            			self.b = b
+            			self.inBand = inBand
+            			self.outBand = outBand
+            			self.y0 = y0
+            			self.y = y
+            			self.r = r
+            			self.t = t
+            			#==#
+            			if t==1:
+			            	print self.threadName+" reading rows "+str(y*r)+" to "+str((y*r)+r)+" in band "+str(b)+"."
+            				self.strip = inBand.ReadAsArray(0,y*r,inBand.XSize,r,inBand.XSize,r)
+            			elif t==2:
+			            	print self.threadName+" reading row "+str(y0+y)+" in band "+str(b)+"."
+            				self.strip = inBand.ReadAsArray(0,y0+y,inBand.XSize,1,inBand.XSize,1)
+        		else:
+            			queueLock.release()
+        		#==#
+        	else:
+        		if t==1:
+		            	print self.threadName+" writing rows "+str(self.y*self.r)+" to "+str((self.y*self.r)+self.r-1)+" in band "+str(self.b)+"."
+            			self.outBand.WriteArray(self.strip,0,self.y*self.r)
+            			self.strip = None
+            		elif t==2:
+		            	print self.threadName+" writing row "+str(self.y0+self.y)+" in band "+str(self.b)+"."
+            			self.outBand.WriteArray(self.strip,0,self.y0+self.y)
+            			self.strip = None
+        	time.sleep(1)
 
 def main():
 	if(len(sys.argv)==8):
