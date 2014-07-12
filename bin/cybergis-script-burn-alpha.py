@@ -26,7 +26,7 @@ def process(threadName, q):
     while not exitFlag:
         queueLock.acquire()
         if not workQueue.empty():
-            inBand, outband, y0, y, r, t = q.get()
+            inBand, outBand, y0, y, r, t = q.get()
             queueLock.release()
             #==#
             if t==1:
@@ -101,20 +101,20 @@ def main():
 								outBand = outputDataset.GetRasterBand(b+1)
 								y0 = inBand.YSize/r
 								for y in range(int(inBand.YSize/r)):
-									task = inband, outBand, y0, y, r, 1
+									task = inBand, outBand, y0, y, r, 1
 									workQueue.put(task)
 								for y in range(inBand.YSize%r):
-									task = inband, outBand, y0, y, r, 2
+									task = inBand, outBand, y0, y, r, 2
 									workQueue.put(task)
 							#Add Alpha Tasks
 							inBand = alphaDataset.GetRasterBand(alphaIndex)
 							outBand = outputDataset.GetRasterBand(numberOfBands)
 							y0 = inBand.YSize/r
 							for y in range(int(inBand.YSize/r)):
-								task = inband, outBand, y0, y, r, 1
+								task = inBand, outBand, y0, y, r, 1
 								workQueue.put(task)
 							for y in range(inBand.YSize%r):
-								task = inband, outBand, y0, y, r, 2
+								task = inBand, outBand, y0, y, r, 2
 								workQueue.put(task)
 							
 							queueLock.release()
