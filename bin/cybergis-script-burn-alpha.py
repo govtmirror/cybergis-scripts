@@ -42,7 +42,6 @@ class RenderThread(threading.Thread):
             				self.strip = inBand.ReadAsArray(0,y0+y,inBand.XSize,1,inBand.XSize,1)
         		else:
             			queueLock.release()
-        		#==#
         	else:
         		b, inBand, outBand, y0, y, r, t = self.task
         		if t==1:
