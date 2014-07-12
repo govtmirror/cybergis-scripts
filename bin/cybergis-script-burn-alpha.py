@@ -3,6 +3,7 @@ import sys
 import os
 import threading
 import time
+import Queue
 import struct
 import numpy
 import struct
@@ -10,6 +11,35 @@ import gdal
 import osr
 import gdalnumeric
 from gdalconst import *
+
+class RenderThread(threading.Thread):
+    def __init__(self, threadID, threadName, queue):
+        threading.Thread.__init__(self)
+        self.threadID = threadID
+        self.threadName = threadName
+        self.queue = queue
+        
+    def run(self):
+    	process(self.name,self.queue)
+
+def process(threadName, q):
+    while not exitFlag:
+        queueLock.acquire()
+        if not workQueue.empty():
+            inBand, outband, y0, y, r, t = q.get()
+            queueLock.release()
+            #==#
+            if t==1:
+            	print "Rendering rows "+str(y*r)+" to "+str((y*r)+r)+"."
+            	outBand.WriteArray(inBand.ReadAsArray(0,y*r,inBand.XSize,r,inBand.XSize,r),0,y*r)
+            elif t==2:
+            	print "Rendering row "+str(y0+y)+"."
+            	outBand.WriteArray(inBand.ReadAsArray(0,y0+y,inBand.XSize,1,inBand.XSize,1),0,y0+y)
+            	
+        else:
+            queueLock.release()
+        #==#
+        time.sleep(1)
 
 def main():
 	if(len(sys.argv)==8):
@@ -50,19 +80,54 @@ def main():
 							burn(alphaDataset.GetRasterBand(alphaIndex),outputDataset.GetRasterBand(numberOfBands),r)
 					
 						elif threads > 1:
+							
+							exitFlag = 0
+							queueLock = threading.Lock()
+							workQueue = Queue.Queue(0)
+							threads = []
+							threadID = 1
+							
+							for threadID in range(threads):
+								thread = RenderThread(threadID, ("Thread "+threadID), workQueue)
+    								thread.start()
+    								threads.append(thread)
+    								threadID += 1
+							
+							queueLock.acquire()
+							#Add RGB Tasks
 							for b in range(inputBands):
+								print "Processing Band"+str(b)
 								inBand = inputDataset.GetRasterBand(b+1)
 								outBand = outputDataset.GetRasterBand(b+1)
-						
-								for y in range(int(inBand.YSize/r)):
-									outBand.WriteArray(inBand.ReadAsArray(0,y*r,inBand.XSize,r,inBand.XSize,r),0,y*r)
-
 								y0 = inBand.YSize/r
+								for y in range(int(inBand.YSize/r)):
+									task = inband, outBand, y0, y, r, 1
+									workQueue.put(task)
 								for y in range(inBand.YSize%r):
-									outBand.WriteArray(inBand.ReadAsArray(0,y0+y,inBand.XSize,1,inBand.XSize,1),0,y0+y)
+									task = inband, outBand, y0, y, r, 2
+									workQueue.put(task)
+							#Add Alpha Tasks
+							inBand = alphaDataset.GetRasterBand(alphaIndex)
+							outBand = outputDataset.GetRasterBand(numberOfBands)
+							y0 = inBand.YSize/r
+							for y in range(int(inBand.YSize/r)):
+								task = inband, outBand, y0, y, r, 1
+								workQueue.put(task)
+							for y in range(inBand.YSize%r):
+								task = inband, outBand, y0, y, r, 2
+								workQueue.put(task)
+							
+							queueLock.release()
+							print "Queue is full with "+str(qsize)+" tasks."
+							print "Rendering threads will now execute".
+							while not workQueue.empty():
+								pass
+							
+							exitFlag = 1 #tell's threads it's time to quit
+							
+							for t in threads:
+								t.join()
 								
-							burn(alphaDataset.GetRasterBand(alphaIndex),outputDataset.GetRasterBand(numberOfBands),r)
-						
 						inputDataset = None
 						outputDataset = None
 					else:
@@ -77,9 +142,6 @@ def main():
 		print "Usage: cybergis-script-burn-alpha.py <input_file> <input_bands> <alpha_file> <alpha_band_index> <output_file> <rows> <threads>"
 
 def burn(inBand,outBand,rows):
-	#for y in range(inBand.YSize):
-	#	inLine = inBand.ReadAsArray(0,y,inBand.XSize,1,inBand.XSize,1)
-	#	outBand.WriteArray(inLine,0,y)
 	r = rows
 	for y in range(int(inBand.YSize/r)):
 		outBand.WriteArray(inBand.ReadAsArray(0,y*r,inBand.XSize,r,inBand.XSize,r),0,y*r)
