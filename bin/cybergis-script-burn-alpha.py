@@ -35,7 +35,7 @@ class RenderThread(threading.Thread):
             			queueLock.release()
             			#==#
             			if t==1:
-			            	print self.threadName+" reading rows "+str(y*r)+" to "+str((y*r)+r)+" in band "+str(b)+"."
+			            	print self.threadName+" reading rows "+str(y*r)+" to "+str((y*r)+r-1)+" in band "+str(b)+"."
             				self.strip = inBand.ReadAsArray(0,y*r,inBand.XSize,r,inBand.XSize,r)
             			elif t==2:
 			            	print self.threadName+" reading row "+str(y0+y)+" in band "+str(b)+"."
