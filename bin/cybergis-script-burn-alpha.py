@@ -33,7 +33,10 @@ class RenderSubprocess(object):
     		if self.strip is None:
     			queueLock.acquire()
         		if not workQueue.empty():
-            			b, inBand, outBand, y0, y, r, t = self.task = tasks[self.queue.get()]
+        			print "tasks in queue: "+str(len(tasks))
+        			taskID = self.queue.get()
+        			print "TaskID: "+str(taskID)
+            			b, inBand, outBand, y0, y, r, t = self.task = tasks[taskID]
             			queueLock.release()
             			#==#
             			if t==1:
