@@ -39,7 +39,6 @@ class RenderSubprocess(object):
         self.task = None
         
     def run(self):
-    	global tasks
     	while not exitFlag:
     		if self.strip is None:
     			queueLock.acquire()
@@ -48,7 +47,8 @@ class RenderSubprocess(object):
         			print "tasks in queue: "+str(len(self.tasks.tasks))
         			taskID = self.queue.get()
         			print "TaskID: "+str(taskID)
-            			b, inBand, outBand, y0, y, r, t = self.task = self.tasks.get(taskID)
+        			self.task = self.tasks.get(taskID)
+            			b, inBand, outBand, y0, y, r, t = self.task
             			queueLock.release()
             			#==#
             			if t==1:
@@ -125,15 +125,6 @@ def main():
 							processID = 1
 							tasks = Tasks()
 							#
-							for processID in range(numberOfThreads):
-								subprocess = RenderSubprocess(processID, ("Thread "+str(processID)), workQueue, tasks)
-								process = Process(target=execute,args=(subprocess,))
-    								process.start()
-    								processes.append(process)
-    								processID += 1
-    								
-							print "Initialized "+str(numberOfThreads)+" threads."
-							
 							for b in range(inputBands):
 								print "Adding tasks for band"+str(b)
 								inBand = inputDataset.GetRasterBand(b+1)
@@ -162,6 +153,15 @@ def main():
 							for taskID in range(len(tasks.tasks)):
 								workQueue.put(taskID)
 							queueLock.release()
+							
+							for processID in range(numberOfThreads):
+								subprocess = RenderSubprocess(processID, ("Thread "+str(processID)), workQueue, tasks)
+								process = Process(target=execute,args=(subprocess,))
+    								process.start()
+    								processes.append(process)
+    								processID += 1
+							print "Initialized "+str(numberOfThreads)+" threads."
+							
 							print "Queue is full with "+str(workQueue.qsize())+" tasks."
 							print "Rendering threads will now execute."
 							while not workQueue.empty():
