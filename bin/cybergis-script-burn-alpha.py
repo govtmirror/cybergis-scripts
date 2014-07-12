@@ -142,8 +142,8 @@ def main():
 								
 							#Add tasks to queue
 							queueLock.acquire()
-							for task in range(len(tasks)):
-								workQueue.put(task)
+							for taskID in range(len(tasks)):
+								workQueue.put(taskID)
 							queueLock.release()
 							print "Queue is full with "+str(workQueue.qsize())+" tasks."
 							print "Rendering threads will now execute."
