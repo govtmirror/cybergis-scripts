@@ -35,7 +35,7 @@ def main():
 						outputDataset.SetGeoTransform(list(inputDataset.GetGeoTransform()))
 						outputDataset.SetProjection(inputDataset.GetProjection())
 					
-						if threads===1:
+						if threads == 1:
 							for b in range(inputBands):
 								inBand = inputDataset.GetRasterBand(b+1)
 								outBand = outputDataset.GetRasterBand(b+1)
