@@ -118,7 +118,7 @@ def main():
 								workQueue.put(task)
 							
 							queueLock.release()
-							print "Queue is full with "+str(qsize)+" tasks."
+							print "Queue is full with "+str(workQueue.qsize())+" tasks."
 							print "Rendering threads will now execute."
 							while not workQueue.empty():
 								pass
