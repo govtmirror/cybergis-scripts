@@ -1,6 +1,8 @@
 #!/usr/bin/python2.7
 import sys
 import os
+import threading
+import time
 import struct
 import numpy
 import struct
@@ -10,13 +12,14 @@ import gdalnumeric
 from gdalconst import *
 
 def main():
-	if(len(sys.argv)==7):
+	if(len(sys.argv)==8):
 		inputFile = sys.argv[1]
 		inputBands = int(sys.argv[2])
 		alphaFile = sys.argv[3]
 		alphaIndex = int(sys.argv[4])
 		outputFile = sys.argv[5]
 		rows = int(sys.argv[6])
+		threads = int(sys.argv[7])
 		if(os.path.exists(inputFile) and os.path.exists(alphaFile)):
 			if(not os.path.exists(outputFile)):
 				inputDataset = gdal.Open(inputFile,GA_ReadOnly)
@@ -59,7 +62,7 @@ def main():
 		else:
 			print "Input file does not exist."
 	else:
-		print "Usage: cybergis-script-burn-alpha.py <input_file> <input_bands> <alpha_file> <alpha_band_index> <output_file> <rows>"
+		print "Usage: cybergis-script-burn-alpha.py <input_file> <input_bands> <alpha_file> <alpha_band_index> <output_file> <rows> <threads>"
 
 def burn(inBand,outBand,rows):
 	#for y in range(inBand.YSize):
