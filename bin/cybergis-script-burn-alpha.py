@@ -16,6 +16,7 @@ from gdalconst import *
 exitFlag = 0
 queueLock = None
 workQueue = None
+tasks = None
 
 class RenderSubprocess(object):
     def __init__(self, processID, processName, queue):
@@ -113,6 +114,7 @@ def main():
 							global exitFlag
 							global queueLock
 							global workQueue
+							global tasks
 							
 							exitFlag = 0
 							queueLock = Lock()
@@ -128,8 +130,8 @@ def main():
     								processID += 1
     								
 							print "Initialized "+str(numberOfThreads)+" threads."
-							queueLock.acquire()
-							#Add RGB Tasks
+							
+							tasks = []
 							for b in range(inputBands):
 								print "Adding tasks for band"+str(b)
 								inBand = inputDataset.GetRasterBand(b+1)
@@ -137,19 +139,25 @@ def main():
 								y0 = inBand.YSize/r
 								for y in range(int(inBand.YSize/r)):
 									task = b+1, inBand, outBand, y0, y, r, 1
-									workQueue.put(task)
+									tasks.append(task)
 								for y in range(inBand.YSize%r):
 									task = b+1, inBand, outBand, y0, y, r, 2
-									workQueue.put(task)
+									tasks.append(task)
 							print "Adding tasks for alpha band"
 							inBand = alphaDataset.GetRasterBand(alphaIndex)
 							outBand = outputDataset.GetRasterBand(numberOfBands)
 							y0 = inBand.YSize/r
 							for y in range(int(inBand.YSize/r)):
-								workQueue.put([numberOfBands, inBand, outBand, y0, y, r, 1])
+								task = numberOfBands, inBand, outBand, y0, y, r, 1
+								tasks.append(task)
 							for y in range(inBand.YSize%r):
-								workQueue.put([numberOfBands, inBand, outBand, y0, y, r, 2])
-							
+								tasks = numberOfBands, inBand, outBand, y0, y, r, 2
+								tasks.append(task)
+								
+							#Add tasks to queue
+							queueLock.acquire()
+							for task in range(len(tasks)):
+								workQueue.put(task)
 							queueLock.release()
 							print "Queue is full with "+str(workQueue.qsize())+" tasks."
 							print "Rendering threads will now execute."
