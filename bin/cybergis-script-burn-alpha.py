@@ -3,8 +3,8 @@ import sys
 import os
 #import threading
 import time
-import Queue
-from multiprocessing import Pool, Process, Lock
+#import Queue
+from multiprocessing import Pool, Process, Lock, Queue
 import struct
 import numpy
 import struct
@@ -17,9 +17,9 @@ exitFlag = 0
 queueLock = None
 workQueue = None
 
-class RenderProcess():
+class RenderProcess(Process):
     def __init__(self, processID, processName, queue):
-        threading.Thread.__init__(self)
+    	super(RenderProcess, self).__init__()
         self.processID = processID
         self.processName = processName
         self.queue = queue
@@ -100,12 +100,12 @@ def main():
 							
 							exitFlag = 0
 							queueLock = Lock()
-							workQueue = Queue.Queue(0)
+							workQueue = Queue(0)
 							processes = []
 							processID = 1
 							
 							for processID in range(numberOfThreads):
-								process = Process(target=RenderProcess, args=(processID, ("Thread "+str(processID)), workQueue))
+								process = Process(processID, ("Thread "+str(processID)), workQueue)
     								process.start()
     								processes.append(process)
     								processID += 1
