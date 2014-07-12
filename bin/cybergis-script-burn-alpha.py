@@ -20,47 +20,59 @@ def main():
 		outputFile = sys.argv[5]
 		rows = int(sys.argv[6])
 		threads = int(sys.argv[7])
-		if(os.path.exists(inputFile) and os.path.exists(alphaFile)):
-			if(not os.path.exists(outputFile)):
-				inputDataset = gdal.Open(inputFile,GA_ReadOnly)
-				alphaDataset = gdal.Open(alphaFile,GA_ReadOnly)
-				if ((not inputDataset is None) and (not alphaDataset is None)):
-					outputFormat = "GTiff"
-					numberOfBands = inputBands+1
-					w = inputDataset.RasterXSize
-					h = inputDataset.RasterYSize
-					r = rows
-					outputDataset = initDataset(outputFile,outputFormat,w,h,numberOfBands)
-					outputDataset.SetGeoTransform(list(inputDataset.GetGeoTransform()))
-					outputDataset.SetProjection(inputDataset.GetProjection())
+		if threads > 0:
+			if(os.path.exists(inputFile) and os.path.exists(alphaFile)):
+				if(not os.path.exists(outputFile)):
+					inputDataset = gdal.Open(inputFile,GA_ReadOnly)
+					alphaDataset = gdal.Open(alphaFile,GA_ReadOnly)
+					if ((not inputDataset is None) and (not alphaDataset is None)):
+						outputFormat = "GTiff"
+						numberOfBands = inputBands+1
+						w = inputDataset.RasterXSize
+						h = inputDataset.RasterYSize
+						r = rows
+						outputDataset = initDataset(outputFile,outputFormat,w,h,numberOfBands)
+						outputDataset.SetGeoTransform(list(inputDataset.GetGeoTransform()))
+						outputDataset.SetProjection(inputDataset.GetProjection())
 					
-					#for b in range(inputBands):
-						#outputDataset.GetRasterBand(b+1).WriteArray(inputDataset.GetRasterBand(b+1).ReadAsArray())
-					
-					#==#
-					#Write RGB Bands
-					for b in range(inputBands):
-						inBand = inputDataset.GetRasterBand(b+1)
-						outBand = outputDataset.GetRasterBand(b+1)
+						if threads===1:
+							for b in range(inputBands):
+								inBand = inputDataset.GetRasterBand(b+1)
+								outBand = outputDataset.GetRasterBand(b+1)
 						
-						for y in range(int(inBand.YSize/r)):
-							outBand.WriteArray(inBand.ReadAsArray(0,y*r,inBand.XSize,r,inBand.XSize,r),0,y*r)
+								for y in range(int(inBand.YSize/r)):
+									outBand.WriteArray(inBand.ReadAsArray(0,y*r,inBand.XSize,r,inBand.XSize,r),0,y*r)
 
-						y0 = inBand.YSize/r
-						for y in range(inBand.YSize%r):
-							outBand.WriteArray(inBand.ReadAsArray(0,y0+y,inBand.XSize,1,inBand.XSize,1),0,y0+y)
-					#==#
-					#Write Alpha Band
-					burn(alphaDataset.GetRasterBand(alphaIndex),outputDataset.GetRasterBand(numberOfBands),r)
+								y0 = inBand.YSize/r
+								for y in range(inBand.YSize%r):
+									outBand.WriteArray(inBand.ReadAsArray(0,y0+y,inBand.XSize,1,inBand.XSize,1),0,y0+y)
+								
+							burn(alphaDataset.GetRasterBand(alphaIndex),outputDataset.GetRasterBand(numberOfBands),r)
 					
-					inputDataset = None
-					outputDataset = None
+						elif threads > 1:
+							for b in range(inputBands):
+								inBand = inputDataset.GetRasterBand(b+1)
+								outBand = outputDataset.GetRasterBand(b+1)
+						
+								for y in range(int(inBand.YSize/r)):
+									outBand.WriteArray(inBand.ReadAsArray(0,y*r,inBand.XSize,r,inBand.XSize,r),0,y*r)
+
+								y0 = inBand.YSize/r
+								for y in range(inBand.YSize%r):
+									outBand.WriteArray(inBand.ReadAsArray(0,y0+y,inBand.XSize,1,inBand.XSize,1),0,y0+y)
+								
+							burn(alphaDataset.GetRasterBand(alphaIndex),outputDataset.GetRasterBand(numberOfBands),r)
+						
+						inputDataset = None
+						outputDataset = None
+					else:
+						print "Error Opening File"
 				else:
-					print "Error Opening File"
+					print "Output file already exists"
 			else:
-				print "Output file already exists"
+				print "Input file does not exist."
 		else:
-			print "Input file does not exist."
+			print "Threads needs to be 1 or higher."
 	else:
 		print "Usage: cybergis-script-burn-alpha.py <input_file> <input_bands> <alpha_file> <alpha_band_index> <output_file> <rows> <threads>"
 
