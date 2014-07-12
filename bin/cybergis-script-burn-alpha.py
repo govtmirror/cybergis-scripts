@@ -122,7 +122,7 @@ def main():
 							
 							for processID in range(numberOfThreads):
 								subprocess = RenderSubprocess(processID, ("Thread "+str(processID)), workQueue)
-								process = Process(taget=execute,args=(subprocess,))
+								process = Process(target=execute,args=(subprocess,))
     								process.start()
     								processes.append(process)
     								processID += 1
