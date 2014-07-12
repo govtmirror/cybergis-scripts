@@ -50,10 +50,10 @@ class RenderSubprocess(object):
 			            	print self.processName+" reading rows "+str(y*r)+" to "+str((y*r)+r-1)+" in band "+str(b)+"."
             				self.strip = inBand.ReadAsArray(0,y*r,inBand.XSize,r,inBand.XSize,r)
             			elif t==2:
-			            	print self.processName+" reading row "+str(y0+y)+" in band "+str(b)+"."
+			            	print self.processName+" reading row "+str((y0*r)+y)+" in band "+str(b)+"."
 			            	print "y0:"+str(y0)
 			            	print "y: "+str(y)
-            				self.strip = inBand.ReadAsArray(0,y0+y,inBand.XSize,1,inBand.XSize,1)
+            				self.strip = inBand.ReadAsArray(0,(y0*r)+y,inBand.XSize,1,inBand.XSize,1)
         		else:
             			queueLock.release()
         	else:
@@ -63,8 +63,8 @@ class RenderSubprocess(object):
             			outBand.WriteArray(self.strip,0,y*r)
             			self.strip = None
             		elif t==2:
-		            	print self.processName+" writing row "+str(y0+y)+" in band "+str(b)+"."
-            			outBand.WriteArray(self.strip,0,y0+y)
+		            	print self.processName+" writing row "+str((y0*r)+y)+" in band "+str(b)+"."
+            			outBand.WriteArray(self.strip,0,(y0*r)+y)
             			self.strip = None
         	time.sleep(1)
 
@@ -126,7 +126,7 @@ def main():
 								print "Adding tasks for band"+str(b)
 								inBand = inputDataset.GetRasterBand(b+1)
 								outBand = outputDataset.GetRasterBand(b+1)
-								y0 = inBand.YSize/r
+								y0 = int(inBand.YSize/r)
 								for y in range(int(inBand.YSize/r)):
 									task = b+1, inBand, outBand, y0, y, r, 1
 									tasks.add(task)
@@ -136,7 +136,7 @@ def main():
 							print "Adding tasks for alpha band"
 							inBand = alphaDataset.GetRasterBand(alphaIndex)
 							outBand = outputDataset.GetRasterBand(numberOfBands)
-							y0 = inBand.YSize/r
+							y0 = int(inBand.YSize/r)
 							for y in range(int(inBand.YSize/r)):
 								task = numberOfBands, inBand, outBand, y0, y, r, 1
 								tasks.add(task)
