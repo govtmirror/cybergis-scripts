@@ -15,6 +15,7 @@ from gdalconst import *
 
 exitFlag = 0
 queueLock = None
+writeLock = None
 workQueue = None
 tasks = None
 
@@ -51,12 +52,11 @@ class RenderSubprocess(object):
             				self.strip = inBand.ReadAsArray(0,y*r,inBand.XSize,r,inBand.XSize,r)
             			elif t==2:
 			            	print self.processName+" reading row "+str((y0*r)+y)+" in band "+str(b)+"."
-			            	print "y0:"+str(y0)
-			            	print "y: "+str(y)
             				self.strip = inBand.ReadAsArray(0,(y0*r)+y,inBand.XSize,1,inBand.XSize,1)
         		else:
             			queueLock.release()
         	else:
+        		writeLock.acquire()
         		b, inBand, outBand, y0, y, r, t = self.task
         		if t==1:
 		            	print self.processName+" writing rows "+str(y*r)+" to "+str((y*r)+r-1)+" in band "+str(b)+"."
@@ -66,6 +66,7 @@ class RenderSubprocess(object):
 		            	print self.processName+" writing row "+str((y0*r)+y)+" in band "+str(b)+"."
             			outBand.WriteArray(self.strip,0,(y0*r)+y)
             			self.strip = None
+            		writeLock.release()
         	time.sleep(1)
 
 def execute(subprocess):
@@ -112,11 +113,13 @@ def main():
 						elif numberOfThreads > 1:
 							global exitFlag
 							global queueLock
+							global writeLock
 							global workQueue
 							global tasks
 							#
 							exitFlag = 0
 							queueLock = Lock()
+							writeLock = Lock()
 							workQueue = Queue(0)
 							processes = []
 							processID = 1
