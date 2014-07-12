@@ -16,7 +16,17 @@ from gdalconst import *
 exitFlag = 0
 queueLock = None
 workQueue = None
-tasks = None
+tasks = Tasks()
+
+class Tasks(object):
+	def __init__(self):
+		self.tasks = []
+	
+	def add(self,task):
+		self.tasks.append(task)
+	
+	def get(self,task):
+		self.tasks[task]
 
 class RenderSubprocess(object):
     def __init__(self, processID, processName, queue, tasks):
@@ -34,10 +44,10 @@ class RenderSubprocess(object):
     		if self.strip is None:
     			queueLock.acquire()
         		if not workQueue.empty():
-        			print "tasks in queue: "+str(len(self.tasks))
+        			print "tasks in queue: "+str(len(self.tasks.tasks))
         			taskID = self.queue.get()
         			print "TaskID: "+str(taskID)
-            			b, inBand, outBand, y0, y, r, t = self.task = self.tasks[taskID]
+            			b, inBand, outBand, y0, y, r, t = self.task = self.tasks.get(taskID)
             			queueLock.release()
             			#==#
             			if t==1:
@@ -112,7 +122,7 @@ def main():
 							workQueue = Queue(0)
 							processes = []
 							processID = 1
-							tasks = []
+							#tasks = []
 							#
 							for processID in range(numberOfThreads):
 								subprocess = RenderSubprocess(processID, ("Thread "+str(processID)), workQueue, tasks)
@@ -130,24 +140,24 @@ def main():
 								y0 = inBand.YSize/r
 								for y in range(int(inBand.YSize/r)):
 									task = b+1, inBand, outBand, y0, y, r, 1
-									tasks.append(task)
+									tasks.add(task)
 								for y in range(inBand.YSize%r):
 									task = b+1, inBand, outBand, y0, y, r, 2
-									tasks.append(task)
+									tasks.add(task)
 							print "Adding tasks for alpha band"
 							inBand = alphaDataset.GetRasterBand(alphaIndex)
 							outBand = outputDataset.GetRasterBand(numberOfBands)
 							y0 = inBand.YSize/r
 							for y in range(int(inBand.YSize/r)):
 								task = numberOfBands, inBand, outBand, y0, y, r, 1
-								tasks.append(task)
+								tasks.add(task)
 							for y in range(inBand.YSize%r):
 								task = numberOfBands, inBand, outBand, y0, y, r, 2
-								tasks.append(task)
+								tasks.add(task)
 								
 							#Add tasks to queue
 							queueLock.acquire()
-							for taskID in range(len(tasks)):
+							for taskID in range(len(tasks.tasks)):
 								workQueue.put(taskID)
 							queueLock.release()
 							print "Queue is full with "+str(workQueue.qsize())+" tasks."
