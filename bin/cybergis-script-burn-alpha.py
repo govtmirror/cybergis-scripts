@@ -88,7 +88,7 @@ def main():
 							threadID = 1
 							
 							for threadID in range(numberOfThreads):
-								thread = RenderThread(threadID, ("Thread "+threadID), workQueue)
+								thread = RenderThread(threadID, ("Thread "+str(threadID)), workQueue)
     								thread.start()
     								threads.append(thread)
     								threadID += 1
