@@ -44,6 +44,7 @@ class RenderSubprocess(object):
     		if self.strip is None:
     			queueLock.acquire()
         		if not workQueue.empty():
+        			print "running process "+str(self.processName)
         			print "tasks in queue: "+str(len(self.tasks.tasks))
         			taskID = self.queue.get()
         			print "TaskID: "+str(taskID)
@@ -154,7 +155,8 @@ def main():
 							for y in range(inBand.YSize%r):
 								task = numberOfBands, inBand, outBand, y0, y, r, 2
 								tasks.add(task)
-								
+						
+							print "tasks in main queue: "+str(len(tasks.tasks))
 							#Add tasks to queue
 							queueLock.acquire()
 							for taskID in range(len(tasks.tasks)):
