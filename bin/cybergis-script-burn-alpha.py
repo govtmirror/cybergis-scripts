@@ -28,6 +28,7 @@ class RenderSubprocess(object):
         self.task = None
         
     def run(self):
+    	global tasks
     	while not exitFlag:
     		if self.strip is None:
     			queueLock.acquire()
