@@ -19,7 +19,7 @@ workQueue = None
 tasks = None
 
 class RenderSubprocess(object):
-    def __init__(self, processID, processName, queue):
+    def __init__(self, processID, processName, queue, tasks):
         self.processID = processID
         self.processName = processName
         self.queue = queue
