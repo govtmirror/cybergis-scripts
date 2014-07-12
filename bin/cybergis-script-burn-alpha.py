@@ -137,7 +137,7 @@ def main():
 								task = numberOfBands, inBand, outBand, y0, y, r, 1
 								tasks.append(task)
 							for y in range(inBand.YSize%r):
-								tasks = numberOfBands, inBand, outBand, y0, y, r, 2
+								task = numberOfBands, inBand, outBand, y0, y, r, 2
 								tasks.append(task)
 								
 							#Add tasks to queue
