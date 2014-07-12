@@ -49,7 +49,7 @@ class RenderSubprocess(object):
             			queueLock.release()
             			#==#
             			if t==1:
-			            	print self.processName+" reading rows "+str(y*r)+" to "+str((y*r)+r-1)+" in band "+str(b)+"."
+			            	#print self.processName+" reading rows "+str(y*r)+" to "+str((y*r)+r-1)+" in band "+str(b)+"."
             				try:
             					self.strip = inBand.ReadAsArray(0,y*r,inBand.XSize,r,inBand.XSize,r)
             					self.tries = 10
@@ -60,7 +60,7 @@ class RenderSubprocess(object):
             					print "r:"+str(r)
             				
             			elif t==2:
-			            	print self.processName+" reading row "+str((y0*r)+y)+" in band "+str(b)+"."
+			            	#print self.processName+" reading row "+str((y0*r)+y)+" in band "+str(b)+"."
             				try:
             					self.strip = inBand.ReadAsArray(0,(y0*r)+y,inBand.XSize,1,inBand.XSize,1)
             				except:
