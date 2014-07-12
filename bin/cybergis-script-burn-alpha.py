@@ -48,6 +48,7 @@ class RenderSubprocess(object):
         			taskID = self.queue.get()
         			print "TaskID: "+str(taskID)
         			self.task = self.tasks.get(taskID)
+        			print self.task
             			b, inBand, outBand, y0, y, r, t = self.task
             			queueLock.release()
             			#==#
