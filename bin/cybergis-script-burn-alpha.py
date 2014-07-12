@@ -30,14 +30,14 @@ def process(threadName, q):
     while not exitFlag:
         queueLock.acquire()
         if not workQueue.empty():
-            inBand, outBand, y0, y, r, t = q.get()
+            b, inBand, outBand, y0, y, r, t = q.get()
             queueLock.release()
             #==#
             if t==1:
-            	print "Rendering rows "+str(y*r)+" to "+str((y*r)+r)+"."
+            	print "Rendering rows "+str(y*r)+" to "+str((y*r)+r)+" in band "+str(b)+"."
             	outBand.WriteArray(inBand.ReadAsArray(0,y*r,inBand.XSize,r,inBand.XSize,r),0,y*r)
             elif t==2:
-            	print "Rendering row "+str(y0+y)+"."
+            	print "Rendering row "+str(y0+y)+" in band "+str(b)+"."
             	outBand.WriteArray(inBand.ReadAsArray(0,y0+y,inBand.XSize,1,inBand.XSize,1),0,y0+y)
             	
         else:
@@ -108,20 +108,20 @@ def main():
 								outBand = outputDataset.GetRasterBand(b+1)
 								y0 = inBand.YSize/r
 								for y in range(int(inBand.YSize/r)):
-									task = inBand, outBand, y0, y, r, 1
+									task = b, inBand, outBand, y0, y, r, 1
 									workQueue.put(task)
 								for y in range(inBand.YSize%r):
-									task = inBand, outBand, y0, y, r, 2
+									task = b, inBand, outBand, y0, y, r, 2
 									workQueue.put(task)
 							#Add Alpha Tasks
 							inBand = alphaDataset.GetRasterBand(alphaIndex)
 							outBand = outputDataset.GetRasterBand(numberOfBands)
 							y0 = inBand.YSize/r
 							for y in range(int(inBand.YSize/r)):
-								task = inBand, outBand, y0, y, r, 1
+								task = numberOfBands, inBand, outBand, y0, y, r, 1
 								workQueue.put(task)
 							for y in range(inBand.YSize%r):
-								task = inBand, outBand, y0, y, r, 2
+								task = numberOfBands, inBand, outBand, y0, y, r, 2
 								workQueue.put(task)
 							
 							queueLock.release()
