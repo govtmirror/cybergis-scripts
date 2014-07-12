@@ -22,7 +22,7 @@ def main():
 				inputDataset = gdal.Open(inputFile,GA_ReadOnly)
 				alphaDataset = gdal.Open(alphaFile,GA_ReadOnly)
 				if ((not inputDataset is None) and (not alphaDataset is None)):
-					outputFormat = "HFA"
+					outputFormat = "GTiff"
 					numberOfBands = inputBands+1
 					w = inputDataset.RasterXSize
 					h = inputDataset.RasterYSize
