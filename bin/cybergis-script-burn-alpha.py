@@ -26,7 +26,7 @@ class Tasks(object):
 		self.tasks.append(task)
 	
 	def get(self,task):
-		self.tasks[task]
+		return self.tasks[task]
 
 class RenderSubprocess(object):
     def __init__(self, processID, processName, queue, tasks):
@@ -43,13 +43,7 @@ class RenderSubprocess(object):
     		if self.strip is None:
     			queueLock.acquire()
         		if not workQueue.empty():
-        			print "running process "+str(self.processName)
-        			print "tasks in queue: "+str(len(self.tasks.tasks))
-        			taskID = self.queue.get()
-        			print "TaskID: "+str(taskID)
-        			self.task = self.tasks.get(taskID)
-        			print self.task
-            			b, inBand, outBand, y0, y, r, t = self.task
+            			b, inBand, outBand, y0, y, r, t = self.tasks.get(self.queue.get())
             			queueLock.release()
             			#==#
             			if t==1:
