@@ -105,7 +105,7 @@ def main():
 							processID = 1
 							
 							for processID in range(numberOfThreads):
-								process = Process(processID, ("Thread "+str(processID)), workQueue)
+								process = RenderProcess(processID, ("Thread "+str(processID)), workQueue)
     								process.start()
     								processes.append(process)
     								processID += 1
