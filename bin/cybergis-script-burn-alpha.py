@@ -12,6 +12,10 @@ import osr
 import gdalnumeric
 from gdalconst import *
 
+exitFlag = 0
+queueLock = None
+workQueue = None
+
 class RenderThread(threading.Thread):
     def __init__(self, threadID, threadName, queue):
         threading.Thread.__init__(self)
@@ -80,6 +84,9 @@ def main():
 							burn(alphaDataset.GetRasterBand(alphaIndex),outputDataset.GetRasterBand(numberOfBands),r)
 					
 						elif numberOfThreads > 1:
+							global exitFlag
+							global queueLock
+							global workQueue
 							
 							exitFlag = 0
 							queueLock = threading.Lock()
