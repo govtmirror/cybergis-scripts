@@ -32,7 +32,15 @@ class RenderProcess(Process):
     		if self.strip is None:
     			queueLock.acquire()
         		if not workQueue.empty():
-            			b, inBand, outBand, y0, y, r, t = self.task = self.queue.get()
+            			self.task = self.queue.get()
+            			#b, inBand, outBand, y0, y, r, t = 
+            			b = self.task[0]
+            			inBand = self.task[1]
+            			outBand = self.task[2]
+            			y0 = self.task[3]
+            			y = self.task[4]
+            			r = self.task[5]
+            			t = self.task[6]
             			queueLock.release()
             			#==#
             			if t==1:
@@ -44,7 +52,13 @@ class RenderProcess(Process):
         		else:
             			queueLock.release()
         	else:
-        		b, inBand, outBand, y0, y, r, t = self.task
+        		b = self.task[0]
+    			inBand = self.task[1]
+    			outBand = self.task[2]
+    			y0 = self.task[3]
+    			y = self.task[4]
+    			r = self.task[5]
+    			t = self.task[6]
         		if t==1:
 		            	print self.processName+" writing rows "+str(y*r)+" to "+str((y*r)+r-1)+" in band "+str(b)+"."
             			outBand.WriteArray(self.strip,0,y*r)
@@ -129,11 +143,9 @@ def main():
 							outBand = outputDataset.GetRasterBand(numberOfBands)
 							y0 = inBand.YSize/r
 							for y in range(int(inBand.YSize/r)):
-								task = numberOfBands, inBand, outBand, y0, y, r, 1
-								workQueue.put(task)
+								workQueue.put([numberOfBands, inBand, outBand, y0, y, r, 1])
 							for y in range(inBand.YSize%r):
-								task = numberOfBands, inBand, outBand, y0, y, r, 2
-								workQueue.put(task)
+								workQueue.put([numberOfBands, inBand, outBand, y0, y, r, 2])
 							
 							queueLock.release()
 							print "Queue is full with "+str(workQueue.qsize())+" tasks."
