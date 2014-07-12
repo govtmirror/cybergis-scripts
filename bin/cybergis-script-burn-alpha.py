@@ -16,7 +16,7 @@ from gdalconst import *
 exitFlag = 0
 queueLock = None
 workQueue = None
-tasks = Tasks()
+tasks = None
 
 class Tasks(object):
 	def __init__(self):
@@ -122,7 +122,7 @@ def main():
 							workQueue = Queue(0)
 							processes = []
 							processID = 1
-							#tasks = []
+							tasks = Tasks()
 							#
 							for processID in range(numberOfThreads):
 								subprocess = RenderSubprocess(processID, ("Thread "+str(processID)), workQueue, tasks)
