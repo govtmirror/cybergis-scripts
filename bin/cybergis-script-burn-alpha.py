@@ -32,15 +32,7 @@ class RenderSubprocess(object):
     		if self.strip is None:
     			queueLock.acquire()
         		if not workQueue.empty():
-            			self.task = self.queue.get()
-            			#b, inBand, outBand, y0, y, r, t = 
-            			b = self.task[0]
-            			inBand = self.task[1]
-            			outBand = self.task[2]
-            			y0 = self.task[3]
-            			y = self.task[4]
-            			r = self.task[5]
-            			t = self.task[6]
+            			b, inBand, outBand, y0, y, r, t = self.task = tasks[self.queue.get()]
             			queueLock.release()
             			#==#
             			if t==1:
@@ -52,13 +44,7 @@ class RenderSubprocess(object):
         		else:
             			queueLock.release()
         	else:
-        		b = self.task[0]
-    			inBand = self.task[1]
-    			outBand = self.task[2]
-    			y0 = self.task[3]
-    			y = self.task[4]
-    			r = self.task[5]
-    			t = self.task[6]
+        		b, inBand, outBand, y0, y, r, t = self.task
         		if t==1:
 		            	print self.processName+" writing rows "+str(y*r)+" to "+str((y*r)+r-1)+" in band "+str(b)+"."
             			outBand.WriteArray(self.strip,0,y*r)
