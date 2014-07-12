@@ -34,12 +34,11 @@ def process(threadName, q):
             queueLock.release()
             #==#
             if t==1:
-            	print "Rendering rows "+str(y*r)+" to "+str((y*r)+r)+" in band "+str(b)+"."
+            	print threadName+" rendering rows "+str(y*r)+" to "+str((y*r)+r)+" in band "+str(b)+"."
             	outBand.WriteArray(inBand.ReadAsArray(0,y*r,inBand.XSize,r,inBand.XSize,r),0,y*r)
             elif t==2:
-            	print "Rendering row "+str(y0+y)+" in band "+str(b)+"."
+            	print threadName+" rendering row "+str(y0+y)+" in band "+str(b)+"."
             	outBand.WriteArray(inBand.ReadAsArray(0,y0+y,inBand.XSize,1,inBand.XSize,1),0,y0+y)
-            	
         else:
             queueLock.release()
         #==#
@@ -99,11 +98,11 @@ def main():
     								thread.start()
     								threads.append(thread)
     								threadID += 1
-							
+							print "Initialized "+str(numberOfThreads)+" threads."
 							queueLock.acquire()
 							#Add RGB Tasks
 							for b in range(inputBands):
-								print "Processing Band"+str(b)
+								print "Adding tasks for band"+str(b)
 								inBand = inputDataset.GetRasterBand(b+1)
 								outBand = outputDataset.GetRasterBand(b+1)
 								y0 = inBand.YSize/r
@@ -113,7 +112,7 @@ def main():
 								for y in range(inBand.YSize%r):
 									task = b, inBand, outBand, y0, y, r, 2
 									workQueue.put(task)
-							#Add Alpha Tasks
+							print "Adding tasks for alpha band"
 							inBand = alphaDataset.GetRasterBand(alphaIndex)
 							outBand = outputDataset.GetRasterBand(numberOfBands)
 							y0 = inBand.YSize/r
