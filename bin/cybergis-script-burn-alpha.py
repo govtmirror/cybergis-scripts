@@ -4,7 +4,7 @@ import os
 #import threading
 import time
 #import Queue
-from multiprocessing import Process, Lock, Queue
+from multiprocessing import Process, Lock, Queue, cpu_count
 import struct
 import numpy
 import struct
@@ -185,6 +185,7 @@ def main():
 								workQueue.put(taskID)
 							queueLock.release()
 							
+							print str(cpu_count())+" cpus are available."
 							for processID in range(numberOfThreads):
 								subprocess = RenderSubprocess(processID, ("Thread "+str(processID)), workQueue, tasks)
 								process = Process(target=execute,args=(subprocess,))
