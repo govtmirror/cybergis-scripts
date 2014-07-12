@@ -17,7 +17,7 @@ exitFlag = 0
 queueLock = None
 workQueue = None
 
-class RenderSubprocess(Object):
+class RenderSubprocess(object):
     def __init__(self, processID, processName, queue):
         self.processID = processID
         self.processName = processName
