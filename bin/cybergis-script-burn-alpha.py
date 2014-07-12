@@ -63,6 +63,7 @@ class RenderSubprocess(object):
 			            	#print self.processName+" reading row "+str((y0*r)+y)+" in band "+str(b)+"."
             				try:
             					self.strip = inBand.ReadAsArray(0,(y0*r)+y,inBand.XSize,1,inBand.XSize,1)
+            					self.tries = 10
             				except:
             					self.strip = None
             					print "read failed.  will try again later."
@@ -70,7 +71,7 @@ class RenderSubprocess(object):
             					print "y:"+str(y)
             					print "r:"+str(r)
             					print "(y0*r)+y:"+str((y0*r)+y)
-            				self.tries = 10
+            				
         		else:
             			queueLock.release()
         	else:
