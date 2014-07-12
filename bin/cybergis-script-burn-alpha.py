@@ -4,7 +4,7 @@ import os
 #import threading
 import time
 #import Queue
-from multiprocessing import Pool, Process, Lock, Queue
+from multiprocessing import Process, Lock, Queue
 import struct
 import numpy
 import struct
@@ -17,9 +17,8 @@ exitFlag = 0
 queueLock = None
 workQueue = None
 
-class RenderProcess(Process):
+class RenderSubprocess(Object):
     def __init__(self, processID, processName, queue):
-    	super(RenderProcess, self).__init__()
         self.processID = processID
         self.processName = processName
         self.queue = queue
@@ -68,6 +67,9 @@ class RenderProcess(Process):
             			outBand.WriteArray(self.strip,0,y0+y)
             			self.strip = None
         	time.sleep(1)
+
+def execute(subprocess):
+	subprocess.run()
 
 def main():
 	if(len(sys.argv)==8):
@@ -119,7 +121,8 @@ def main():
 							processID = 1
 							
 							for processID in range(numberOfThreads):
-								process = RenderProcess(processID, ("Thread "+str(processID)), workQueue)
+								subprocess = RenderSubprocess(processID, ("Thread "+str(processID)), workQueue)
+								process = Process(taget=execute,args=(subprocess,))
     								process.start()
     								processes.append(process)
     								processID += 1
