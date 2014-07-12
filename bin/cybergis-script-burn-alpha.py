@@ -51,8 +51,8 @@ class RenderSubprocess(object):
             				self.strip = inBand.ReadAsArray(0,y*r,inBand.XSize,r,inBand.XSize,r)
             			elif t==2:
 			            	print self.processName+" reading row "+str(y0+y)+" in band "+str(b)+"."
-			            	print "y0:"+y0
-			            	print "y: "+y
+			            	print "y0:"+str(y0)
+			            	print "y: "+str(y)
             				self.strip = inBand.ReadAsArray(0,y0+y,inBand.XSize,1,inBand.XSize,1)
         		else:
             			queueLock.release()
