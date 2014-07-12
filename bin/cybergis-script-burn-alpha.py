@@ -1,9 +1,10 @@
 #!/usr/bin/python2.7
 import sys
 import os
-import threading
+#import threading
 import time
 import Queue
+from multiprocessing import Pool, Process, Lock
 import struct
 import numpy
 import struct
@@ -16,11 +17,11 @@ exitFlag = 0
 queueLock = None
 workQueue = None
 
-class RenderThread(threading.Thread):
-    def __init__(self, threadID, threadName, queue):
+class RenderProcess():
+    def __init__(self, processID, processName, queue):
         threading.Thread.__init__(self)
-        self.threadID = threadID
-        self.threadName = threadName
+        self.processID = processID
+        self.processName = processName
         self.queue = queue
         #Variable#
         self.strip = None
@@ -35,21 +36,21 @@ class RenderThread(threading.Thread):
             			queueLock.release()
             			#==#
             			if t==1:
-			            	print self.threadName+" reading rows "+str(y*r)+" to "+str((y*r)+r-1)+" in band "+str(b)+"."
+			            	print self.processName+" reading rows "+str(y*r)+" to "+str((y*r)+r-1)+" in band "+str(b)+"."
             				self.strip = inBand.ReadAsArray(0,y*r,inBand.XSize,r,inBand.XSize,r)
             			elif t==2:
-			            	print self.threadName+" reading row "+str(y0+y)+" in band "+str(b)+"."
+			            	print self.processName+" reading row "+str(y0+y)+" in band "+str(b)+"."
             				self.strip = inBand.ReadAsArray(0,y0+y,inBand.XSize,1,inBand.XSize,1)
         		else:
             			queueLock.release()
         	else:
         		b, inBand, outBand, y0, y, r, t = self.task
         		if t==1:
-		            	print self.threadName+" writing rows "+str(y*r)+" to "+str((y*r)+r-1)+" in band "+str(b)+"."
+		            	print self.processName+" writing rows "+str(y*r)+" to "+str((y*r)+r-1)+" in band "+str(b)+"."
             			outBand.WriteArray(self.strip,0,y*r)
             			self.strip = None
             		elif t==2:
-		            	print self.threadName+" writing row "+str(y0+y)+" in band "+str(b)+"."
+		            	print self.processName+" writing row "+str(y0+y)+" in band "+str(b)+"."
             			outBand.WriteArray(self.strip,0,y0+y)
             			self.strip = None
         	time.sleep(1)
@@ -98,16 +99,17 @@ def main():
 							global workQueue
 							
 							exitFlag = 0
-							queueLock = threading.Lock()
+							queueLock = Lock()
 							workQueue = Queue.Queue(0)
-							threads = []
-							threadID = 1
+							processes = []
+							processID = 1
 							
-							for threadID in range(numberOfThreads):
-								thread = RenderThread(threadID, ("Thread "+str(threadID)), workQueue)
-    								thread.start()
-    								threads.append(thread)
-    								threadID += 1
+							for processID in range(numberOfThreads):
+								process = Process(target=RenderProcess, args=(processID, ("Thread "+str(processID)), workQueue))
+    								process.start()
+    								processes.append(process)
+    								processID += 1
+    								
 							print "Initialized "+str(numberOfThreads)+" threads."
 							queueLock.acquire()
 							#Add RGB Tasks
@@ -141,8 +143,8 @@ def main():
 							
 							exitFlag = 1 #tell's threads it's time to quit
 							
-							for t in threads:
-								t.join()
+							for process in processes:
+								process.join()
 								
 						inputDataset = None
 						outputDataset = None
