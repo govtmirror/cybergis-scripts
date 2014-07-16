@@ -152,7 +152,6 @@ def main():
 							queueLock = Lock()
 							writeLock = Lock()
 							workQueue = Queue(0)
-							processes = []
 							processID = 1
 							tasks = Tasks()
 							#
@@ -185,15 +184,8 @@ def main():
 								workQueue.put(taskID)
 							queueLock.release()
 							
-							print str(cpu_count())+" cpus are available."
-							for processID in range(numberOfThreads):
-								subprocess = RenderSubprocess(processID, ("Thread "+str(processID)), workQueue, tasks)
-								process = Process(target=execute,args=(subprocess,))
-    								process.start()
-    								processes.append(process)
-    								processID += 1
-							print "Initialized "+str(numberOfThreads)+" threads."
-							
+							processes = initProcesses(numberOfThreads)
+
 							print "Queue is full with "+str(workQueue.qsize())+" tasks."
 							print "Rendering threads will now execute."
 							while not workQueue.empty():
@@ -230,5 +222,17 @@ def initDataset(outputFile,f,w,h,b):
     driver = gdal.GetDriverByName(f)
     metadata = driver.GetMetadata()
     return driver.Create(outputFile,w,h,b,gdal.GDT_Byte,['ALPHA=YES'])
+    
+def initProcesses(count)
+	print str(cpu_count())+" CPUs are available."
+	processes = []
+	for processID in range(count):
+		subprocess = RenderSubprocess(processID, ("Thread "+str(processID)), workQueue, tasks)
+		process = Process(target=execute,args=(subprocess,))
+		process.start()
+		processes.append(process)
+		processID += 1
+	print "Initialized "+str(count)+" threads."
+	return processes
 
 main()    
