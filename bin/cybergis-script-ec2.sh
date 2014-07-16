@@ -22,8 +22,8 @@ add_swap(){
     #
     fallocate -l $SIZE $FILE
     chmod 600 $FILE
-    #mkswap $FILE
-    #swapon $FILE
+    mkswap $FILE
+    swapon $FILE
   fi
 }
 
