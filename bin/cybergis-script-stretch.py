@@ -44,7 +44,7 @@ class RenderSubprocess(object):
     		if self.strip is None:
     			queueLock.acquire()
         		if not workQueue.empty():
-            			b, inBand, outBand, y0, y, r, t = self.task = self.tasks.get(self.queue.get())
+            			b, inBand, outBand, lut, y0, y, r, t = self.task = self.tasks.get(self.queue.get())
             			queueLock.release()
             			#==#
             			if t==1:
@@ -75,12 +75,13 @@ class RenderSubprocess(object):
             				
         		else:
             			queueLock.release()
-            	elif self.strip_stretched is None:
+            	elif (not self.strip is None) and (self.strip_stretched is None):
+            		b, inBand, outBand, lut, y0, y, r, t = self.task
             		self.strip_stretched = lut[self.strip]
         	elif (not self.strip is None) and (not self.strip_stretched is None):
         		if self.tries > 0:
         			writeLock.acquire()
-        			b, inBand, outBand, y0, y, r, t = self.task
+        			b, inBand, outBand, lut, y0, y, r, t = self.task
         			if t==1:
 			            	#print self.processName+" writing rows "+str(y*r)+" to "+str((y*r)+r-1)+" in band "+str(b)+"."
             				try:
