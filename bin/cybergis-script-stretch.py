@@ -17,6 +17,90 @@ writeLock = None
 workQueue = None
 tasks = None
 
+class Tasks(object):
+	def __init__(self):
+		self.tasks = []
+	
+	def add(self,task):
+		self.tasks.append(task)
+	
+	def get(self,task):
+		return self.tasks[task]
+		
+class RenderSubprocess(object):
+    def __init__(self, processID, processName, queue, tasks):
+        self.processID = processID
+        self.processName = processName
+        self.queue = queue
+        self.tasks = tasks
+        #Variable#
+        self.strip = None
+        self.task = None
+        self.tries = 3
+        
+    def run(self):
+    	while not exitFlag:
+    		if self.strip is None:
+    			queueLock.acquire()
+        		if not workQueue.empty():
+            			b, inBand, outBand, y0, y, r, t = self.task = self.tasks.get(self.queue.get())
+            			queueLock.release()
+            			#==#
+            			if t==1:
+			            	#print self.processName+" reading rows "+str(y*r)+" to "+str((y*r)+r-1)+" in band "+str(b)+"."
+            				try:
+            					self.strip = inBand.ReadAsArray(0,y*r,inBand.XSize,r,inBand.XSize,r)
+            					self.tries = 10
+            				except:
+            					self.strip = None
+            					print "read failed.  will try again later."
+            					print "y:"+str(y)
+            					print "r:"+str(r)
+            				
+            			elif t==2:
+			            	#print self.processName+" reading row "+str((y0*r)+y)+" in band "+str(b)+"."
+            				try:
+            					self.strip = inBand.ReadAsArray(0,(y0*r)+y,inBand.XSize,1,inBand.XSize,1)
+            					self.tries = 10
+            				except:
+            					self.strip = None
+            					print "read failed.  will try again later."
+            					print "y0:"+str(y0)
+            					print "y:"+str(y)
+            					print "r:"+str(r)
+            					print "(y0*r)+y:"+str((y0*r)+y)
+            				
+        		else:
+            			queueLock.release()
+        	else:
+        		if self.tries > 0:
+        			writeLock.acquire()
+        			b, inBand, outBand, y0, y, r, t = self.task
+        			if t==1:
+			            	#print self.processName+" writing rows "+str(y*r)+" to "+str((y*r)+r-1)+" in band "+str(b)+"."
+            				try:
+	            				outBand.WriteArray(self.strip,0,y*r)
+            					self.strip = None
+            				except:
+	            				self.tries = self.tries - 1
+            					print "write failed.  "+str(self.tries)+" more tries."
+            			elif t==2:
+			            	#print self.processName+" writing row "+str((y0*r)+y)+" in band "+str(b)+"."
+            				try:
+            					outBand.WriteArray(self.strip,0,(y0*r)+y)
+            					self.strip = None
+            				except:
+            					self.tries = self.tries -1
+            					print "write failed.  "+str(self.tries)+" more tries."
+            			writeLock.release()
+            		else:
+            			print "abandoning write"
+            			self.strip = None
+        	time.sleep(1)
+
+def execute(subprocess):
+	subprocess.run()
+
 class BreakPoint:
 
 	def __init__(self, i = None, o = None):
