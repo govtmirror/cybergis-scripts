@@ -26,6 +26,19 @@ add_swap(){
     swapon $FILE
   fi
 }
+delete_swap(){
+  echo "delete_swap"
+  if [[ $# -ne 3 ]]; then
+    echo "Usage: cybergis-script-ec2.sh prod delete_swap <file>"
+  else
+    INIT_ENV=$1
+    INIT_CMD=$2
+    FILE=$3
+    #
+    swapoff $FILE
+    rm $FILE
+  fi
+}
 
 resize_volume(){
   echo "resize_volume"
@@ -59,10 +72,18 @@ if [[ "$INIT_ENV" = "prod" ]]; then
             export -f add_swap
             bash --login -c "add_swap $INIT_ENV $INIT_CMD '${3}' '${4}'"
         fi
+    elif [[ "$INIT_CMD" == "delete_swap" ]]; then
+        
+        if [[ $# -ne 3 ]]; then
+            echo "Usage: cybergis-script-ec2.sh $INIT_ENV $INIT_CMD <file>"
+        else
+            export -f delete_swap
+            bash --login -c "delete_swap $INIT_ENV $INIT_CMD '${3}'"
+        fi
     else
         echo "Usage: cybergis-script-ec2.sh prod [resize]"
     fi
 
 else
-    echo "Usage: cybergis-script-ec2.sh [prod|dev] [resize|swap]"
+    echo "Usage: cybergis-script-ec2.sh [prod|dev] [resize|swap|delete_swap]"
 fi
