@@ -199,47 +199,55 @@ class LookUpTables:
 		return self.valid;
 
 def main():
-	if(len(sys.argv)==5):
+	if(len(sys.argv)==6):
 		inputFile = sys.argv[1]
 		breakPointsFile = sys.argv[2]
 		outputFile = sys.argv[3]
 		rows = int(sys.argv[4])
-		if(os.path.exists(inputFile) and os.path.exists(breakPointsFile)):
-			if(not os.path.exists(outputFile)):
-				inputDataset = gdal.Open(inputFile,GA_ReadOnly)
-				lookUpTables = LookUpTables(breakPointsFile)
-				if ((not inputDataset is None) and (lookUpTables.isValid())):
-					outputFormat = "HFA"
-					numberOfBands = 3
-					w = inputDataset.RasterXSize
-					h = inputDataset.RasterYSize
-					outputDataset = initDataset(outputFile,outputFormat,w,h,numberOfBands)
-					outputDataset.SetGeoTransform(list(inputDataset.GetGeoTransform()))
-					outputDataset.SetProjection(inputDataset.GetProjection())
-					for b in range(numberOfBands):
-						print "Stretching Band "+str(b+1)
-						lut = numpy.array(lookUpTables.tables[b].table)
-						inBand = inputDataset.GetRasterBand(b+1)
-						outBand = outputDataset.GetRasterBand(b+1)
+		numberOfThreads = int(sys.argv[5])
+		if numberOfThreads > 0:
+			if(os.path.exists(inputFile) and os.path.exists(breakPointsFile)):
+				if(not os.path.exists(outputFile)):
+					inputDataset = gdal.Open(inputFile,GA_ReadOnly)
+					lookUpTables = LookUpTables(breakPointsFile)
+					if ((not inputDataset is None) and (lookUpTables.isValid())):
+						outputFormat = "HFA"
+						numberOfBands = 3
+						w = inputDataset.RasterXSize
+						h = inputDataset.RasterYSize
+						outputDataset = initDataset(outputFile,outputFormat,w,h,numberOfBands)
+						outputDataset.SetGeoTransform(list(inputDataset.GetGeoTransform()))
+						outputDataset.SetProjection(inputDataset.GetProjection())
 						
-						r = rows
-						for y in range(int(inBand.YSize/r)):
-							outBand.WriteArray(lut[inBand.ReadAsArray(0,y*r,inBand.XSize,r,inBand.XSize,r)],0,y*r)
+						if numberOfThreads == 1:
+							for b in range(numberOfBands):
+								print "Stretching Band "+str(b+1)
+								lut = numpy.array(lookUpTables.tables[b].table)
+								inBand = inputDataset.GetRasterBand(b+1)
+								outBand = outputDataset.GetRasterBand(b+1)
 						
-						y0 = inBand.YSize/rows
-						for y in range(inBand.YSize%r):
-							outBand.WriteArray(lut[inBand.ReadAsArray(0,y0+y,inBand.XSize,1,inBand.XSize,1)],0,y0+y)
+								r = rows
+								for y in range(int(inBand.YSize/r)):
+									outBand.WriteArray(lut[inBand.ReadAsArray(0,y*r,inBand.XSize,r,inBand.XSize,r)],0,y*r)
+						
+								y0 = inBand.YSize/rows
+								for y in range(inBand.YSize%r):
+									outBand.WriteArray(lut[inBand.ReadAsArray(0,y0+y,inBand.XSize,1,inBand.XSize,1)],0,y0+y)
+						else
+							print "not implemented yet"
 					
-					inputDataset = None
-					outputDataset = None
+						inputDataset = None
+						outputDataset = None
+					else:
+						print "Error Opening File"
 				else:
-					print "Error Opening File"
+					print "Output file already exists"
 			else:
-				print "Output file already exists"
+				print "Input file does not exist."
 		else:
-			print "Input file does not exist."
+			print "You need at least 1 thread."
 	else:
-		print "Usage: cybergis-script-stretch.py <input_file> <breakpoints_file> <output_file> <rows>"
+		print "Usage: cybergis-script-stretch.py <input_file> <breakpoints_file> <output_file> <rows> <threads>"
 
 def initDataset(outputFile,f,w,h,b):
     driver = gdal.GetDriverByName(f)
