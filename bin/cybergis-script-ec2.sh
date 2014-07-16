@@ -49,7 +49,7 @@ if [[ "$INIT_ENV" = "prod" ]]; then
             echo "Usage: cybergis-script-ec2.sh $INIT_ENV $INIT_CMD"
         else
             export -f resize_volume
-            bash --login -c resize_volume
+            bash --login -c "resize_volume $INIT_ENV $INIT_CMD '${3}'"
         fi
     elif [[ "$INIT_CMD" == "swap" ]]; then
         
@@ -57,7 +57,7 @@ if [[ "$INIT_ENV" = "prod" ]]; then
             echo "Usage: cybergis-script-ec2.sh $INIT_ENV $INIT_CMD <size> <file>"
         else
             export -f add_swap
-            bash --login -c add_swap
+            bash --login -c "add_swap $INIT_ENV $INIT_CMD '${3}' '${4}'"
         fi
     else
         echo "Usage: cybergis-script-ec2.sh prod [resize]"
