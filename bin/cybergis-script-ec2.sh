@@ -54,7 +54,7 @@ if [[ "$INIT_ENV" = "prod" ]]; then
     elif [[ "$INIT_CMD" == "swap" ]]; then
         
         if [[ $# -ne 4 ]]; then
-            echo "Usage: cybergis-script-ec2.sh $INIT_ENV $INIT_CMD"
+            echo "Usage: cybergis-script-ec2.sh $INIT_ENV $INIT_CMD <size> <file>"
         else
             export -f add_swap
             bash --login -c add_swap
