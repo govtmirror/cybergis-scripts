@@ -152,7 +152,6 @@ def main():
 							queueLock = Lock()
 							writeLock = Lock()
 							workQueue = Queue(0)
-							processID = 1
 							tasks = Tasks()
 							#
 							for b in range(inputBands):
@@ -226,6 +225,7 @@ def initDataset(outputFile,f,w,h,b):
 def initProcesses(count)
     print str(cpu_count())+" CPUs are available."
     processes = []
+    processID = 1
     for processID in range(count):
         subprocess = RenderSubprocess(processID, ("Thread "+str(processID)), workQueue, tasks)
         process = Process(target=execute,args=(subprocess,))
