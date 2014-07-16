@@ -33,6 +33,11 @@ Logout and Login
 
 ## Usage
 
+### Development Environments
+
+```
+cybergis-script-env.sh [geonode]
+````
 ### EC2
 
 ```
