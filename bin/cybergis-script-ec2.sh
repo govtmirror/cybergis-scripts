@@ -20,10 +20,10 @@ add_swap(){
     SIZE=$3
     FILE=$4
     #
-    fallocate -l $SIZE $FILE
-    chmod 600 $FILE
-    mkswap $FILE
-    swapon $FILE
+    #fallocate -l $SIZE $FILE
+    #chmod 600 $FILE
+    #mkswap $FILE
+    #swapon $FILE
   fi
 }
 
@@ -53,7 +53,7 @@ if [[ "$INIT_ENV" = "prod" ]]; then
         fi
     elif [[ "$INIT_CMD" == "swap" ]]; then
         
-        if [[ $# -ne 3 ]]; then
+        if [[ $# -ne 4 ]]; then
             echo "Usage: cybergis-script-ec2.sh $INIT_ENV $INIT_CMD"
         else
             export -f add_swap
