@@ -19,7 +19,7 @@ geonode(){
     sudo apt-get update
     # Essential build tools and libraries
     sudo apt-get install -y build-essential libxml2-dev libxslt1-dev libjpeg-dev gettext git python-dev python-pip python-virtualenv
-    sudo apt-get install libgeos-dev libpq-dev
+    sudo apt-get install -y libgeos-dev libpq-dev
     # Python and Django dependencies with official packages
     sudo apt-get install -y python-lxml python-psycopg2 python-django python-bs4 python-multipartposthandler transifex-client python-nose python-django-nose python-gdal python-django-pagination python-django-extensions python-httplib2
     # Java dependencies
