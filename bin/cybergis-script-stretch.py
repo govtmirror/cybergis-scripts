@@ -2,6 +2,7 @@
 import sys
 import os
 import time
+import datetime
 from multiprocessing import Process, Lock, Queue, cpu_count
 import struct
 import numpy
@@ -305,6 +306,7 @@ class LookUpTables:
 		return self.valid;
 
 def main():
+	start=datetime.now()
 	if(len(sys.argv)==6):
 		inputFile = sys.argv[1]
 		breakPointsFile = sys.argv[2]
@@ -341,17 +343,17 @@ def main():
 									outBand.WriteArray(lut[inBand.ReadAsArray(0,y0+y,inBand.XSize,1,inBand.XSize,1)],0,y0+y)
 						elif numberOfThreads > 1:
 							print "not fully implemented yet"
-                                                        global exitFlag
-                                                        global queueLock
-                                                        global writeLock
-                                                        global workQueue
-                                                        global tasks
+                            global exitFlag
+                            global queueLock
+                            global writeLock
+                            global workQueue
+                            global tasks
 							#
-                                                        exitFlag = 0
-                                                        queueLock = Lock()
-                                                        writeLock = Lock()
-                                                        workQueue = Queue(0)
-                                                        tasks = Tasks()
+                            exitFlag = 0
+                            queueLock = Lock()
+                            writeLock = Lock()
+                            workQueue = Queue(0)
+                            tasks = Tasks()
 							#
 							for b in range(inputBands):
 								print "Adding tasks for band "+str(b+1)
@@ -365,9 +367,29 @@ def main():
 								for y in range(inBand.YSize%r):
 									task = b+1, inBand, outBand, lut, y0, y, r, 2
 									tasks.add(task)
+									
+							print "tasks in main queue: "+str(len(tasks.tasks))
+							#Add tasks to queue
+							queueLock.acquire()
+							for taskID in range(len(tasks.tasks)):
+								workQueue.put(taskID)
+							queueLock.release()
+							
+							processes = initProcesses(numberOfThreads)
+
+							print "Queue is full with "+str(workQueue.qsize())+" tasks."
+							print "Rendering threads will now execute."
+							while not workQueue.empty():
+								pass
+							
+							exitFlag = 1 #tell's threads it's time to quit
+							
+							for process in processes:
+								process.join()
 					
 						inputDataset = None
 						outputDataset = None
+						print datetime.now()-start
 					else:
 						print "Error Opening File"
 				else:
