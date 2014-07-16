@@ -342,7 +342,7 @@ def main():
 								for y in range(inBand.YSize%r):
 									outBand.WriteArray(lut[inBand.ReadAsArray(0,y0+y,inBand.XSize,1,inBand.XSize,1)],0,y0+y)
 						elif numberOfThreads > 1:
-							print "not fully implemented yet"
+                            print "not fully implemented yet"
                             global exitFlag
                             global queueLock
                             global writeLock
