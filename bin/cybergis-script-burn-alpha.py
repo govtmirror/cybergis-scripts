@@ -213,7 +213,7 @@ def main():
 			else:
 				print "Input file does not exist."
 		else:
-			print "Threads needs to be 1 or higher."
+			print "You need at least 1 thread."
 	else:
 		print "Usage: cybergis-script-burn-alpha.py <input_file> <input_bands> <alpha_file> <alpha_band_index> <output_file> <rows> <threads>"
 
