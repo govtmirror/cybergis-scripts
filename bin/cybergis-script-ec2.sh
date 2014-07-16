@@ -13,7 +13,7 @@ INIT_CMD=$2
 add_swap(){
   echo "add_swap"
   if [[ $# -ne 4 ]]; then
-    echo "Usage: cybergis-script-ec2.sh $INIT_ENV $INIT_CMD <size> <file>"
+    echo "Usage: cybergis-script-ec2.sh prod swap <size> <file>"
   else
     INIT_ENV=$1
     INIT_CMD=$2
@@ -30,7 +30,7 @@ add_swap(){
 resize_volume(){
   echo "resize_volume"
   if [[ $# -ne 3 ]]; then
-    echo "Usage: cybergis-script-ec2.sh $INIT_ENV $INIT_CMD <dev>"
+    echo "Usage: cybergis-script-ec2.sh prod resize <dev>"
   else
     INIT_ENV=$1
     INIT_CMD=$2
