@@ -37,7 +37,7 @@ geonode(){
     cd ~/geonode
     mkvirtualenv geonode
     workon geonode
-    pip install pillow django-taggit django-jsonfield django-downloadview
+    pip install pillow tasypie django-taggit django-jsonfield django-downloadview
     #Install GeoNode
     pip install -e geonode
     #cd geonode
