@@ -347,15 +347,15 @@ def initDataset(outputFile,f,w,h,b):
     return driver.Create(outputFile,w,h,b,gdal.GDT_Byte,['ALPHA=YES'])
 
 def initProcesses(count)
-	print str(cpu_count())+" CPUs are available."
-	processes = []
-	for processID in range(count):
-		subprocess = RenderSubprocess(processID, ("Thread "+str(processID)), workQueue, tasks)
-		process = Process(target=execute,args=(subprocess,))
-		process.start()
-		processes.append(process)
-		processID += 1
-	print "Initialized "+str(count)+" threads."
-	return processes
+    print str(cpu_count())+" CPUs are available."
+    processes = []
+    for processID in range(count):
+        subprocess = RenderSubprocess(processID, ("Thread "+str(processID)), workQueue, tasks)
+        process = Process(target=execute,args=(subprocess,))
+        process.start()
+        processes.append(process)
+        processID += 1
+    print "Initialized "+str(count)+" threads."
+    return processes
 
 main()
