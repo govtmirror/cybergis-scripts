@@ -342,18 +342,18 @@ def main():
 								for y in range(inBand.YSize%r):
 									outBand.WriteArray(lut[inBand.ReadAsArray(0,y0+y,inBand.XSize,1,inBand.XSize,1)],0,y0+y)
 						elif numberOfThreads > 1:
-                            print "not fully implemented yet"
-                            global exitFlag
-                            global queueLock
-                            global writeLock
-                            global workQueue
-                            global tasks
+							print "not fully implemented yet"
+							global exitFlag
+							global queueLock
+							global writeLock
+							global workQueue
+							global tasks
 							#
-                            exitFlag = 0
-                            queueLock = Lock()
-                            writeLock = Lock()
-                            workQueue = Queue(0)
-                            tasks = Tasks()
+							exitFlag = 0
+							queueLock = Lock()
+							writeLock = Lock()
+							workQueue = Queue(0)
+							tasks = Tasks()
 							#
 							for b in range(inputBands):
 								print "Adding tasks for band "+str(b+1)
