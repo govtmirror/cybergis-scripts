@@ -35,6 +35,7 @@ class RenderSubprocess(object):
         self.tasks = tasks
         #Variable#
         self.strip = None
+        self.strip_stretched = None
         self.task = None
         self.tries = 3
         
@@ -53,6 +54,7 @@ class RenderSubprocess(object):
             					self.tries = 10
             				except:
             					self.strip = None
+            					self.strip_stretched = None
             					print "read failed.  will try again later."
             					print "y:"+str(y)
             					print "r:"+str(r)
@@ -64,6 +66,7 @@ class RenderSubprocess(object):
             					self.tries = 10
             				except:
             					self.strip = None
+            					self.strip_stretched = None
             					print "read failed.  will try again later."
             					print "y0:"+str(y0)
             					print "y:"+str(y)
@@ -72,23 +75,27 @@ class RenderSubprocess(object):
             				
         		else:
             			queueLock.release()
-        	else:
+            	elif self.strip_stretched is None:
+            		self.strip_stretched = lut[self.strip]
+        	elif (not self.strip is None) and (not self.strip_stretched is None):
         		if self.tries > 0:
         			writeLock.acquire()
         			b, inBand, outBand, y0, y, r, t = self.task
         			if t==1:
 			            	#print self.processName+" writing rows "+str(y*r)+" to "+str((y*r)+r-1)+" in band "+str(b)+"."
             				try:
-	            				outBand.WriteArray(self.strip,0,y*r)
+	            				outBand.WriteArray(self.strip_stretched,0,y*r)
             					self.strip = None
+            					self.strip_stretched = None
             				except:
 	            				self.tries = self.tries - 1
             					print "write failed.  "+str(self.tries)+" more tries."
             			elif t==2:
 			            	#print self.processName+" writing row "+str((y0*r)+y)+" in band "+str(b)+"."
             				try:
-            					outBand.WriteArray(self.strip,0,(y0*r)+y)
+            					outBand.WriteArray(self.strip_stretched,0,(y0*r)+y)
             					self.strip = None
+            					self.strip_stretched = None
             				except:
             					self.tries = self.tries -1
             					print "write failed.  "+str(self.tries)+" more tries."
@@ -96,6 +103,12 @@ class RenderSubprocess(object):
             		else:
             			print "abandoning write"
             			self.strip = None
+            			self.strip_stretched = None
+            	else:
+            	    print "abandoning task.  This should never happen."
+            	    self.strip = None
+            	    self.strip_stretched = None
+            	    
         	time.sleep(1)
 
 def execute(subprocess):
@@ -326,7 +339,31 @@ def main():
 								for y in range(inBand.YSize%r):
 									outBand.WriteArray(lut[inBand.ReadAsArray(0,y0+y,inBand.XSize,1,inBand.XSize,1)],0,y0+y)
 						elif numberOfThreads > 1:
-							print "not implemented yet"
+							print "not fully implemented yet"
+                                                        global exitFlag
+                                                        global queueLock
+                                                        global writeLock
+                                                        global workQueue
+                                                        global tasks
+							#
+                                                        exitFlag = 0
+                                                        queueLock = Lock()
+                                                        writeLock = Lock()
+                                                        workQueue = Queue(0)
+                                                        tasks = Tasks()
+							#
+							for b in range(inputBands):
+								print "Adding tasks for band "+str(b+1)
+								lut = numpy.array(lookUpTables.tables[b].table)
+								inBand = inputDataset.GetRasterBand(b+1)
+								outBand = outputDataset.GetRasterBand(b+1)
+								y0 = int(inBand.YSize/r)
+								for y in range(int(inBand.YSize/r)):
+									task = b+1, inBand, outBand, lut, y0, y, r, 1
+									tasks.add(task)
+								for y in range(inBand.YSize%r):
+									task = b+1, inBand, outBand, lut, y0, y, r, 2
+									tasks.add(task)
 					
 						inputDataset = None
 						outputDataset = None
@@ -349,6 +386,7 @@ def initDataset(outputFile,f,w,h,b):
 def initProcesses(count)
     print str(cpu_count())+" CPUs are available."
     processes = []
+    processID = 1
     for processID in range(count):
         subprocess = RenderSubprocess(processID, ("Thread "+str(processID)), workQueue, tasks)
         process = Process(target=execute,args=(subprocess,))
