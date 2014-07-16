@@ -1,6 +1,8 @@
 #!/usr/bin/python2.7
 import sys
 import os
+import time
+from multiprocessing import Process, Lock, Queue, cpu_count
 import struct
 import numpy
 from xml.dom.minidom import parse, parseString
@@ -8,6 +10,12 @@ import gdal
 import osr
 import gdalnumeric
 from gdalconst import *
+
+exitFlag = 0
+queueLock = None
+writeLock = None
+workQueue = None
+tasks = None
 
 class BreakPoint:
 
@@ -233,7 +241,7 @@ def main():
 								y0 = inBand.YSize/rows
 								for y in range(inBand.YSize%r):
 									outBand.WriteArray(lut[inBand.ReadAsArray(0,y0+y,inBand.XSize,1,inBand.XSize,1)],0,y0+y)
-						else
+						elif numberOfThreads > 1:
 							print "not implemented yet"
 					
 						inputDataset = None
