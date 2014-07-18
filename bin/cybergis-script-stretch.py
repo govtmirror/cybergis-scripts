@@ -81,8 +81,8 @@ class RenderSubprocess(object):
             		self.strip_stretched = lut[self.strip]
         	elif (not self.strip is None) and (not self.strip_stretched is None):
         		if self.tries > 0:
-        			writeLock.acquire()
         			b, inBand, outBand, lut, y0, y, r, t = self.task
+        			writeLock.acquire()
         			if t==1:
 			            	#print self.processName+" writing rows "+str(y*r)+" to "+str((y*r)+r-1)+" in band "+str(b)+"."
             				try:
@@ -355,7 +355,7 @@ def main():
 							workQueue = Queue(0)
 							tasks = Tasks()
 							#
-							for b in range(inputBands):
+							for b in range(numberOfBands):
 								print "Adding tasks for band "+str(b+1)
 								lut = numpy.array(lookUpTables.tables[b].table)
 								inBand = inputDataset.GetRasterBand(b+1)
