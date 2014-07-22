@@ -60,10 +60,10 @@ cybergis-script-geoserver.sh [prod|dev] [tune]
 ### Imagery Processing
 
 ```
-cybergis-script-stretch.py <input_file> <breakpoints_file> <output_file> <rows>
+cybergis-script-stretch.py <input_file> <breakpoints_file> <output_file> <rows> <threads>
 ```
 ```
-cybergis-script-burn-alpha.py <input_file> <alpha_file> <alpha_band_index> <output_file>
+cybergis-script-burn-alpha.py <input_file> <alpha_file> <alpha_band_index> <output_file> <rows> <threads>
 ```
 ```
 cybergis-script-hide-no-data.py <input_file> <output_file>
