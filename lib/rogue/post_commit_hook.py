@@ -1,5 +1,6 @@
 #!/var/lib/geonode/bin/python
-import sys, os
+import sys
+import os
 import boto
 
 from django.conf import settings
@@ -17,6 +18,6 @@ if len(sys.argv) == 2:
     else:
         log.write("Topic was invalid")
 else:
-    log.write("Usage: var/lib/geonode/bin/python /opt/cybergis-scripts.git/lib/rogue/post_commit_hook.py <commit_message>")
+    log.write("Usage: /var/lib/geonode/bin/python /opt/cybergis-scripts.git/lib/rogue/post_commit_hook.py <commit_message>")
 
 log.close()
