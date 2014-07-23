@@ -23,6 +23,7 @@ install_rvm(){
 
 install_gems(){
   #
+  source /usr/local/rvm/scripts/rvm
   rvm get stable
   rvm list known
   rvm install "ruby-$RUBY_VERSION"
