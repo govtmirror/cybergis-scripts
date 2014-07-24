@@ -30,12 +30,13 @@ install_gems(){
   rvm --default use $RUBY_VERSION
   ruby -v
   #
-  gem install chef --version 11.8.0 --no-rdoc --no-ri --conservative
-  gem install solve --version 0.8.2
-  gem install nokogiri --version 1.6.1
-  gem install berkshelf --version 2.0.14 --no-rdoc --no-ri
-  gem list
+  #gem install chef --version 11.8.0 --no-rdoc --no-ri --conservative
+  #gem install solve --version 0.8.2
+  #gem install nokogiri --version 1.6.1
+  #gem install berkshelf --version 2.0.14 --no-rdoc --no-ri
+  #gem list
   #
+  gem install bundler
 }
 
 conf_application(){
@@ -60,6 +61,11 @@ conf_application(){
     if [ -d "/opt/chef-run" ]; then
       rm -fr /opt/chef-run
     fi
+    #
+    #Install GEM Dependencies if missing.
+    bundle install
+    berks install
+    #
     mkdir /opt/chef-run
     cp -r /opt/rogue-chef-repo/solo/* /opt/chef-run/
     cd /opt/chef-run
