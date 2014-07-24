@@ -19,9 +19,6 @@ init_user(){
 
 install_rvm(){
   curl -L https://get.rvm.io | bash -s stable
-}
-
-install_gems(){
   #
   source /usr/local/rvm/scripts/rvm
   rvm get stable
@@ -30,13 +27,18 @@ install_gems(){
   rvm --default use $RUBY_VERSION
   ruby -v
   #
+}
+
+install_bundler(){
+  #
+  gem install bundler
+  #
   #gem install chef --version 11.8.0 --no-rdoc --no-ri --conservative
   #gem install solve --version 0.8.2
   #gem install nokogiri --version 1.6.1
   #gem install berkshelf --version 2.0.14 --no-rdoc --no-ri
   #gem list
   #
-  gem install bundler
 }
 
 conf_application(){
@@ -311,13 +313,13 @@ if [[ "$INIT_ENV" = "prod" ]]; then
             bash --login -c install_rvm
         fi
     
-    elif [[ "$INIT_CMD" == "gems" ]]; then
+    elif [[ "$INIT_CMD" == "bundler" ]]; then
         
         if [[ $# -ne 2 ]]; then
 	    echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD"
         else
-            export -f install_gems
-            bash --login -c install_gems
+            export -f install_bundler
+            bash --login -c install_bundler
         fi
 
     elif [[ "$INIT_CMD" == "conf_application" ]]; then
@@ -396,9 +398,9 @@ if [[ "$INIT_ENV" = "prod" ]]; then
             bash --login -c "add_cron_sync_2 $INIT_ENV $INIT_CMD \"$3\" \"$4\" \"$5\" \"$6\" \"$7\" \"$8\" \"$9\" \"${10}\""
         fi
     else
-        echo "Usage: cybergis-script-init-rogue.sh prod [use|rvm|gems|conf_application|provision|server|remote|remote2|aws|sns|cron|cron2]"
+        echo "Usage: cybergis-script-init-rogue.sh prod [use|rvm|bundler|conf_application|provision|server|remote|remote2|aws|sns|cron|cron2]"
     fi
 else
-    echo "Usage: cybergis-script-init-rogue.sh [prod|dev] [use|rvm|gems|conf_application|provision|server|remote|remote2|aws|sns|cron|cron2]"
+    echo "Usage: cybergis-script-init-rogue.sh [prod|dev] [use|rvm|bundler|conf_application|provision|server|remote|remote2|aws|sns|cron|cron2]"
 fi
 
