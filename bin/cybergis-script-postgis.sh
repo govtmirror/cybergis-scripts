@@ -4,7 +4,6 @@
 #Run this script using root's login shell under: sudo su -
 #==================================#
 DATE=$(date)
-PATH_BASE='/opt/cybergis-scripts.git'
 #==================================#
 INIT_ENV=$1
 INIT_CMD=$2
@@ -14,6 +13,7 @@ install(){
   if [[ $# -ne 9 ]]; then
     echo "Usage: cybergis-script-postgis.sh prod install [rds|local] <host> <port> <user> <password> <database> <template>"
   else
+    PATH_BASE='/opt/cybergis-scripts.git'
     #
     INIT_ENV=$1
     INIT_CMD=$2
