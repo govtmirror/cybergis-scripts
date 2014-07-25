@@ -153,13 +153,15 @@ echo 'authorname and authoremail used when merging non-conflicting branches'
       INIT_CMD=$2
       DIRECTION=$3
       USER=$4
-      PASSWORD=$5
+      PASSWORD=${5}
       REPO=$6
       REMOTE=$7
       AUTHORNAME=$8
       AUTHOREMAIL=$9
       FREQUENCY=${10}
-
+      #
+      PASSWORD="$(echo "$PASSWORD" | sed -e 's/[()&]/\\&/g')"
+      #
       CRON_FILE="/etc/cron.d/geogit_sync"
       LOG_FILE="/var/log/rogue/cron_geogit_sync.log"
 
@@ -192,13 +194,15 @@ add_cron_sync_2(){
       INIT_CMD=$2
       DIRECTION=$3
       USER=$4
-      PASSWORD=$5
+      PASSWORD=${5}
       REPO=$6
       REMOTE=$7
       AUTHORNAME=$8
       AUTHOREMAIL=$9
       FREQUENCY=${10}
-
+      #
+      PASSWORD="$(echo "$PASSWORD" | sed -e 's/[()&]/\\&/g')"
+      #
       CRON_FILE="/etc/cron.d/geogit_sync"
       LOG_FILE="/var/log/rogue/cron_geogit_sync.log"
 
@@ -264,7 +268,7 @@ add_remote(){
       REMOTE_GEONODE_URL=$8
       REMOTE_USER=$9
       REMOTE_PASS=${10}
-      
+      #
       REPO_URL="$LOCAL_GEONODE_URL/geoserver/geogit/$LOCAL_REPO_NAME/"
       REMOTE_URL="$REMOTE_GEONODE_URL/geoserver/geogit/$REMOTE_REPO_NAME/"
       CMD="add_remote_2 $INIT_ENV $INIT_CMD \"$USERPASS\" \"$REPO_URL\" \"$REMOTE_NAME\" \"$REMOTE_URL\" \"$REMOTE_USER\" \"$REMOTE_PASS\""
@@ -283,8 +287,10 @@ add_remote_2(){
       REMOTE_NAME=$5
       REMOTE_URL=$6
       REMOTE_USER=$7
-      REMOTE_PASS=$8
-      
+      REMOTE_PASS=${8}
+      #
+      REMOTE_PASS="$(echo "$REMOTE_PASS" | sed -e 's/[()&]/\\&/g')"
+      #
       CTX="remote"
       QS="user=$REMOTE_USER&password=$REMOTE_PASS&output_format=JSON&remoteName=$REMOTE_NAME&remoteURL=$REMOTE_URL"
       URL="$REPO_URL$CTX?$QS"
