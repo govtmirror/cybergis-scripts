@@ -51,7 +51,7 @@ conf_application(){
     DB_HOST=$4
     DB_IP=$5
     DB_PORT=$6
-    DB_PASS=$7
+    DB_PASS=${7}
     GS_BASELINE=$8
     cd /opt
     if [ ! -d "/opt/rogue-chef-repo" ]; then
@@ -79,7 +79,7 @@ conf_application(){
     else
       sed -i "s/{{db-ip}}/\"$DB_IP\"/g" dna.json
     fi
-    sed -i "s/{{db-pass}}/$DB_PASS/g" dna.json
+    sed -i "s/{{db-pass}}/"'"$DB_PASS"'"/g" dna.json
     sed -i "s/{{db-port}}/$DB_PORT/g" dna.json
     sed -i "s/{{gs-baseline}}/$GS_BASELINE/g" dna.json
   fi
