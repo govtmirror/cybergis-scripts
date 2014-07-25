@@ -79,7 +79,7 @@ conf_application(){
     else
       sed -i "s/{{db-ip}}/\"$DB_IP\"/g" dna.json
     fi
-    sed -i "s/{{db-pass}}/"'"$DB_PASS"'"/g" dna.json
+    sed -i "s/{{db-pass}}/$DB_PASS/g" dna.json
     sed -i "s/{{db-port}}/$DB_PORT/g" dna.json
     sed -i "s/{{gs-baseline}}/$GS_BASELINE/g" dna.json
   fi
