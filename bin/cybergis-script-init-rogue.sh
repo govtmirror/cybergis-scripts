@@ -53,6 +53,9 @@ conf_application(){
     DB_PORT=$6
     DB_PASS=${7}
     GS_BASELINE=$8
+    #
+    DB_PASS="$(echo "$DB_PASS" | sed -e 's/[()&]/\\&/g')"
+    #
     cd /opt
     if [ ! -d "/opt/rogue-chef-repo" ]; then
       git clone https://github.com/state-hiu/rogue-chef-repo.git
