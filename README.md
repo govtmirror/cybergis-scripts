@@ -21,6 +21,7 @@ As root, execute the following commands:
 ```
 apt-get update
 apt-get install -y curl vim git
+apt-get install postgresql-client-common postgresql-client-9.1 libgeos-dev
 #Only install gdal and numpy if it is needed and won't conflict with a different installation.
 #gdal and numpy are only needed for cybergis-script-stretch.py, cybergis-script-burn-alpha.py, cybergis-script-hide-no-data.py, cybergis-script-pull-wfs.sh, cybergis-script-pull-arcgis.sh, and cybergis-script-pull-shapefile.sh
 apt-get install -y gdal-bin python-gdal python-numpy
