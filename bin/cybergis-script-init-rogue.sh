@@ -350,6 +350,8 @@ osm(){
           FILE_MAPPING="/opt/cybergis-osm-mappings.git/mappings/$MAPPING.json"
           echo $FILE_EXTENT
           echo $FILE_MAPPING
+          VALUE_EXTENT=$(<$FILE_EXTENT)
+          echo $VALUE_EXTENT
       else
           echo "cybergis-osm-mappings.git not found"
       fi
