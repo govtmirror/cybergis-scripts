@@ -333,6 +333,29 @@ add_remote_2(){
   fi
 }
 
+osm(){
+  if [[ $# -ne 5 ]]; then
+      echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD <repo> <extent> <mapping>"
+  else
+      INIT_ENV=$1
+      INIT_CMD=$2
+      REPO=$3
+      EXTENT=$4
+      MAPPING=$5
+      #
+      if [ -d "/opt/cybergis-osm-mappings.git" ]; then
+          EXTENT="$(echo "$EXTENT" | sed -e 's/[():]/\//g')"
+          MAPPING="$(echo "MAPPING" | sed -e 's/[():]/\//g')"
+          FILE_EXTENT="/opt/cybergis-osm-mappings.git/extents/$EXTENT.txt"
+          FILE_MAPPING="/opt/cybergis-osm-mappings.git/mappings/$EXTENT.json"
+          echo $FILE_EXTENT
+          echo $FILE_MAPPING
+      else
+          echo "cybergis-osm-mappings.git not found"
+      fi
+  fi
+}
+
 
 if [[ "$INIT_ENV" = "prod" ]]; then
     
@@ -448,10 +471,18 @@ if [[ "$INIT_ENV" = "prod" ]]; then
             export -f add_cron_sync_2
             bash --login -c "add_cron_sync_2 $INIT_ENV $INIT_CMD \"$3\" \"$4\" \"$5\" \"$6\" \"$7\" \"$8\" \"$9\" \"${10}\""
         fi
+    elif [[ "$INIT_CMD" == "osm" ]]; then
+        
+        if [[ $# -ne 5 ]]; then
+	    echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD <repo> <extent> <mapping>"
+        else
+            export -f osm
+            bash --login -c "osm $INIT_ENV $INIT_CMD \"$3\" \"$4\" \"$5\""
+        fi
     else
-        echo "Usage: cybergis-script-init-rogue.sh prod [use|rvm|bundler|conf_application|conf_standalone|provision|server|remote|remote2|aws|sns|cron|cron2]"
+        echo "Usage: cybergis-script-init-rogue.sh prod [use|rvm|bundler|conf_application|conf_standalone|provision|server|remote|remote2|aws|sns|cron|cron2|osm]"
     fi
 else
-    echo "Usage: cybergis-script-init-rogue.sh [prod|dev] [use|rvm|bundler|conf_application|conf_standalone|provision|server|remote|remote2|aws|sns|cron|cron2]"
+    echo "Usage: cybergis-script-init-rogue.sh [prod|dev] [use|rvm|bundler|conf_application|conf_standalone|provision|server|remote|remote2|aws|sns|cron|cron2|osm]"
 fi
 
