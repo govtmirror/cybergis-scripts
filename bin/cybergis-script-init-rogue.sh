@@ -348,10 +348,26 @@ osm(){
           MAPPING="$(echo "$MAPPING" | sed -e 's/[():]/\//g')"
           FILE_EXTENT="/opt/cybergis-osm-mappings.git/extents/$EXTENT.txt"
           FILE_MAPPING="/opt/cybergis-osm-mappings.git/mappings/$MAPPING.json"
-          echo $FILE_EXTENT
-          echo $FILE_MAPPING
-          VALUE_EXTENT=$(<$FILE_EXTENT)
-          echo $VALUE_EXTENT
+          if [ -f "$FILE_EXTENT" ] and [ -f "$FILE_MAPPING" ]; then
+              VALUE_EXTENT=$(<$FILE_EXTENT)
+              echo $VALUE_EXTENT
+              
+              
+              CMD_1="geogit init $NAME"
+              CMD_2="geogit osm download --bbox $VALUE_EXTENT --mapping $FILE_MAPPING"
+              CMD_3=""
+              
+              
+              /etc/init.d/tomcat7 stop
+              #bash --login -c "$CMD_1"
+              #bash --login -c "$CMD_2"
+              #bash --login -c "$CMD_3"
+              /etc/init.d/tomcat7 start
+          else
+              echo "Could not find extent of mapping file"
+              echo "Extent: $FILE_EXTENT"
+              echo "Mapping: $FILE_MAPPING"
+          fi
       else
           echo "cybergis-osm-mappings.git not found"
       fi
