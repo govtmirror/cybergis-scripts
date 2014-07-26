@@ -449,9 +449,9 @@ if [[ "$INIT_ENV" = "prod" ]]; then
             bash --login -c "add_cron_sync_2 $INIT_ENV $INIT_CMD \"$3\" \"$4\" \"$5\" \"$6\" \"$7\" \"$8\" \"$9\" \"${10}\""
         fi
     else
-        echo "Usage: cybergis-script-init-rogue.sh prod [use|rvm|bundler|conf_application|provision|server|remote|remote2|aws|sns|cron|cron2]"
+        echo "Usage: cybergis-script-init-rogue.sh prod [use|rvm|bundler|conf_application|conf_standalone|provision|server|remote|remote2|aws|sns|cron|cron2]"
     fi
 else
-    echo "Usage: cybergis-script-init-rogue.sh [prod|dev] [use|rvm|bundler|conf_application|provision|server|remote|remote2|aws|sns|cron|cron2]"
+    echo "Usage: cybergis-script-init-rogue.sh [prod|dev] [use|rvm|bundler|conf_application|conf_standalone|provision|server|remote|remote2|aws|sns|cron|cron2]"
 fi
 
