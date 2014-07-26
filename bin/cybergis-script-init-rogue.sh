@@ -88,6 +88,38 @@ conf_application(){
   fi
 }
 
+conf_standalone(){
+  if [[ $# -ne 4 ]]; then
+    echo "Usage: cybergis-script-init-rogue.sh prod conf_standalone <fqdn> <gs_baseline>"
+  else
+    INIT_ENV=$1
+    INIT_CMD=$2
+    FQDN=$3
+    GS_BASELINE=$4
+    cd /opt
+    if [ ! -d "/opt/rogue-chef-repo" ]; then
+      git clone https://github.com/state-hiu/rogue-chef-repo.git
+    fi
+    cd /opt/rogue-chef-repo
+    git checkout -b hiu_standalone origin/hiu_standalone
+    git pull origin hiu_standalone
+    if [ -d "/opt/chef-run" ]; then
+      rm -fr /opt/chef-run
+    fi
+    #
+    #Install GEM Dependencies if missing.
+    bundle install
+    berks install
+    #
+    mkdir /opt/chef-run
+    cp -r /opt/rogue-chef-repo/solo/* /opt/chef-run/
+    cd /opt/chef-run
+    #
+    sed -i "s/{{fqdn}}/$FQDN/g" dna.json
+    sed -i "s/{{gs-baseline}}/$GS_BASELINE/g" dna.json
+  fi
+}
+
 provision(){
   echo "provision"
   if [[ $# -ne 2 ]]; then
@@ -339,6 +371,16 @@ if [[ "$INIT_ENV" = "prod" ]]; then
             export -f conf_application
             bash --login -c "conf_application $INIT_ENV $INIT_CMD '${3}' '${4}' '${5}' '${6}' '${7}' '${8}'"
         fi
+    
+    elif [[ "$INIT_CMD" == "conf_standalone" ]]; then
+
+        if [[ $# -ne 4 ]]; then
+            echo "Usage: cybergis-script-init-rogue.sh prod conf_standalone <fqdn> <gs_baseline>"
+        else
+            export -f conf_standalone
+            bash --login -c "conf_standalone $INIT_ENV $INIT_CMD '${3}' '${4}'"
+        fi
+    
     
     elif [[ "$INIT_CMD" == "provision" ]]; then
         
