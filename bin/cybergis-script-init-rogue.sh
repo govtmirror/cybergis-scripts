@@ -351,18 +351,24 @@ osm(){
           if [ -f "$FILE_EXTENT" ] and [ -f "$FILE_MAPPING" ]; then
               VALUE_EXTENT=$(<$FILE_EXTENT)
               echo $VALUE_EXTENT
+              #
+              #REPO_STAGING="/home/rogue/geogit/repo/$REPO"
+              REPO_STAGING="/var/geogit/repo/$REPO"
+              #
+              mkdir -p $REPO_STAGING
+              cd $REPO_STAGING
+              geogit init
+              cp $FILE_MAPPING .
               
-              
-              CMD_1="geogit init $NAME"
-              CMD_2="geogit osm download --bbox $VALUE_EXTENT --mapping $FILE_MAPPING"
-              CMD_3=""
-              
-              
-              /etc/init.d/tomcat7 stop
+              #
+              CMD_1="geogit osm download --bbox $VALUE_EXTENT --mapping $FILE_MAPPING"
+
+              echo $CMD_1
+              #/etc/init.d/tomcat7 stop
               #bash --login -c "$CMD_1"
               #bash --login -c "$CMD_2"
               #bash --login -c "$CMD_3"
-              /etc/init.d/tomcat7 start
+              #/etc/init.d/tomcat7 start
           else
               echo "Could not find extent of mapping file"
               echo "Extent: $FILE_EXTENT"
