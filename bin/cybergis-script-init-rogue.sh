@@ -361,17 +361,15 @@ osm(){
               cd $REPO_STAGING
               geogit init
               cp $FILE_MAPPING .
-              
               #
               CMD_1="geogit osm download --bbox $VALUE_EXTENT --mapping $FILE_MAPPING"
-
               echo $CMD_1
-              #/etc/init.d/tomcat7 stop
-              #bash --login -c "$CMD_1"
+              bash --login -c "$CMD_1"
               cp -R $REPO_STAGING $REPO_GEOSERVER
               chown tomcat7:tomcat7 -R $REPO_GEOSERVER
               cd $REPO_STAGING
               geogit remote add -u admin -p admin origin $REPO_URL
+              #/etc/init.d/tomcat7 stop
               #bash --login -c "$CMD_2"
               #bash --login -c "$CMD_3"
               #/etc/init.d/tomcat7 start
