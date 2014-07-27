@@ -348,7 +348,7 @@ osm(){
           MAPPING="$(echo "$MAPPING" | sed -e 's/[():]/\//g')"
           FILE_EXTENT="/opt/cybergis-osm-mappings.git/extents/$EXTENT.txt"
           FILE_MAPPING="/opt/cybergis-osm-mappings.git/mappings/$MAPPING.json"
-          if [[ -f "$FILE_EXTENT" ] and [ -f "$FILE_MAPPING" ]]; then
+          if [ -f "$FILE_EXTENT" ] && [ -f "$FILE_MAPPING" ]; then
               VALUE_EXTENT=$(<$FILE_EXTENT)
               echo $VALUE_EXTENT
               #
