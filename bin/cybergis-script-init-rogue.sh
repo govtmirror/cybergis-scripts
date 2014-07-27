@@ -354,6 +354,8 @@ osm(){
               #
               #REPO_STAGING="/home/rogue/geogit/repo/$REPO"
               REPO_STAGING="/var/geogit/repo/$REPO"
+              REPO_GEOSERVER="/var/lib/geoserver_data/geogit/$REPO"
+              REPO_URL="http://localhost/geoserver/geogit/geonode:$REPO"
               #
               mkdir -p $REPO_STAGING
               cd $REPO_STAGING
@@ -366,6 +368,10 @@ osm(){
               echo $CMD_1
               #/etc/init.d/tomcat7 stop
               #bash --login -c "$CMD_1"
+              cp -R $REPO_STAGING $REPO_GEOSERVER
+              chown tomcat7:tomcat7 -R $REPO_GEOSERVER
+              cd $REPO_STAGING
+              geogit remote add -u admin -p admin origin $REPO_URL
               #bash --login -c "$CMD_2"
               #bash --login -c "$CMD_3"
               #/etc/init.d/tomcat7 start
