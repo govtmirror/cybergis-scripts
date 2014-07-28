@@ -370,8 +370,15 @@ osm(){
               chown tomcat7:tomcat7 -R $REPO_GEOSERVER
               cd $REPO_STAGING
               geogit remote add -u admin -p admin origin $REPO_URL
+              #===============#
+              FILE_POST_DATA=/opt/cybergis-scripts.git/lib/rogue/post_geogitdatastore.xml
+              POST_DATA=$(<$FILE_POST_DATA)
+              POST_DATA="$(echo "$POST_DATA" | sed -e s/{{name}}/$REPO/g)"
+              POST_DATA="$(echo "$POST_DATA" | sed -e s/{{path}}/$REPO_GEOSERVER/g)"
+              echo $POST_DATA
               REST_DATASTORES="http://localhost/geoserver/rest/workspaces/geonode/datastores.xml"
-              curl $REST_DATASTORES -u $USERPASS -H 'Content-type: xml' -XPOST -d @data.xml
+              #curl $REST_DATASTORES -u $USERPASS -H 'Content-type: xml' -XPOST -d @data.xml
+              #===============#
               ##Add GeoGit Datastore to Tomcat
               #Add Layer to Tomcat
               #/etc/init.d/tomcat7 stop
