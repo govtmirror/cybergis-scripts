@@ -334,14 +334,15 @@ add_remote_2(){
 }
 
 osm(){
-  if [[ $# -ne 5 ]]; then
-      echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD <repo> <extent> <mapping>"
+  if [[ $# -ne 6 ]]; then
+      echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD <user:password> <repo> <extent> <mapping>"
   else
       INIT_ENV=$1
       INIT_CMD=$2
-      REPO=$3
-      EXTENT=$4
-      MAPPING=$5
+      USERPASS=$3
+      REPO=$4
+      EXTENT=$5
+      MAPPING=$6
       #
       if [ -d "/opt/cybergis-osm-mappings.git" ]; then
           EXTENT="$(echo "$EXTENT" | sed -e 's/[():]/\//g')"
@@ -369,6 +370,8 @@ osm(){
               chown tomcat7:tomcat7 -R $REPO_GEOSERVER
               cd $REPO_STAGING
               geogit remote add -u admin -p admin origin $REPO_URL
+              REST_DATASTORES="http://localhost/geoserver/rest/workspaces/geonode/datastores.xml"
+              curl $REST_DATASTORES -u $USERPASS -H 'Content-type: xml' -XPOST -d @data.xml
               ##Add GeoGit Datastore to Tomcat
               #Add Layer to Tomcat
               #/etc/init.d/tomcat7 stop
