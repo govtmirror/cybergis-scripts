@@ -358,10 +358,16 @@ osm(){
               REPO_GEOSERVER="/var/lib/geoserver_data/geogit/$REPO"
               REPO_URL="http://localhost/geoserver/geogit/geonode:$REPO"
               #
+              FILE_DATASTORE=/opt/cybergis-scripts.git/lib/rogue/post_geogitdatastore.xml
+              #
               mkdir -p $REPO_STAGING
               cd $REPO_STAGING
               geogit init
               cp $FILE_MAPPING .
+              #
+              cp $FILE_DATASTORE .
+              sed -i "s/{{name}}/$REPO/g" post_geogitdatastore.xml
+              sed -i "s/{{path}}/$REPO_GEOSERVER/g" post_geogitdatastore.xml
               #
               CMD_1="geogit osm download --bbox $VALUE_EXTENT --mapping $FILE_MAPPING"
               echo $CMD_1
@@ -371,11 +377,7 @@ osm(){
               cd $REPO_STAGING
               geogit remote add -u admin -p admin origin $REPO_URL
               #===============#
-              FILE_POST_DATA=/opt/cybergis-scripts.git/lib/rogue/post_geogitdatastore.xml
-              POST_DATA=$(<$FILE_POST_DATA)
-              POST_DATA="$(echo "$POST_DATA" | sed -e \"s/{{name}}/$REPO/g\")"
-              POST_DATA="$(echo "$POST_DATA" | sed -e \"s/{{path}}/$REPO_GEOSERVER/g\")"
-              echo $POST_DATA
+              echo post_geogitdatastore.xml
               REST_DATASTORES="http://localhost/geoserver/rest/workspaces/geonode/datastores.xml"
               #curl $REST_DATASTORES -u $USERPASS -H 'Content-type: xml' -XPOST -d @data.xml
               #===============#
