@@ -367,7 +367,8 @@ osm(){
               #
               cp $FILE_DATASTORE .
               sed -i "s/{{name}}/$REPO/g" post_geogitdatastore.xml
-              sed -i "s/{{path}}/$REPO_GEOSERVER/g" post_geogitdatastore.xml
+              REPO_GEOSERVER_2="$(echo "$REPO_GEOSERVER" | sed -e 's/[()\/]/\\\//g')"
+              sed -i "s/{{path}}/$REPO_GEOSERVER_2/g" post_geogitdatastore.xml
               #
               CMD_1="geogit osm download --bbox $VALUE_EXTENT --mapping $FILE_MAPPING"
               echo $CMD_1
