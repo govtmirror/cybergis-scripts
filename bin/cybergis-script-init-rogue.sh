@@ -373,8 +373,8 @@ osm(){
               #===============#
               FILE_POST_DATA=/opt/cybergis-scripts.git/lib/rogue/post_geogitdatastore.xml
               POST_DATA=$(<$FILE_POST_DATA)
-              POST_DATA="$(echo "$POST_DATA" | sed -e s/{{name}}/$REPO/g)"
-              POST_DATA="$(echo "$POST_DATA" | sed -e s/{{path}}/$REPO_GEOSERVER/g)"
+              POST_DATA="$(echo "$POST_DATA" | sed -e 's/{{name}}/$REPO/g')"
+              POST_DATA="$(echo "$POST_DATA" | sed -e 's/{{path}}/$REPO_GEOSERVER/g')"
               echo $POST_DATA
               REST_DATASTORES="http://localhost/geoserver/rest/workspaces/geonode/datastores.xml"
               #curl $REST_DATASTORES -u $USERPASS -H 'Content-type: xml' -XPOST -d @data.xml
