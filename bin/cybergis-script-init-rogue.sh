@@ -369,10 +369,13 @@ osm(){
               chown tomcat7:tomcat7 -R $REPO_GEOSERVER
               cd $REPO_STAGING
               geogit remote add -u admin -p admin origin $REPO_URL
+              ##Add GeoGit Datastore to Tomcat
+              #Add Layer to Tomcat
               #/etc/init.d/tomcat7 stop
               #bash --login -c "$CMD_2"
               #bash --login -c "$CMD_3"
               #/etc/init.d/tomcat7 start
+              #/var/lib/geonode/bin/python /var/lib/geonode/rogue_geonode/manage.py updatelayers --ignore-errors
           else
               echo "Could not find extent of mapping file"
               echo "Extent: $FILE_EXTENT"
