@@ -380,7 +380,7 @@ osm(){
               #===============#
               echo post_geogitdatastore.xml
               REST_DATASTORES="http://localhost/geoserver/rest/workspaces/geonode/datastores.xml"
-              curl $REST_DATASTORES -u $USERPASS -H 'Content-type: xml' -XPOST -d @post_geogitdatastore.xml
+              curl $REST_DATASTORES -u $USERPASS -H "Content-Type:text/xml" -XPOST -d @post_geogitdatastore.xml
               #===============#
               ##Add GeoGit Datastore to Tomcat
               #Add Layer to Tomcat
