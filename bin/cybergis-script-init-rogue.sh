@@ -335,7 +335,7 @@ add_remote_2(){
 
 osm(){
   if [[ $# -ne 6 ]]; then
-      echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD <user:password> <repo> <extent> <mapping>"
+      echo "Usage: cybergis-script-init-rogue.sh prod osm <user:password> <repo> <extent> <mapping>"
   else
       INIT_ENV=$1
       INIT_CMD=$2
