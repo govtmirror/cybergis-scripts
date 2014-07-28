@@ -518,7 +518,7 @@ if [[ "$INIT_ENV" = "prod" ]]; then
 	    echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD <user:password> <repo> <extent> <mapping>"
         else
             export -f osm
-            bash --login -c "osm $INIT_ENV $INIT_CMD \"$3\" \"$4\" \"$5\""
+            bash --login -c "osm $INIT_ENV $INIT_CMD \"$3\" \"$4\" \"$5\" \"$6\""
         fi
     else
         echo "Usage: cybergis-script-init-rogue.sh prod [use|rvm|bundler|conf_application|conf_standalone|provision|server|remote|remote2|aws|sns|cron|cron2|osm]"
