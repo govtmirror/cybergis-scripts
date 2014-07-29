@@ -83,4 +83,5 @@ GEOGCS["WGS84(DD)", DATUM["WGS84", SPHEROID["WGS84", 6378137.0, 298.257223563]],
       <nillable>true</nillable>
       <binding>java.lang.String</binding>
     </attribute>
+  </attributes>
 </featureType>
