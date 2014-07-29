@@ -373,7 +373,7 @@ osm(){
               #
               cp $FILE_LAYER .
               sed -i "s/{{name}}/$REPO/g" post_geogitlayer.xml
-              #
+              #===============#
               CMD_1="geogit osm download --bbox $VALUE_EXTENT --mapping $FILE_MAPPING"
               echo $CMD_1
               bash --login -c "$CMD_1"
@@ -382,18 +382,14 @@ osm(){
               cd $REPO_STAGING
               geogit remote add -u admin -p admin origin $REPO_URL
               #===============#
+              #Update GeoServer
               echo post_geogitdatastore.xml
               REST_DATASTORES="http://localhost/geoserver/rest/workspaces/geonode/datastores.xml"
               curl $REST_DATASTORES -u $USERPASS -H "Content-Type:text/xml" -XPOST -d @post_geogitdatastore.xml
               REST_LAYERS="http://localhost/geoserver/rest/workspaces/geonode/datastores/$REPO/featuretypes"
               curl $REST_LAYERS -u $USERPASS -H "Content-Type:text/xml" -XPOST -d @post_geogitlayer.xml
               #===============#
-              ##Add GeoGit Datastore to Tomcat
-              #Add Layer to Tomcat
-              #/etc/init.d/tomcat7 stop
-              #bash --login -c "$CMD_2"
-              #bash --login -c "$CMD_3"
-              #/etc/init.d/tomcat7 start
+              #Update GeoNode
               #/var/lib/geonode/bin/python /var/lib/geonode/rogue_geonode/manage.py updatelayers --ignore-errors
           else
               echo "Could not find extent of mapping file"
