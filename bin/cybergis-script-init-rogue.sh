@@ -385,7 +385,8 @@ osm(){
               REST_DATASTORES="http://localhost/geoserver/rest/workspaces/geonode/datastores.xml"
               curl $REST_DATASTORES -u $USERPASS -H "Content-Type:text/xml" -XPOST -d @post_geogitdatastore.xml
               REST_LAYERS="http://localhost/geoserver/rest/workspaces/geonode/datastores/$REPO/featuretypes"
-              curl $REST_LAYERS -u $USERPASS -H "Content-Type:text/xml" -XPOST -d @post_geogitlayer.xml
+              #Following line commented out since it corrupts repo or creates corrupted layer.
+              #curl $REST_LAYERS -u $USERPASS -H "Content-Type:text/xml" -XPOST -d @post_geogitlayer.xml
               #===============#
               #Update GeoNode
               #/var/lib/geonode/bin/python /var/lib/geonode/rogue_geonode/manage.py updatelayers --ignore-errors
