@@ -383,7 +383,6 @@ osm(){
               geogit remote add -u admin -p admin origin $REPO_URL
               #===============#
               #Update GeoServer
-              echo post_geogitdatastore.xml
               REST_DATASTORES="http://localhost/geoserver/rest/workspaces/geonode/datastores.xml"
               curl $REST_DATASTORES -u $USERPASS -H "Content-Type:text/xml" -XPOST -d @post_geogitdatastore.xml
               REST_LAYERS="http://localhost/geoserver/rest/workspaces/geonode/datastores/$REPO/featuretypes"
