@@ -395,12 +395,11 @@ osm(){
               ERROR_FILE="/var/log/rogue/cron_geogit_sync_osm_errors.log"
               CMD_CRON='root /bin/bash /opt/cybergis-scripts.git/lib/rogue/geogit_sync_osm.sh \"'$REPO_STAGING'\" origin \"'$LOGFILE'\" \"'$ERRORFILE'\" >> '$CRON_FILE
               echo $CMD_CRON
-
-      if [[ "$FREQUENCY" != "" ]]; then
-          CMD='echo "'$FREQUENCY' '$CMD
-          bash --login -c "$CMD"
-      fi
-      chmod 755 $CRON_FILE
+              if [[ "$FREQUENCY" != "" ]]; then
+                  CMD='echo "'$FREQUENCY' '$CMD
+                  bash --login -c "$CMD"
+              fi
+              chmod 755 $CRON_FILE
           else
               echo "Could not find extent of mapping file"
               echo "Extent: $FILE_EXTENT"
