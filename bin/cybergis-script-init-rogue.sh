@@ -359,6 +359,7 @@ osm(){
               REPO_URL="http://localhost/geoserver/geogit/geonode:$REPO"
               #
               FILE_DATASTORE=/opt/cybergis-scripts.git/lib/rogue/post_geogitdatastore.xml
+              FILE_LAYER=/opt/cybergis-scripts.git/lib/rogue/post_geogitlayer.xml
               #
               mkdir -p $REPO_STAGING
               cd $REPO_STAGING
@@ -369,6 +370,9 @@ osm(){
               sed -i "s/{{name}}/$REPO/g" post_geogitdatastore.xml
               REPO_GEOSERVER_2="$(echo "$REPO_GEOSERVER" | sed -e 's/[()\/]/\\\//g')"
               sed -i "s/{{path}}/$REPO_GEOSERVER_2/g" post_geogitdatastore.xml
+              #
+              cp $FILE_LAYER .
+              sed -i "s/{{name}}/$REPO/g" post_geogitlayer.xml
               #
               CMD_1="geogit osm download --bbox $VALUE_EXTENT --mapping $FILE_MAPPING"
               echo $CMD_1
@@ -381,6 +385,8 @@ osm(){
               echo post_geogitdatastore.xml
               REST_DATASTORES="http://localhost/geoserver/rest/workspaces/geonode/datastores.xml"
               curl $REST_DATASTORES -u $USERPASS -H "Content-Type:text/xml" -XPOST -d @post_geogitdatastore.xml
+              REST_LAYERS="http://localhost/geoserver/rest/workspaces/geonode/datastores/$REPO/featuretypes"
+              curl $REST_LAYERS -u $USERPASS -H "Content-Type:text/xml" -XPOST -d @post_geogitlayer.xml
               #===============#
               ##Add GeoGit Datastore to Tomcat
               #Add Layer to Tomcat
