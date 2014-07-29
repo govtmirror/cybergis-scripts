@@ -351,7 +351,6 @@ osm(){
           FILE_MAPPING="/opt/cybergis-osm-mappings.git/mappings/$MAPPING.json"
           if [ -f "$FILE_EXTENT" ] && [ -f "$FILE_MAPPING" ]; then
               VALUE_EXTENT=$(<$FILE_EXTENT)
-              echo $VALUE_EXTENT
               #
               #REPO_STAGING="/home/rogue/geogit/repo/$REPO"
               REPO_STAGING="/var/geogit/repo/$REPO"
