@@ -89,13 +89,26 @@ conf_application(){
 }
 
 conf_standalone(){
-  if [[ $# -ne 4 ]]; then
+  if [ [ $# -ne 4 ] && [ $# -ne 7] ]; then
     echo "Usage: cybergis-script-init-rogue.sh prod conf_standalone <fqdn> <gs_baseline>"
+    echo "or"
+    echo "Usage: cybergis-script-init-rogue.sh prod conf_standalone <fqdn> <gs_baseline> <banner_text> <banner_color_text> <banner_color_background>"
   else
     INIT_ENV=$1
     INIT_CMD=$2
     FQDN=$3
     GS_BASELINE=$4
+    if [[ $# -eq 4 ]]; then
+      BANNER_ON="false"
+      BANNER_TEXT=""
+      BANNER_COLOR_TEXT=""
+      BANNER_COLOR_BACKGROUND=""
+    else
+      BANNER_ON="true"
+      BANNER_TEXT=$5
+      BANNER_COLOR_TEXT=$6
+      BANNER_COLOR_BACKGROUND=$7
+    fi
     cd /opt
     if [ ! -d "/opt/rogue-chef-repo" ]; then
       git clone https://github.com/state-hiu/rogue-chef-repo.git
@@ -117,6 +130,10 @@ conf_standalone(){
     #
     sed -i "s/{{fqdn}}/$FQDN/g" dna.json
     sed -i "s/{{gs-baseline}}/$GS_BASELINE/g" dna.json
+    sed -i "s/{{banner-on}}/$BANNER_ON/g" dna.json
+    sed -i "s/{{banner-color-text}}/$BANNER_COLOR_TEXT/g" dna.json
+    sed -i "s/{{banner-color-background}}/$BANNER_COLOR_BACKGROUND/g" dna.json
+    sed -i "s/{{banner-text}}/$BANNER_TEXT/g" dna.json
   fi
 }
 
