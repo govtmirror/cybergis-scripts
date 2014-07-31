@@ -1,0 +1,38 @@
+<featureType>
+  <name>{{name}}</name>
+  <nativeName>{{name}}</nativeName>
+  <title>{{name}}</title>
+  <abstract>No abstract provided</abstract>
+  <nativeCRS>
+GEOGCS["WGS 84", DATUM["World Geodetic System 1984", SPHEROID["WGS 84", 6378137.0, 298.257223563, AUTHORITY["EPSG","7030"]], AUTHORITY["EPSG","6326"]], PRIMEM["Greenwich", 0.0, AUTHORITY["EPSG","8901"]], UNIT["degree", 0.017453292519943295], AXIS["Geodetic longitude", EAST], AXIS["Geodetic latitude", NORTH], AUTHORITY["EPSG","4326"]]
+  </nativeCRS>
+  <srs>EPSG:4326</srs>
+  <nativeBoundingBox>
+  <minx>-69.93682861328125</minx>
+  <maxx>-69.8325424194336</maxx>
+  <miny>18.45307731628418</miny>
+  <maxy>18.515501022338867</maxy>
+  <crs>EPSG:4326</crs>
+  </nativeBoundingBox>
+  <latLonBoundingBox>
+    <minx>-69.93682861328125</minx>
+    <maxx>-69.8325424194336</maxx>
+    <miny>18.45307731628418</miny>
+    <maxy>18.515501022338867</maxy>
+    <crs>
+GEOGCS["WGS84(DD)", DATUM["WGS84", SPHEROID["WGS84", 6378137.0, 298.257223563]], PRIMEM["Greenwich", 0.0], UNIT["degree", 0.017453292519943295], AXIS["Geodetic longitude", EAST], AXIS["Geodetic latitude", NORTH]]
+    </crs>
+  </latLonBoundingBox>
+  <projectionPolicy>FORCE_DECLARED</projectionPolicy>
+  <enabled>true</enabled>
+  <advertised>true</advertised>
+  <attributes>
+    <attribute>
+      <name>id</name>
+      <minOccurs>0</minOccurs>
+      <maxOccurs>1</maxOccurs>
+      <nillable>true</nillable>
+      <binding>java.lang.Long</binding>
+    </attribute>
+  </attributes>
+</featureType>

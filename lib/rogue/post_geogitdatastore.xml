@@ -1,0 +1,11 @@
+<dataStore>
+  <name>{{name}}</name>
+  <description>{{name}}</description>
+  <type>GeoGIT</type>
+  <connectionParameters>
+    <geogit_repository>{{path}}</geogit_repository>
+    <branch>master</branch>
+    <create>false</create>
+    <namespace>http://www.geonode.org/</namespace>
+  </connectionParameters>
+</dataStore>

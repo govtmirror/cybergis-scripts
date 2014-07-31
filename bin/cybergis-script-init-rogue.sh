@@ -351,14 +351,15 @@ add_remote_2(){
 }
 
 osm(){
-  if [[ $# -ne 5 ]]; then
-      echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD <repo> <extent> <mapping>"
+  if [[ $# -ne 6 ]]; then
+      echo "Usage: cybergis-script-init-rogue.sh prod osm <user:password> <repo> <extent> <mapping>"
   else
       INIT_ENV=$1
       INIT_CMD=$2
-      REPO=$3
-      EXTENT=$4
-      MAPPING=$5
+      USERPASS=$3
+      REPO=$4
+      EXTENT=$5
+      MAPPING=$6
       #
       if [ -d "/opt/cybergis-osm-mappings.git" ]; then
           EXTENT="$(echo "$EXTENT" | sed -e 's/[():]/\//g')"
@@ -367,18 +368,28 @@ osm(){
           FILE_MAPPING="/opt/cybergis-osm-mappings.git/mappings/$MAPPING.json"
           if [ -f "$FILE_EXTENT" ] && [ -f "$FILE_MAPPING" ]; then
               VALUE_EXTENT=$(<$FILE_EXTENT)
-              echo $VALUE_EXTENT
               #
               #REPO_STAGING="/home/rogue/geogit/repo/$REPO"
               REPO_STAGING="/var/geogit/repo/$REPO"
               REPO_GEOSERVER="/var/lib/geoserver_data/geogit/$REPO"
               REPO_URL="http://localhost/geoserver/geogit/geonode:$REPO"
               #
+              FILE_DATASTORE=/opt/cybergis-scripts.git/lib/rogue/post_geogitdatastore.xml
+              FILE_LAYER=/opt/cybergis-scripts.git/lib/rogue/post_geogitlayer.xml
+              #
               mkdir -p $REPO_STAGING
               cd $REPO_STAGING
               geogit init
               cp $FILE_MAPPING .
               #
+              cp $FILE_DATASTORE .
+              sed -i "s/{{name}}/$REPO/g" post_geogitdatastore.xml
+              REPO_GEOSERVER_2="$(echo "$REPO_GEOSERVER" | sed -e 's/[()\/]/\\\//g')"
+              sed -i "s/{{path}}/$REPO_GEOSERVER_2/g" post_geogitdatastore.xml
+              #
+              cp $FILE_LAYER .
+              sed -i "s/{{name}}/$REPO/g" post_geogitlayer.xml
+              #===============#
               CMD_1="geogit osm download --bbox $VALUE_EXTENT --mapping $FILE_MAPPING"
               echo $CMD_1
               bash --login -c "$CMD_1"
@@ -386,10 +397,26 @@ osm(){
               chown tomcat7:tomcat7 -R $REPO_GEOSERVER
               cd $REPO_STAGING
               geogit remote add -u admin -p admin origin $REPO_URL
-              #/etc/init.d/tomcat7 stop
-              #bash --login -c "$CMD_2"
-              #bash --login -c "$CMD_3"
-              #/etc/init.d/tomcat7 start
+              #===============#
+              #Update GeoServer
+              REST_DATASTORES="http://localhost/geoserver/rest/workspaces/geonode/datastores.xml"
+              curl $REST_DATASTORES -u $USERPASS -H "Content-Type:text/xml" -XPOST -d @post_geogitdatastore.xml
+              REST_LAYERS="http://localhost/geoserver/rest/workspaces/geonode/datastores/$REPO/featuretypes"
+              #Following line commented out since it corrupts repo or creates corrupted layer.
+              #curl $REST_LAYERS -u $USERPASS -H "Content-Type:text/xml" -XPOST -d @post_geogitlayer.xml
+              #===============#
+              #Update GeoNode
+              #/var/lib/geonode/bin/python /var/lib/geonode/rogue_geonode/manage.py updatelayers --ignore-errors
+              CRON_FILE="/etc/cron.d/geogit_sync_osm"
+              LOG_FILE="/var/log/rogue/cron_geogit_sync_osm.log"
+              ERROR_FILE="/var/log/rogue/cron_geogit_sync_osm_errors.log"
+              CMD_CRON='root /bin/bash /opt/cybergis-scripts.git/lib/rogue/geogit_sync_osm.sh \"'$REPO_STAGING'\" origin \"'$LOGFILE'\" \"'$ERRORFILE'\" >> '$CRON_FILE
+              echo $CMD_CRON
+              if [[ "$FREQUENCY" != "" ]]; then
+                  CMD='echo "'$FREQUENCY' '$CMD
+                  bash --login -c "$CMD"
+              fi
+              chmod 755 $CRON_FILE
           else
               echo "Could not find extent of mapping file"
               echo "Extent: $FILE_EXTENT"
@@ -518,11 +545,11 @@ if [[ "$INIT_ENV" = "prod" ]]; then
         fi
     elif [[ "$INIT_CMD" == "osm" ]]; then
         
-        if [[ $# -ne 5 ]]; then
-	    echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD <repo> <extent> <mapping>"
+        if [[ $# -ne 6 ]]; then
+	    echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD <user:password> <repo> <extent> <mapping>"
         else
             export -f osm
-            bash --login -c "osm $INIT_ENV $INIT_CMD \"$3\" \"$4\" \"$5\""
+            bash --login -c "osm $INIT_ENV $INIT_CMD \"$3\" \"$4\" \"$5\" \"$6\""
         fi
     else
         echo "Usage: cybergis-script-init-rogue.sh prod [use|rvm|bundler|conf_application|conf_standalone|provision|server|remote|remote2|aws|sns|cron|cron2|osm]"
