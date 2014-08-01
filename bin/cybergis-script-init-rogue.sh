@@ -469,11 +469,16 @@ if [[ "$INIT_ENV" = "prod" ]]; then
     
     elif [[ "$INIT_CMD" == "conf_standalone" ]]; then
 
-        if [[ $# -ne 4 ]]; then
+        if [ [ $# -ne 4 ] && [ $# -ne 7] ]; then
             echo "Usage: cybergis-script-init-rogue.sh prod conf_standalone <fqdn> <gs_baseline>"
-        else
+            echo "or"
+            echo "Usage: cybergis-script-init-rogue.sh prod conf_standalone <fqdn> <gs_baseline> <banner_text> <banner_color_text> <banner_color_background>"
+        elif [[ $# -eq 4 ]]; then
             export -f conf_standalone
             bash --login -c "conf_standalone $INIT_ENV $INIT_CMD '${3}' '${4}'"
+        elif [[ $# -eq 7 ]]; then
+            export -f conf_standalone
+            bash --login -c "conf_standalone $INIT_ENV $INIT_CMD '${3}' '${4}' '${5}' '${6} '${7}'"
         fi
     
     
