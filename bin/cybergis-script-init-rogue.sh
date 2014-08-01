@@ -94,6 +94,7 @@ conf_standalone(){
     echo "or"
     echo "Usage: cybergis-script-init-rogue.sh prod conf_standalone <fqdn> <gs_baseline> <banner_text> <banner_color_text> <banner_color_background>"
   else
+    echo "test"
     INIT_ENV=$1
     INIT_CMD=$2
     FQDN=$3
