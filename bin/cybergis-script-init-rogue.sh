@@ -105,9 +105,9 @@ conf_standalone(){
       BANNER_COLOR_BACKGROUND=""
     else
       BANNER_ON="true"
-      BANNER_TEXT=$5
-      BANNER_COLOR_TEXT=$6
-      BANNER_COLOR_BACKGROUND=$7
+      BANNER_TEXT=${5}
+      BANNER_COLOR_TEXT=${6}
+      BANNER_COLOR_BACKGROUND=${7}
     fi
     cd /opt
     if [ ! -d "/opt/rogue-chef-repo" ]; then
