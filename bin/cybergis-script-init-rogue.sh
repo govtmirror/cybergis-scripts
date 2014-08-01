@@ -479,7 +479,7 @@ if [[ "$INIT_ENV" = "prod" ]]; then
             bash --login -c "conf_standalone $INIT_ENV $INIT_CMD '${3}' '${4}'"
         elif [[ $# -eq 7 ]]; then
             export -f conf_standalone
-            bash --login -c "conf_standalone $INIT_ENV $INIT_CMD '${3}' '${4}' '${5}' '${6} '${7}'"
+            bash --login -c "conf_standalone $INIT_ENV $INIT_CMD '${3}' '${4}' '${5}' '${6}' '${7}'"
         fi
     
     
