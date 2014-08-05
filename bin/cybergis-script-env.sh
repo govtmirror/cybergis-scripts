@@ -6,7 +6,7 @@
 DATE=$(date)
 
 ENV=$1
-
+CMD=$2
 #==================================#
 #####################
 ###!!!!!! Still under development.  Not stable!!!!!!!!!!!!!##############
@@ -67,7 +67,7 @@ if [[ "$ENV" = "geonode" ]]; then
         echo "Usage: cybergis-script-env.sh geonode [install|reset]"
     else
         export -f geonode
-        bash --login -c geonode
+        bash --login -c "geonode $ENV $CMD"
     fi
 
 else
