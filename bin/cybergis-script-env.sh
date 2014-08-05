@@ -53,7 +53,7 @@ geonode(){
       paver stop
       paver reset_hard
       paver setup
-      paver start -b paver start -b 0.0.0.0:8000
+      paver start -b 0.0.0.0:8000
       #
     else
       echo "Usage: cybergis-script-env.sh geonode [install|reset]"
