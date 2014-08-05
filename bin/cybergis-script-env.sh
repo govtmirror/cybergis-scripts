@@ -20,12 +20,12 @@ geonode(){
     #
     if [[ "$CMD" = "install" ]]; then
       sudo apt-get update
-      # Essential build tools and libraries
+      # Add UbuntuGIS Repository to get latest GDAL package
       sudo apt-get install -y python-software-properties
       sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable
       #
       sudo apt-get update
-      #
+      # Essential build tools and libraries
       sudo apt-get install -y build-essential libxml2-dev libxslt1-dev libjpeg-dev gettext git python-dev python-pip python-virtualenv
       sudo apt-get install -y libgdal1h libgdal-dev python-gdal
       sudo apt-get install -y libgeos-dev libpq-dev
