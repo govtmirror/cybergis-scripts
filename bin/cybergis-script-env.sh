@@ -51,7 +51,9 @@ geonode(){
       #cd geonode
       #./restart.sh
     elif [[ "$CMD" = "reset" ]]; then
-      # 
+      #
+      source ~/.bash_aliases
+      #
       cd ~/geonode
       paver stop
       paver reset_hard
