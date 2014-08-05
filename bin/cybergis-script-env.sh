@@ -44,9 +44,10 @@ geonode(){
       echo 'workon geonode' >> ~/.bash_aliases
       #
       source ~/.bash_aliases
-      #
       mkvirtualenv geonode
       workon geonode
+      #===============#
+      #Install Django Dependencies
       pip install pillow django-tastypie django-taggit django-jsonfield django-downloadview
       #
       #===============#
@@ -56,8 +57,9 @@ geonode(){
       sed -i "s/\.\.\/\.\.\/apps\/gdal-config/\/usr\/bin\/gdal-config/g" setup.cfg
       python setup.py build_ext --include-dirs=/usr/include/gdal
       pip install --no-download GDAL==1.10.0
-      #
+      #===============#
       #Install GeoNode
+      cd ~
       pip install -e geonode
       #
       cd ~/geonode
