@@ -38,13 +38,14 @@ geonode(){
       echo 'source /usr/local/bin/virtualenvwrapper.sh'>> ~/.bash_alises
       echo 'export PIP_DOWNLOAD_CACHE=$HOME/.pip-downloads' >> ~/.bash_alises
       echo 'workon geonode' >> ~/.bash_alises
-    
-      cd ~/geonode
+      #
       mkvirtualenv geonode
       workon geonode
-      pip install pillow tasypie django-taggit django-jsonfield django-downloadview
+      pip install pillow tastypie django-taggit django-jsonfield django-downloadview
       #Install GeoNode
       pip install -e geonode
+      #
+      cd ~/geonode
       #cd geonode
       #./restart.sh
     elif [[ "$CMD" = "reset" ]]; then
