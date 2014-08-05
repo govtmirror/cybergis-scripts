@@ -33,11 +33,13 @@ geonode(){
       sudo pip install virtualenvwrapper paver
     
       #Add all these lines to ~/.bash_aliases
-      echo 'export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python' >> ~/.bash_alises
+      echo 'export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python' >> ~/.bash_aliases
       echo 'export WORKON_HOME=~/.venvs' >> ~/.bash_alises
-      echo 'source /usr/local/bin/virtualenvwrapper.sh'>> ~/.bash_alises
-      echo 'export PIP_DOWNLOAD_CACHE=$HOME/.pip-downloads' >> ~/.bash_alises
-      echo 'workon geonode' >> ~/.bash_alises
+      echo 'source /usr/local/bin/virtualenvwrapper.sh'>> ~/.bash_aliases
+      echo 'export PIP_DOWNLOAD_CACHE=$HOME/.pip-downloads' >> ~/.bash_aliases
+      echo 'workon geonode' >> ~/.bash_aliases
+      #
+      source ~/.bash_aliases
       #
       mkvirtualenv geonode
       workon geonode
