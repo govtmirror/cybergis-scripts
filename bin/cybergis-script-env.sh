@@ -80,7 +80,7 @@ ittc(){
       #
     elif [[ "$CMD" = "reset" ]]; then
       # 
-
+      echo "reset"
       #
     else
       echo "Usage: cybergis-script-env.sh ittc [install|reset]"
