@@ -61,6 +61,30 @@ geonode(){
   fi
 }
 
+ittc(){
+  echo "ittc"
+  if [[ $# -ne 2 ]]; then
+    echo "Usage: cybergis-script-env.sh ittc [install|reset]"
+  else
+    ENV=$1
+    CMD=$2
+    #
+    if [[ "$CMD" = "install" ]]; then
+      sudo apt-get update
+      #
+      sudo apt-get install postgresql-client-common postgresql-client-9.1 libgeos-dev
+      sudo apt-get install -y gdal-bin python-gdal python-numpy
+      #
+    elif [[ "$CMD" = "reset" ]]; then
+      # 
+
+      #
+    else
+      echo "Usage: cybergis-script-env.sh ittc [install|reset]"
+    fi
+  fi
+}
+
 if [[ "$ENV" = "geonode" ]]; then
     
     if [[ $# -ne 2 ]]; then
@@ -70,6 +94,15 @@ if [[ "$ENV" = "geonode" ]]; then
         bash --login -c "geonode $ENV $CMD"
     fi
 
+elif [[ "$ENV" = "ittc" ]]; then
+    
+    if [[ $# -ne 2 ]]; then
+        echo "Usage: cybergis-script-env.sh ittc [install|reset]"
+    else
+        export -f ittc
+        bash --login -c "ittc $ENV $CMD"
+    fi
+
 else
-    echo "Usage: cybergis-script-env.sh [geonode]"
+    echo "Usage: cybergis-script-env.sh [geonode|ittc]"
 fi
