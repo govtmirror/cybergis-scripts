@@ -64,7 +64,7 @@ geonode(){
 if [[ "$ENV" = "geonode" ]]; then
     
     if [[ $# -ne 2 ]]; then
-        echo "Usage: cybergis-script-env.sh geonode"
+        echo "Usage: cybergis-script-env.sh geonode [install|reset]"
     else
         export -f geonode
         bash --login -c geonode
