@@ -43,7 +43,7 @@ geonode(){
       #
       mkvirtualenv geonode
       workon geonode
-      pip install pillow tastypie django-taggit django-jsonfield django-downloadview
+      pip install pillow django-tastypie django-taggit django-jsonfield django-downloadview
       #Install GeoNode
       pip install -e geonode
       #
