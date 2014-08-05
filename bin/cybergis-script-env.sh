@@ -63,7 +63,7 @@ geonode(){
 
 if [[ "$ENV" = "geonode" ]]; then
     
-    if [[ $# -ne 3 ]]; then
+    if [[ $# -ne 2 ]]; then
         echo "Usage: cybergis-script-env.sh geonode"
     else
         export -f geonode
