@@ -71,7 +71,8 @@ geonode(){
       #
       cd ~/geonode
       paver stop
-      paver reset_hard
+      paver reset
+      #paver reset_hard
       paver setup
       paver start -b 0.0.0.0:8000
       #
