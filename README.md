@@ -37,7 +37,11 @@ Logout and Login
 ### Development Environments
 
 ```
-cybergis-script-env.sh [geonode]
+cybergis-script-env.sh [geonode|ittc]
+
+    cybergis-script-env.sh geonode [install|reset]
+    
+    cybergis-script-env.sh ittc install
 ````
 ### EC2
 
