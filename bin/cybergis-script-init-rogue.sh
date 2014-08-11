@@ -415,9 +415,10 @@ osm(){
               echo $CMD_CRON
               if [[ "$FREQUENCY" != "" ]]; then
                   CMD='echo "'$FREQUENCY' '$CMD
-                  bash --login -c "$CMD"
+                  echo $CMD
+                  #bash --login -c "$CMD"
               fi
-              chmod 755 $CRON_FILE
+              #chmod 755 $CRON_FILE
           else
               echo "Could not find extent of mapping file"
               echo "Extent: $FILE_EXTENT"
