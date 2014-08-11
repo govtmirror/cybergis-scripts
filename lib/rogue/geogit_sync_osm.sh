@@ -53,7 +53,7 @@ else
     do
 	echo "Attempt $i of $SYNC_ATTEMPTS."
         ERROR_OCCURED=0
-	geogit pull $SYNC_WITH_REMOTE
+	geogit pull $REMOTE
         EXIT_CODE=$?
         if [ $EXIT_CODE -gt 0 ]; then
          ERROR_OCCURED=255
