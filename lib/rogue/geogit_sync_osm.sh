@@ -62,9 +62,9 @@ else
         EXIT_CODE=$?
         echo $OUTPUT
         if [ $EXIT_CODE -gt 0 ]; then 
-        if [  "$OUTPUT" != "Nothing to push." ]; then
-        ERROR_OCCURED=255
-        fi
+            if [  "$OUTPUT" != "Nothing to push." ]; then
+                ERROR_OCCURED=255
+            fi
         fi
 	if [ $ERROR_OCCURED -eq 0 ]; then
          break
