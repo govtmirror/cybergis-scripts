@@ -16,21 +16,18 @@ SYNC_ATTEMPTS=10
 # This will track whether or not an error occurred
 ERROR_OCCURED=0
 #=================#
-if [[ $# -ne 7 ]]; then
-    echo "Usage: geogit_sync_osm.sh <repo> <remote> <log_file> <error_file>"
+if [[ $# -ne 6 ]]; then
+    echo "Usage: geogit_sync_osm.sh <repo> <remote> <authorname> <authoremail> <log_file> <error_file>"
     echo 'authorname and authoremail used when merging non-conflicting branches'
     echo 'repo points to the staging repo'
     echo 'remote points to the live repo to be updated'
 else
-    DIRECTION=$1
-    USER=$2
-    PASSWORD=$3
-    REPO=$4
-    REMOTE=$5
-    AUTHORNAME=$6
-    AUTHOREMAIL=$7
-    LOG_FILE=$8
-    ERROR_FILE=$9
+    REPO=$1
+    REMOTE=$2
+    AUTHORNAME=$3
+    AUTHOREMAIL=$4
+    LOG_FILE=$5
+    ERROR_FILE=$6
     #=================#
     cd $REPO
     #=================#
