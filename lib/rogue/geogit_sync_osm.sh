@@ -32,6 +32,8 @@ else
     LOG_FILE=$8
     ERROR_FILE=$9
     #=================#
+    cd $REPO
+    #=================#
     if [ -f $ERROR_FILE ]; then
         exit 255
     fi
