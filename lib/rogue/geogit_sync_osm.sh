@@ -56,7 +56,7 @@ else
         if [ $EXIT_CODE -gt 0 ]; then
          ERROR_OCCURED=255
         fi
-        OUTPUT=$(geogit push $SYNC_WITH_REMOTE)
+        OUTPUT=$(geogit push $REMOTE)
         EXIT_CODE=$?
         echo $OUTPUT
         if [ $EXIT_CODE -gt 0 ]; then 
