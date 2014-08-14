@@ -23,6 +23,8 @@ geonode(){
       # Add UbuntuGIS Repository to get latest GDAL package
       sudo apt-get install -y python-software-properties
       sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable
+      # Add respository for static development
+      sudo add-apt-repository -y ppa:chris-lea/node.js
       #
       sudo apt-get update
       # Essential build tools and libraries
@@ -33,6 +35,11 @@ geonode(){
       sudo apt-get install -y python-lxml python-psycopg2 python-django python-bs4 python-multipartposthandler transifex-client python-nose python-django-nose python-django-pagination python-django-extensions python-httplib2
       # Java dependencies
       sudo apt-get install -y --force-yes openjdk-6-jdk ant maven2 --no-install-recommends
+      #
+      sudo apt-get install -y nodejs
+      sudo npm install -y -g bower
+      sudo npm install -y -g grunt-cli
+      #
       #Install python packages for development
       sudo pip install virtualenvwrapper paver
     
