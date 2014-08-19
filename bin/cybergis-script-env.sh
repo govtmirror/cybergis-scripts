@@ -67,7 +67,7 @@ rogue(){
       paver stop
       paver reset
       #paver reset_hard
-      #paver build_geoserver
+      paver build_geoserver
       paver setup
       paver start -b 0.0.0.0:8000
       #
