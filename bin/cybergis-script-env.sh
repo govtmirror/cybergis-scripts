@@ -25,6 +25,7 @@ geonode(){
     elif [[ "$CMD" = "reset" ]]; then
       #
       source ~/.bash_aliases
+      workon geonode
       #
       cd ~/geonode
       paver stop
@@ -59,6 +60,7 @@ rogue(){
     elif [[ "$CMD" = "reset" ]]; then
       #
       source ~/.bash_aliases
+      workon rogue_geonode
       #
       cd ~/rogue_geonode
       paver stop
@@ -105,7 +107,7 @@ geonode_install(){
   echo 'export WORKON_HOME=~/.venvs' >> ~/.bash_aliases
   echo 'source /usr/local/bin/virtualenvwrapper.sh'>> ~/.bash_aliases
   echo 'export PIP_DOWNLOAD_CACHE=$HOME/.pip-downloads' >> ~/.bash_aliases
-  echo 'workon geonode' >> ~/.bash_aliases
+  #echo 'workon geonode' >> ~/.bash_aliases
   #===============#
   #Create GeoNode Virtual Environment
   source ~/.bash_aliases
