@@ -19,8 +19,9 @@ geonode(){
     CMD=$2
     #
     if [[ "$CMD" = "install" ]]; then
-      export -f geonode_install
+      #
       bash --login -c "geonode_install"
+      #
     elif [[ "$CMD" = "reset" ]]; then
       #
       source ~/.bash_aliases
@@ -48,7 +49,6 @@ rogue(){
     #
     if [[ "$CMD" = "install" ]]; then
       #
-      export -f geonode_install
       bash --login -c "geonode_install"
       #===============#
       #Install ROGUE Components
@@ -159,6 +159,7 @@ if [[ "$ENV" = "geonode" ]]; then
     if [[ $# -ne 2 ]]; then
         echo "Usage: cybergis-script-env.sh geonode [install|reset]"
     else
+        export -f geonode_install
         export -f geonode
         bash --login -c "geonode $ENV $CMD"
     fi
@@ -168,6 +169,7 @@ elif [[ "$ENV" = "rogue" ]]; then
     if [[ $# -ne 2 ]]; then
         echo "Usage: cybergis-script-env.sh rogue [install|reset]"
     else
+        export -f geonode_install
         export -f rogue
         bash --login -c "rogue $ENV $CMD"
     fi
