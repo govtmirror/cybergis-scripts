@@ -26,6 +26,7 @@ geonode(){
       #
       source ~/.bash_aliases
       workon geonode
+      source ~/.venvs/geonode/bin/activate
       #
       cd ~/geonode
       paver stop
