@@ -53,10 +53,10 @@ rogue(){
       #Install ROGUE Components
       source ~/.bash_aliases
       mkvirtualenv rogue_geonode
-      workon geonode
+      workon rogue_geonode
       #===============#
       #Install ROGUE Components
-      cd ~/rogue_geonode
+      #cd ~/rogue_geonode
       #
       #cd ~/geonode
     elif [[ "$CMD" = "reset" ]]; then
