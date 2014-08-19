@@ -47,6 +47,7 @@ rogue(){
     CMD=$2
     #
     if [[ "$CMD" = "install" ]]; then
+      #
       export -f geonode_install
       bash --login -c "geonode_install"
       #===============#
@@ -54,11 +55,7 @@ rogue(){
       source ~/.bash_aliases
       mkvirtualenv rogue_geonode
       workon rogue_geonode
-      #===============#
-      #Install ROGUE Components
-      #cd ~/rogue_geonode
       #
-      #cd ~/geonode
     elif [[ "$CMD" = "reset" ]]; then
       #
       source ~/.bash_aliases
