@@ -14,10 +14,9 @@ add_swap(){
   if [[ $# -ne 3 ]]; then
     echo "Usage: cybergis-script-ec2.sh swap <size> <file>"
   else
-    INIT_ENV=$1
-    INIT_CMD=$2
-    SIZE=$3
-    FILE=$4
+    INIT_CMD=$1
+    SIZE=$2
+    FILE=$3
     #
     fallocate -l $SIZE $FILE
     chmod 600 $FILE
@@ -30,9 +29,8 @@ delete_swap(){
   if [[ $# -ne 2 ]]; then
     echo "Usage: cybergis-script-ec2.sh delete_swap <file>"
   else
-    INIT_ENV=$1
-    INIT_CMD=$2
-    FILE=$3
+    INIT_CMD=$1
+    FILE=$2
     #
     swapoff $FILE
     rm $FILE
@@ -44,9 +42,8 @@ resize_volume(){
   if [[ $# -ne 2 ]]; then
     echo "Usage: cybergis-script-ec2.sh resize <dev>"
   else
-    INIT_ENV=$1
-    INIT_CMD=$2
-    DEVICE=$3
+    INIT_CMD=$1
+    DEVICE=$2
     #
     e2fsck -f $DEVICE
     resize2fs $DEVICE
@@ -55,29 +52,29 @@ resize_volume(){
 
 if [[ "$INIT_CMD" == "resize" ]]; then
         
-    if [[ $# -ne 3 ]]; then
+    if [[ $# -ne 2 ]]; then
         echo "Usage: cybergis-script-ec2.sh $INIT_CMD"
     else
         export -f resize_volume
-        bash --login -c "resize_volume $INIT_CMD '${3}'"
+        bash --login -c "resize_volume $INIT_CMD '${2}'"
     fi
     
 elif [[ "$INIT_CMD" == "swap" ]]; then
     
-    if [[ $# -ne 4 ]]; then
+    if [[ $# -ne 3 ]]; then
         echo "Usage: cybergis-script-ec2.sh $INIT_CMD <size> <file>"
     else
         export -f add_swap
-        bash --login -c "add_swap $INIT_CMD '${3}' '${4}'"
+        bash --login -c "add_swap $INIT_CMD '${2}' '${3}'"
     fi
     
 elif [[ "$INIT_CMD" == "delete_swap" ]]; then
     
-    if [[ $# -ne 3 ]]; then
+    if [[ $# -ne 2 ]]; then
         echo "Usage: cybergis-script-ec2.sh $INIT_CMD <file>"
     else
         export -f delete_swap
-        bash --login -c "delete_swap $INIT_CMD '${3}'"
+        bash --login -c "delete_swap $INIT_CMD '${2}'"
     fi
     
 else
