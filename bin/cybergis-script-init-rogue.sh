@@ -420,7 +420,7 @@ osm(){
               fi
               #chmod 755 $CRON_FILE
           else
-              echo "Could not find extent of mapping file"
+              echo "Could not find extent or mapping file"
               echo "Extent: $FILE_EXTENT"
               echo "Mapping: $FILE_MAPPING"
           fi
