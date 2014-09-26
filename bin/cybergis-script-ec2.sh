@@ -53,7 +53,7 @@ resize_volume(){
 if [[ "$INIT_CMD" == "resize" ]]; then
         
     if [[ $# -ne 2 ]]; then
-        echo "Usage: cybergis-script-ec2.sh $INIT_CMD"
+        echo "Usage: cybergis-script-ec2.sh $INIT_CMD <dev>"
     else
         export -f resize_volume
         bash --login -c "resize_volume $INIT_CMD '${2}'"
