@@ -19,9 +19,13 @@ add_swap(){
     FILE=$3
     #
     fallocate -l $SIZE $FILE
-    chmod 600 $FILE
-    mkswap $FILE
-    swapon $FILE
+    if (($? = 0)); then
+      chmod 600 $FILE
+      mkswap $FILE
+      swapon $FILE
+    else
+      echo "facllocate failed"
+    fi
   fi
 }
 delete_swap(){
