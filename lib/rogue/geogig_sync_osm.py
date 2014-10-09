@@ -7,7 +7,7 @@ import argparse
 
 def beginTransaction(url, auth):
     params = {'output_format': 'JSON'}
-    self.stdout.write('Starting transaction...')
+    print('Starting transaction...')
     request = self.make_request(url=url+'beginTransaction?', params=params, auth=auth)
 
     if request.getcode() != 200:
@@ -18,7 +18,7 @@ def beginTransaction(url, auth):
     if not response['response']['success']:
         raise Exception("An error occurred on beginTransaction: {0}".format(response['response']['error']))
 
-    self.stdout.write('Transaction started')
+    print('Transaction started')
     transactionId = response['response']['Transaction']['ID']
         
     return transactionId;
@@ -37,7 +37,7 @@ def endTransaction(url, auth, cancel, transactionId):
 
 def pullFromOSM(url, auth, transactionId):
     params = {'output_format': 'JSON', 'update': 'true'}
-    self.stdout.write('Starting transaction...')
+    print('Starting transaction...')
     request = self.make_request(url=url+'osm/download.xml?', params=params, auth=auth)
 
     if request.getcode() != 200:
@@ -48,7 +48,7 @@ def pullFromOSM(url, auth, transactionId):
     if not response['response']['success']:
         raise Exception("An error occurred when pulling new data from OSM: {0}".format(response['response']['error']))
 
-    self.stdout.write('Pull from OSM complete.')
+    print('Pull from OSM complete.')
  
 def parse_url(args):
     url = args.url
