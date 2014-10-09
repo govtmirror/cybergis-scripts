@@ -4,6 +4,7 @@ import json
 import urllib
 import urllib2
 import argparse
+import time
 
 def make_request(url, params, auth=None):
     """
@@ -47,6 +48,33 @@ def endTransaction(url, auth, cancel, transactionId):
     if not response['response']['success']:
         raise Exception("An error occurred on endTransaction: {0}".format(response['response']['error']))
 
+def getTaskStatus(url, auth, taskID):
+    print('Downloading from OpenStreetMap ...')
+    params = {'output_format': 'JSON', 'update': 'true'}
+    request = make_request(url=url+'tasks/'+str(taskID)+'+?', params=params, auth=auth)
+
+    if request.getcode() != 200:
+        raise Exception("Get Task Status Failed: Status Code {0}".format(request.getcode()))
+        
+    response = json.loads(request.read())
+
+    taskStatus = response['task']['status']
+    
+    print taskStatus
+    return taskID;
+
+def waitOnTask(url, auth, taskID):
+    print "Waiting for task "+str(taskID)+"...".
+    
+    maxTime = 20
+    timeSlept = 0
+    
+    while timeSlept < maxTime and getTaskStatus(url, auth,taskID) in ['WAITING','RUNNING']:
+        time.sleep(2)
+        timeSlept +=2
+        
+    print "Task "+str(taskID)+" is done".
+
 def downloadFromOSM(url, auth, transactionId):
     print('Downloading from OpenStreetMap ...')
     params = {'output_format': 'JSON', 'update': 'true'}
@@ -58,12 +86,12 @@ def downloadFromOSM(url, auth, transactionId):
     response = json.loads(request.read())
 
     print response
-    if response['task']['status'] != 'RUNNING':
-        raise Exception("An error occurred when pulling new data from OSM: {0}".format(response['response']['error']))
+    if response['task']['status'] == 'FAILED':
+        raise Exception("An error occurred when pulling new data from OSM: {0}".format(response['task']['status']))
 
     print('Download from OpenStreetMap complete.')
     
-    taskID = response['response']['task']['id']
+    taskID = response['task']['id']
         
     return taskID;
  
@@ -92,27 +120,27 @@ def run(args):
     if args.username and args.password:
       auth = b64encode('{0}:{1}'.format(args.username, args.password))
 
-    transactionId = -1
+    transID = -1
     try:
-        transactionId = beginTransaction(url, auth)
+        transID = beginTransaction(url, auth)
     except Exception:
-        transactionId = -1
+        transID = -1
         raise
     
-    if transactionId != -1:
-        taskId = -1
+    if transID != -1:
+        taskID = -1
         try:
-            taskId = downloadFromOSM(url, auth, transactionId)
+            taskID = downloadFromOSM(url, auth, transID)
         except Exception:
-            taskId = -1
-            endTransaction(url, auth, True, transactionId)
+            taskID = -1
+            endTransaction(url, auth, True, transID)
             raise
         
         if taskID != -1:
-            print "Task ID: "+str(taskID)    
+            waitOnTask(url, auth, taskID)
     
     try:
-        endTransaction(url, auth, False, transactionId)
+        endTransaction(url, auth, False, transID)
     except Exception:
         pass
 
