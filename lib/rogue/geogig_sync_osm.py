@@ -99,6 +99,7 @@ def run(args):
             downloadFromOSM(url, auth, transactionId)
         except Exception:
             endTransaction(url, auth, True, transactionId)
+            raise
     
     try:
         endTransaction(url, auth, False, transactionId)
