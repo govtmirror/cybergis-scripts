@@ -96,7 +96,7 @@ def downloadFromOSM(url, auth, transactionId):
         
     return taskID;
  
-def parse_geoserver(url):
+def parse_url(url):
     
     if (url is None) or len(url) == 0:
         return None
