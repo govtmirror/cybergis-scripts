@@ -74,19 +74,50 @@ def getTaskStatus(url, auth, taskID, printStatus):
             print "++Task "+str(taskID)+" is "+taskStatus+"."
     
     return taskStatus;
+    
+def cancelTask(url, auth, taskID, printStatus):
+    print('Downloading from OpenStreetMap ...')
+    params = {}
+    request = make_request(url=url+'/'+str(taskID)+'.json?cancel=true', params=params, auth=auth)
+
+    if request.getcode() != 200:
+        raise Exception("Could not cancel task: Status Code {0}".format(request.getcode()))
+    
+    response = json.loads(request.read())
+
+    taskStatus = response['task']['status']
+    
+    if printStatus:
+        if taskStatus == "CANCELLED":
+            print "++Task "+str(taskID)+" was cancelled."
+        else:
+            print "++Error.  Could not cancel task "+str(taskID)+"."
+    
+    return taskStatus;
 
 def waitOnTask(url, auth, taskID):
-    print "Waiting for task "+str(taskID)+"..."
-    
-    maxTime = 60
+    maxTime = 30
     timeSlept = 0
-    sleepCycle = 2
-    
-    while timeSlept < maxTime and getTaskStatus(url, auth, taskID, True) in ['WAITING','RUNNING']:
+    sleepCycle = 5
+    taskStatus = None
+    print "----------------------------------"
+    print "Waiting for task "+str(taskID)+"..."
+    print "Maximum wait time is "+str(maxTime)+" seconds."
+    while timeSlept < maxTime and (taskStatus = getTaskStatus(url, auth, taskID, True) in ['WAITING','RUNNING']):
         #print "Time Slept: "+str(timeSlept)
         time.sleep(sleepCycle)
         timeSlept += sleepCycle
-        
+    
+    if taskStatus in ['WAITING','RUNNING']:
+        print "Task "+str(taskID)+" timed out after "+str(timeSlept)+" seconds."
+        print "Attempting to cancel task "+str(taskID).
+        maxTime = 30
+        timeSlept = 0
+        sleepCycle = 1
+        while timeSlept < maxTime and (taskStatus = cancelTask(url, auth, taskID, True) in ['WAITING','RUNNING']):
+            time.sleep(sleepCycle)
+            timeSlept += sleepCycle
+    
     print "Task "+str(taskID)+" is done"
 
 def downloadFromOSM(url, auth, transactionId):
