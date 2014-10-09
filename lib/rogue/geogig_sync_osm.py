@@ -103,7 +103,7 @@ def waitOnTask(url, auth, taskID):
     print "----------------------------------"
     print "Waiting for task "+str(taskID)+"..."
     print "Maximum wait time is "+str(maxTime)+" seconds."
-    while timeSlept < maxTime and (taskStatus = getTaskStatus(url, auth, taskID, True) in ['WAITING','RUNNING']):
+    while timeSlept < maxTime and (taskStatus = getTaskStatus(url, auth, taskID, True)) in ['WAITING','RUNNING']:
         #print "Time Slept: "+str(timeSlept)
         time.sleep(sleepCycle)
         timeSlept += sleepCycle
@@ -114,7 +114,7 @@ def waitOnTask(url, auth, taskID):
         maxTime = 30
         timeSlept = 0
         sleepCycle = 1
-        while timeSlept < maxTime and (taskStatus = cancelTask(url, auth, taskID, True) in ['WAITING','RUNNING']):
+        while timeSlept < maxTime and (taskStatus = cancelTask(url, auth, taskID, True)) in ['WAITING','RUNNING']:
             time.sleep(sleepCycle)
             timeSlept += sleepCycle
     
