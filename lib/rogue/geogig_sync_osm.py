@@ -73,7 +73,7 @@ def getTaskStatus(url, auth, taskID, printStatus):
         else:
             print "++Task "+str(taskID)+" is "+taskStatus+"."
     
-    return taskID;
+    return taskStatus;
 
 def waitOnTask(url, auth, taskID):
     print "Waiting for task "+str(taskID)+"..."
