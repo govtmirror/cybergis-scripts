@@ -48,7 +48,7 @@ def endTransaction(url, auth, cancel, transactionId):
     if not response['response']['success']:
         raise Exception("An error occurred on endTransaction: {0}".format(response['response']['error']))
 
-def getTaskStatus(url, auth, taskID):
+def getTaskStatus(url, auth, taskID, printStatus):
     print('Downloading from OpenStreetMap ...')
     params = {}
     request = make_request(url=url+'/'+str(taskID)+'.json', params=params, auth=auth)
@@ -61,7 +61,9 @@ def getTaskStatus(url, auth, taskID):
 
     taskStatus = response['task']['status']
     
-    print taskStatus
+    if printStatus:
+        print "++Task "+str(taskID)+" is "+taskStatus.
+    
     return taskID;
 
 def waitOnTask(url, auth, taskID):
@@ -86,13 +88,18 @@ def downloadFromOSM(url, auth, transactionId):
         raise Exception("OSM Download failed: Status Code {0}".format(request.getcode()))
         
     response = json.loads(request.read())
+    
+    taskID = response['task']['id']
+    
     #print response
     if response['task']['status'] == 'FAILED':
         raise Exception("An error occurred when pulling new data from OSM: {0}".format(response['task']['status']))
 
-    print('Download from OpenStreetMap complete.')
+    if response['task']['status'] == 'WAITING':
+        print('Download from OpenStreetMap is waiting to be processed.  Task ID is '+str(taskID)+'.')
     
-    taskID = response['task']['id']
+    if response['task']['status'] == 'RUNNING':
+        print('Download from OpenStreetMap is being processed.  Task ID is '+str(taskID)+'.')
         
     return taskID;
  
