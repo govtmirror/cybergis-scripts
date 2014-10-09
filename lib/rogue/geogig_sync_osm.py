@@ -142,7 +142,7 @@ def run(args):
 
     print "=================================="
     print "#==#"
-    print "CyberGIS Script / geogig_sync_osm.py
+    print "CyberGIS Script / geogig_sync_osm.py"
     print "Downloading Updates from OpenStreetMap"
     print "#==#"
     
