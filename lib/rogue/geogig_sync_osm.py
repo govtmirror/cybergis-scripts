@@ -51,7 +51,7 @@ def endTransaction(url, auth, cancel, transactionId):
 def getTaskStatus(url, auth, taskID):
     print('Downloading from OpenStreetMap ...')
     params = {'output_format': 'JSON', 'update': 'true'}
-    request = make_request(url=url+'/'+str(taskID)+'+?', params=params, auth=auth)
+    request = make_request(url=url+'/'+str(taskID)+'.json', params=params, auth=auth)
 
     print request
     if request.getcode() != 200:
