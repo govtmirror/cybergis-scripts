@@ -117,7 +117,7 @@ def run(args):
     geoserver = parse_url(args.geoserver)
     repo = args.repo
     url_repo = geoserver+'geogig/'+repo+'/'
-    url_task = geoserver+'geogig/tasks'
+    url_tasks = geoserver+'geogig/tasks'
     
     authorname = args.authorname
     authoremail = args.authoremail
@@ -142,7 +142,7 @@ def run(args):
             raise
         
         if taskID != -1:
-            waitOnTask(url_repo, auth, taskID)
+            waitOnTask(url_tasks, auth, taskID)
     
     try:
         endTransaction(url_repo, auth, False, transID)
