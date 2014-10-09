@@ -5,7 +5,7 @@
 #==================================#
 DATE=$(date)
 RUBY_VERSION="2.0.0-p353"
-CTX_GEOGIT="/geoserver/geogit/"
+CTX_GEOGIG="/geoserver/geogig/"
 FILE_SETTINGS="/var/lib/geonode/rogue_geonode/rogue_geonode/settings.py"
 #==================================#
 INIT_ENV=$1
@@ -43,7 +43,7 @@ install_bundler(){
 
 conf_application(){
   if [[ $# -ne 8 ]]; then
-    echo "Usage: cybergis-script-init-rogue.sh prod conf_application <fqdn> <db_host> <db_ip> <db_port> <db_pass> <gs_baseline>"
+    echo "Usage: cybergis-script-rogue.sh prod conf_application <fqdn> <db_host> <db_ip> <db_port> <db_pass> <gs_baseline>"
   else
     INIT_ENV=$1
     INIT_CMD=$2
@@ -90,9 +90,9 @@ conf_application(){
 
 conf_standalone(){
   if [ $# -ne 4 ] && [ $# -ne 7 ]; then
-    echo "Usage: cybergis-script-init-rogue.sh prod conf_standalone <fqdn> <gs_baseline>"
+    echo "Usage: cybergis-script-rogue.sh prod conf_standalone <fqdn> <gs_baseline>"
     echo "or"
-    echo "Usage: cybergis-script-init-rogue.sh prod conf_standalone <fqdn> <gs_baseline> <banner_text> <banner_color_text> <banner_color_background>"
+    echo "Usage: cybergis-script-rogue.sh prod conf_standalone <fqdn> <gs_baseline> <banner_text> <banner_color_text> <banner_color_background>"
   else
     echo "test"
     INIT_ENV=$1
@@ -141,7 +141,7 @@ conf_standalone(){
 provision(){
   echo "provision"
   if [[ $# -ne 2 ]]; then
-    echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD"
+    echo "Usage: cybergis-script-rogue.sh $INIT_ENV $INIT_CMD"
   else
     INIT_ENV=$1
     INIT_CMD=$2
@@ -154,7 +154,7 @@ provision(){
 
 install_aws(){
   if [[ $# -ne 2 ]]; then
-    echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD"
+    echo "Usage: cybergis-script-rogue.sh $INIT_ENV $INIT_CMD"
   else
     #
     #if ! type "pip" &> /dev/null; then
@@ -162,7 +162,7 @@ install_aws(){
     #fi
     #pip install awscli
     #
-    #The GeoGit Hook scripts uses the config info stored in settings.py instead of ~/.aws/config
+    #The GeoGig Hook scripts uses the config info stored in settings.py instead of ~/.aws/config
     #aws configure
     #Install boto 9https://github.com/boto/boto) into Django's environment
     bash --login -c "/var/lib/geonode/bin/pip install -U boto"
@@ -175,7 +175,7 @@ install_aws(){
 
 add_sns(){
   if [[ $# -ne 6 ]]; then
-      echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD <aws_access_key_id> <aws_secret_access_key> <sns_topic>"
+      echo "Usage: cybergis-script-rogue.sh $INIT_ENV $INIT_CMD <aws_access_key_id> <aws_secret_access_key> <sns_topic>"
   else
       INIT_ENV=$1
       INIT_CMD=$2
@@ -196,7 +196,7 @@ add_sns(){
 
 add_cron_sync(){
   if [[ $# -ne 10 ]]; then
-      echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD <direction> <user> <password> <localRepoName> <remoteName> <authorname> <authoremail> [hourly|daily|weekly|monthly]"
+      echo "Usage: cybergis-script-rogue.sh $INIT_ENV $INIT_CMD <direction> <user> <password> <localRepoName> <remoteName> <authorname> <authoremail> [hourly|daily|weekly|monthly]"
 echo 'authorname and authoremail used when merging non-conflicting branches'
   else
       INIT_ENV=$1
@@ -212,10 +212,10 @@ echo 'authorname and authoremail used when merging non-conflicting branches'
       #
       PASSWORD="$(echo "$PASSWORD" | sed -e 's/[()&]/\\&/g')"
       #
-      CRON_FILE="/etc/cron.d/geogit_sync"
-      LOG_FILE="/var/log/rogue/cron_geogit_sync.log"
+      CRON_FILE="/etc/cron.d/geogig_sync"
+      LOG_FILE="/var/log/rogue/cron_geogig_sync.log"
 
-      CMD='root /bin/bash /opt/cybergis-scripts.git/lib/rogue/geogit_sync.sh '$DIRECTION' '$USER' '$PASSWORD' \"'$REPO'\" '$REMOTE' \"'$AUTHORNAME'\" \"'$AUTHOREMAIL'\" >> '$LOG_FILE'" >> '$CRON_FILE
+      CMD='root /bin/bash /opt/cybergis-scripts.git/lib/rogue/geogig_sync.sh '$DIRECTION' '$USER' '$PASSWORD' \"'$REPO'\" '$REMOTE' \"'$AUTHORNAME'\" \"'$AUTHOREMAIL'\" >> '$LOG_FILE'" >> '$CRON_FILE
 
       if [[ "$FREQUENCY" == "hourly" ]]; then
           CMD='echo "@hourly '$CMD
@@ -236,7 +236,7 @@ echo 'authorname and authoremail used when merging non-conflicting branches'
 
 add_cron_sync_2(){
   if [[ $# -ne 10 ]]; then
-      echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD <direction> <user> <password> <localRepoName> <remoteName> <authorname> <aithoremail> <frequency>"
+      echo "Usage: cybergis-script-rogue.sh $INIT_ENV $INIT_CMD <direction> <user> <password> <localRepoName> <remoteName> <authorname> <aithoremail> <frequency>"
       echo 'authorname and authoremail used when merging non-conflicting branches'
       echo 'frequency = a string in the crontab format = \"minute hour dayofmonth month dayofweek\"'
   else
@@ -253,10 +253,10 @@ add_cron_sync_2(){
       #
       PASSWORD="$(echo "$PASSWORD" | sed -e 's/[()&]/\\&/g')"
       #
-      CRON_FILE="/etc/cron.d/geogit_sync"
-      LOG_FILE="/var/log/rogue/cron_geogit_sync.log"
+      CRON_FILE="/etc/cron.d/geogig_sync"
+      LOG_FILE="/var/log/rogue/cron_geogig_sync.log"
 
-      CMD='root /bin/bash /opt/cybergis-scripts.git/lib/rogue/geogit_sync.sh '$DIRECTION' '$USER' '$PASSWORD' \"'$REPO'\" '$REMOTE' \"'$AUTHORNAME'\" \"'$AUTHOREMAIL'\" >> '$LOG_FILE'" >> '$CRON_FILE
+      CMD='root /bin/bash /opt/cybergis-scripts.git/lib/rogue/geogig_sync.sh '$DIRECTION' '$USER' '$PASSWORD' \"'$REPO'\" '$REMOTE' \"'$AUTHORNAME'\" \"'$AUTHOREMAIL'\" >> '$LOG_FILE'" >> '$CRON_FILE
 
       if [[ "$FREQUENCY" != "" ]]; then
           CMD='echo "'$FREQUENCY' '$CMD
@@ -268,7 +268,7 @@ add_cron_sync_2(){
 
 add_server(){
   if [[ $# -ne 6 ]]; then
-      echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD [tms] <name> <url>"
+      echo "Usage: cybergis-script-rogue.sh $INIT_ENV $INIT_CMD [tms] <name> <url>"
   else
       INIT_ENV=$1
       INIT_CMD=$2
@@ -298,7 +298,7 @@ add_server(){
           bash --login -c "$CMD1"
           bash --login -c "$CMD2"
       else
-          echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD [tms|geonode] <name> <url>"
+          echo "Usage: cybergis-script-rogue.sh $INIT_ENV $INIT_CMD [tms|geonode] <name> <url>"
       fi
   fi
 }
@@ -306,7 +306,7 @@ add_server(){
 add_remote(){
   echo $URL  
   if [[ $# -ne 10 ]]; then
-      echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD <user:password> <localRepoName> <localGeonodeURL> <remoteName> <remoteRepoName> <remoteGeoNodeURL> <remoteUser> <remotePassword>"
+      echo "Usage: cybergis-script-rogue.sh $INIT_ENV $INIT_CMD <user:password> <localRepoName> <localGeonodeURL> <remoteName> <remoteRepoName> <remoteGeoNodeURL> <remoteUser> <remotePassword>"
   else
       INIT_ENV=$1
       INIT_CMD=$2
@@ -319,8 +319,8 @@ add_remote(){
       REMOTE_USER=$9
       REMOTE_PASS=${10}
       #
-      REPO_URL="$LOCAL_GEONODE_URL/geoserver/geogit/$LOCAL_REPO_NAME/"
-      REMOTE_URL="$REMOTE_GEONODE_URL/geoserver/geogit/$REMOTE_REPO_NAME/"
+      REPO_URL="$LOCAL_GEONODE_URL/geoserver/geogig/$LOCAL_REPO_NAME/"
+      REMOTE_URL="$REMOTE_GEONODE_URL/geoserver/geogig/$REMOTE_REPO_NAME/"
       CMD="add_remote_2 $INIT_ENV $INIT_CMD \"$USERPASS\" \"$REPO_URL\" \"$REMOTE_NAME\" \"$REMOTE_URL\" \"$REMOTE_USER\" \"$REMOTE_PASS\""
       bash --login -c "$CMD"
   fi
@@ -328,7 +328,7 @@ add_remote(){
 
 add_remote_2(){
   if [[ $# -ne 8 ]]; then
-      echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD <user:password> <repoURL> <remoteName> <remoteURL> <remoteUser> <remotePassword>"
+      echo "Usage: cybergis-script-rogue.sh $INIT_ENV $INIT_CMD <user:password> <repoURL> <remoteName> <remoteURL> <remoteUser> <remotePassword>"
   else
       INIT_ENV=$1
       INIT_CMD=$2
@@ -353,7 +353,7 @@ add_remote_2(){
 
 osm(){
   if [[ $# -ne 6 ]]; then
-      echo "Usage: cybergis-script-init-rogue.sh prod osm <user:password> <repo> <extent> <mapping>"
+      echo "Usage: cybergis-script-rogue.sh prod osm <user:password> <repo> <extent> <mapping>"
   else
       INIT_ENV=$1
       INIT_CMD=$2
@@ -370,48 +370,47 @@ osm(){
           if [ -f "$FILE_EXTENT" ] && [ -f "$FILE_MAPPING" ]; then
               VALUE_EXTENT=$(<$FILE_EXTENT)
               #
-              #REPO_STAGING="/home/rogue/geogit/repo/$REPO"
-              REPO_STAGING="/var/geogit/repo/$REPO"
-              REPO_GEOSERVER="/var/lib/geoserver_data/geogit/$REPO"
-              REPO_URL="http://localhost/geoserver/geogit/geonode:$REPO"
+              #REPO_STAGING="/home/rogue/geogig/repo/$REPO"
+              REPO_STAGING="/var/geogig/repo/$REPO"
+              REPO_GEOSERVER="/var/lib/geoserver_data/geogig/$REPO"
+              REPO_URL="http://localhost/geoserver/geogig/geonode:$REPO"
               #
-              FILE_DATASTORE=/opt/cybergis-scripts.git/lib/rogue/post_geogitdatastore.xml
-              FILE_LAYER=/opt/cybergis-scripts.git/lib/rogue/post_geogitlayer.xml
+              FILE_DATASTORE=/opt/cybergis-scripts.git/lib/rogue/post_geogigdatastore.xml
+              FILE_LAYER=/opt/cybergis-scripts.git/lib/rogue/post_geogiglayer.xml
               #
               mkdir -p $REPO_STAGING
               cd $REPO_STAGING
-              geogit init
+              geogig init
               cp $FILE_MAPPING .
               #
               cp $FILE_DATASTORE .
-              sed -i "s/{{name}}/$REPO/g" post_geogitdatastore.xml
+              sed -i "s/{{name}}/$REPO/g" post_geogigdatastore.xml
               REPO_GEOSERVER_2="$(echo "$REPO_GEOSERVER" | sed -e 's/[()\/]/\\\//g')"
-              sed -i "s/{{path}}/$REPO_GEOSERVER_2/g" post_geogitdatastore.xml
+              sed -i "s/{{path}}/$REPO_GEOSERVER_2/g" post_geogigdatastore.xml
               #
               cp $FILE_LAYER .
-              sed -i "s/{{name}}/$REPO/g" post_geogitlayer.xml
+              sed -i "s/{{name}}/$REPO/g" post_geogiglayer.xml
               #===============#
-              CMD_1="geogit osm download --bbox $VALUE_EXTENT --mapping $FILE_MAPPING"
+              CMD_1="geogig osm download --bbox $VALUE_EXTENT --mapping $FILE_MAPPING"
               echo $CMD_1
               bash --login -c "$CMD_1"
               cp -R $REPO_STAGING $REPO_GEOSERVER
               chown tomcat7:tomcat7 -R $REPO_GEOSERVER
               cd $REPO_STAGING
-              geogit remote add -u admin -p admin origin $REPO_URL
+              geogig remote add -u admin -p admin origin $REPO_URL
               #===============#
               #Update GeoServer
               REST_DATASTORES="http://localhost/geoserver/rest/workspaces/geonode/datastores.xml"
-              curl $REST_DATASTORES -u $USERPASS -H "Content-Type:text/xml" -XPOST -d @post_geogitdatastore.xml
+              curl $REST_DATASTORES -u $USERPASS -H "Content-Type:text/xml" -XPOST -d @post_geogigdatastore.xml
               REST_LAYERS="http://localhost/geoserver/rest/workspaces/geonode/datastores/$REPO/featuretypes"
-              #Following line commented out since it corrupts repo or creates corrupted layer.
-              #curl $REST_LAYERS -u $USERPASS -H "Content-Type:text/xml" -XPOST -d @post_geogitlayer.xml
+              curl $REST_LAYERS -u $USERPASS -H "Content-Type:text/xml" -XPOST -d @post_geogiglayer.xml
               #===============#
               #Update GeoNode
               #/var/lib/geonode/bin/python /var/lib/geonode/rogue_geonode/manage.py updatelayers --ignore-errors
-              CRON_FILE="/etc/cron.d/geogit_sync_osm"
-              LOG_FILE="/var/log/rogue/cron_geogit_sync_osm.log"
-              ERROR_FILE="/var/log/rogue/cron_geogit_sync_osm_errors.log"
-              CMD_CRON='root /bin/bash /opt/cybergis-scripts.git/lib/rogue/geogit_sync_osm.sh \"'$REPO_STAGING'\" origin \"'$LOGFILE'\" \"'$ERRORFILE'\" >> '$CRON_FILE
+              CRON_FILE="/etc/cron.d/geogig_sync_osm"
+              LOG_FILE="/var/log/rogue/cron_geogig_sync_osm.log"
+              ERROR_FILE="/var/log/rogue/cron_geogig_sync_osm_errors.log"
+              CMD_CRON='root /bin/bash /opt/cybergis-scripts.git/lib/rogue/geogig_sync_osm.sh \"'$REPO_STAGING'\" origin \"'$LOGFILE'\" \"'$ERRORFILE'\" >> '$CRON_FILE
               echo $CMD_CRON
               if [[ "$FREQUENCY" != "" ]]; then
                   CMD='echo "'$FREQUENCY' '$CMD
@@ -436,7 +435,7 @@ if [[ "$INIT_ENV" = "prod" ]]; then
     if [[ "$INIT_CMD" == "user" ]]; then
         
         if [[ $# -ne 2 ]]; then
-	    echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD"
+	    echo "Usage: cybergis-script-rogue.sh $INIT_ENV $INIT_CMD"
         else
             export -f init_user
             bash --login -c init_user
@@ -445,7 +444,7 @@ if [[ "$INIT_ENV" = "prod" ]]; then
     elif [[ "$INIT_CMD" == "rvm" ]]; then
         
         if [[ $# -ne 2 ]]; then
-	    echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD"
+	    echo "Usage: cybergis-script-rogue.sh $INIT_ENV $INIT_CMD"
         else
             export -f install_rvm
             bash --login -c install_rvm
@@ -454,7 +453,7 @@ if [[ "$INIT_ENV" = "prod" ]]; then
     elif [[ "$INIT_CMD" == "bundler" ]]; then
         
         if [[ $# -ne 2 ]]; then
-	    echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD"
+	    echo "Usage: cybergis-script-rogue.sh $INIT_ENV $INIT_CMD"
         else
             export -f install_bundler
             bash --login -c install_bundler
@@ -463,7 +462,7 @@ if [[ "$INIT_ENV" = "prod" ]]; then
     elif [[ "$INIT_CMD" == "conf_application" ]]; then
 
         if [[ $# -ne 8 ]]; then
-            echo "Usage: cybergis-script-init-rogue.sh prod conf_application <fqdn> <db_host> <db_ip> <db_port> <db_pass> <gs_baseline>"
+            echo "Usage: cybergis-script-rogue.sh prod conf_application <fqdn> <db_host> <db_ip> <db_port> <db_pass> <gs_baseline>"
         else
             export -f conf_application
             bash --login -c "conf_application $INIT_ENV $INIT_CMD '${3}' '${4}' '${5}' '${6}' '${7}' '${8}'"
@@ -472,9 +471,9 @@ if [[ "$INIT_ENV" = "prod" ]]; then
     elif [[ "$INIT_CMD" == "conf_standalone" ]]; then
 
         if [ $# -ne 4 ] && [ $# -ne 7 ]; then
-            echo "Usage: cybergis-script-init-rogue.sh prod conf_standalone <fqdn> <gs_baseline>"
+            echo "Usage: cybergis-script-rogue.sh prod conf_standalone <fqdn> <gs_baseline>"
             echo "or"
-            echo "Usage: cybergis-script-init-rogue.sh prod conf_standalone <fqdn> <gs_baseline> <banner_text> <banner_color_text> <banner_color_background>"
+            echo "Usage: cybergis-script-rogue.sh prod conf_standalone <fqdn> <gs_baseline> <banner_text> <banner_color_text> <banner_color_background>"
         elif [[ $# -eq 4 ]]; then
             export -f conf_standalone
             bash --login -c "conf_standalone $INIT_ENV $INIT_CMD '${3}' '${4}'"
@@ -487,7 +486,7 @@ if [[ "$INIT_ENV" = "prod" ]]; then
     elif [[ "$INIT_CMD" == "provision" ]]; then
         
         if [[ $# -ne 2 ]]; then
-	    echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD"
+	    echo "Usage: cybergis-script-rogue.sh $INIT_ENV $INIT_CMD"
         else
             export -f provision
             bash --login -c "provision $INIT_ENV $INIT_CMD"
@@ -496,7 +495,7 @@ if [[ "$INIT_ENV" = "prod" ]]; then
     elif [[ "$INIT_CMD" == "server" ]]; then
         
         if [[ $# -ne 5 ]]; then
-	    echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD [geonode|wms|tms] <name> <url>"
+	    echo "Usage: cybergis-script-rogue.sh $INIT_ENV $INIT_CMD [geonode|wms|tms] <name> <url>"
         else
             export -f add_server
             bash --login -c "add_server $INIT_ENV $INIT_CMD $3 \"$4\" \"$5\" \"$FILE_SETTINGS\""
@@ -504,7 +503,7 @@ if [[ "$INIT_ENV" = "prod" ]]; then
     elif [[ "$INIT_CMD" == "remote" ]]; then
         
         if [[ $# -ne 10 ]]; then
-	    echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD <user:password> <localRepoName> <localGeonodeURL> <remoteName> <remoteRepoName> <remoteGeoNodeURL> <remoteUser> <remotePassword>"
+	    echo "Usage: cybergis-script-rogue.sh $INIT_ENV $INIT_CMD <user:password> <localRepoName> <localGeonodeURL> <remoteName> <remoteRepoName> <remoteGeoNodeURL> <remoteUser> <remotePassword>"
         else
             export -f add_remote
             export -f add_remote_2
@@ -513,7 +512,7 @@ if [[ "$INIT_ENV" = "prod" ]]; then
     elif [[ "$INIT_CMD" == "remote2" ]]; then
         
         if [[ $# -ne 8 ]]; then
-	    echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD <user:password> <repoURL> <remoteName> <remoteURL> <remoteUser> <remotePassword>"
+	    echo "Usage: cybergis-script-rogue.sh $INIT_ENV $INIT_CMD <user:password> <repoURL> <remoteName> <remoteURL> <remoteUser> <remotePassword>"
         else
             export -f add_remote_2
             bash --login -c "add_remote_2 $INIT_ENV $INIT_CMD \"$3\" \"$4\" \"$5\" \"$6\" \"$7\" \"$8\""
@@ -521,7 +520,7 @@ if [[ "$INIT_ENV" = "prod" ]]; then
     elif [[ "$INIT_CMD" == "aws" ]]; then
         
         if [[ $# -ne 2 ]]; then
-	    echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD"
+	    echo "Usage: cybergis-script-rogue.sh $INIT_ENV $INIT_CMD"
         else
             export -f install_aws
             bash --login -c "install_aws $INIT_ENV $INIT_CMD"
@@ -529,7 +528,7 @@ if [[ "$INIT_ENV" = "prod" ]]; then
     elif [[ "$INIT_CMD" == "sns" ]]; then
         
         if [[ $# -ne 5 ]]; then
-	    echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD <aws_access_key_id> <aws_secret_access_key> <sns_topic>"
+	    echo "Usage: cybergis-script-rogue.sh $INIT_ENV $INIT_CMD <aws_access_key_id> <aws_secret_access_key> <sns_topic>"
         else
             export -f add_sns
             bash --login -c "add_sns $INIT_ENV $INIT_CMD \"$3\" \"$4\" \"$5\" \"$FILE_SETTINGS\""
@@ -537,7 +536,7 @@ if [[ "$INIT_ENV" = "prod" ]]; then
     elif [[ "$INIT_CMD" == "cron" ]]; then
         
         if [[ $# -ne 10 ]]; then
-	    echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD <direction> <user> <password> <localRepoName> <remoteName> <authorname> <authoremail> [hourly|daily|weekly|monthly]"
+	    echo "Usage: cybergis-script-rogue.sh $INIT_ENV $INIT_CMD <direction> <user> <password> <localRepoName> <remoteName> <authorname> <authoremail> [hourly|daily|weekly|monthly]"
         else
             export -f add_cron_sync
             bash --login -c "add_cron_sync $INIT_ENV $INIT_CMD \"$3\" \"$4\" \"$5\" \"$6\" \"$7\" \"$8\" \"$9\" \"${10}\""
@@ -545,7 +544,7 @@ if [[ "$INIT_ENV" = "prod" ]]; then
     elif [[ "$INIT_CMD" == "cron2" ]]; then
         
         if [[ $# -ne 10 ]]; then
-	    echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD <direction> <user> <password> <localRepoName> <remoteName> <authorname> <authoremail> <frequency>"
+	    echo "Usage: cybergis-script-rogue.sh $INIT_ENV $INIT_CMD <direction> <user> <password> <localRepoName> <remoteName> <authorname> <authoremail> <frequency>"
         else
             export -f add_cron_sync_2
             bash --login -c "add_cron_sync_2 $INIT_ENV $INIT_CMD \"$3\" \"$4\" \"$5\" \"$6\" \"$7\" \"$8\" \"$9\" \"${10}\""
@@ -553,15 +552,15 @@ if [[ "$INIT_ENV" = "prod" ]]; then
     elif [[ "$INIT_CMD" == "osm" ]]; then
         
         if [[ $# -ne 6 ]]; then
-	    echo "Usage: cybergis-script-init-rogue.sh $INIT_ENV $INIT_CMD <user:password> <repo> <extent> <mapping>"
+	    echo "Usage: cybergis-script-rogue.sh $INIT_ENV $INIT_CMD <user:password> <repo> <extent> <mapping>"
         else
             export -f osm
             bash --login -c "osm $INIT_ENV $INIT_CMD \"$3\" \"$4\" \"$5\" \"$6\""
         fi
     else
-        echo "Usage: cybergis-script-init-rogue.sh prod [use|rvm|bundler|conf_application|conf_standalone|provision|server|remote|remote2|aws|sns|cron|cron2|osm]"
+        echo "Usage: cybergis-script-rogue.sh prod [use|rvm|bundler|conf_application|conf_standalone|provision|server|remote|remote2|aws|sns|cron|cron2|osm]"
     fi
 else
-    echo "Usage: cybergis-script-init-rogue.sh [prod|dev] [use|rvm|bundler|conf_application|conf_standalone|provision|server|remote|remote2|aws|sns|cron|cron2|osm]"
+    echo "Usage: cybergis-script-rogue.sh [prod|dev] [use|rvm|bundler|conf_application|conf_standalone|provision|server|remote|remote2|aws|sns|cron|cron2|osm]"
 fi
 
