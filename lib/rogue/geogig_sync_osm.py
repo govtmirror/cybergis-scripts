@@ -64,7 +64,7 @@ def getTaskStatus(url, auth, taskID):
     return taskID;
 
 def waitOnTask(url, auth, taskID):
-    print "Waiting for task "+str(taskID)+"...".
+    print "Waiting for task "+str(taskID)+"..."
     
     maxTime = 20
     timeSlept = 0
