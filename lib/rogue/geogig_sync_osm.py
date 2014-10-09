@@ -53,6 +53,7 @@ def getTaskStatus(url, auth, taskID, printStatus):
     params = {}
     request = make_request(url=url+'/'+str(taskID)+'.json', params=params, auth=auth)
 
+    print request.getcode()
     if request.getcode() != 200:
         raise Exception("Get Task Status Failed: Status Code {0}".format(request.getcode()))
     
