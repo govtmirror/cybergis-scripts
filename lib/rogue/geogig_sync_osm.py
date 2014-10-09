@@ -80,6 +80,7 @@ def run(args):
         transactionId = beginTransaction(url, auth)
     except Exception:
         transactionId = -1
+        raise
     
     if transactionId != -1:
         try:
