@@ -5,6 +5,17 @@ import urllib
 import urllib2
 import argparse
 
+def make_request(self, url, params, auth=None):
+    """
+    Prepares a request from a url, params, and optionally authentication.
+    """
+    req = urllib2.Request(url + urllib.urlencode(params))
+
+    if auth:
+        req.add_header('AUTHORIZATION', 'Basic ' + auth)
+
+    return urllib2.urlopen(req)
+
 def beginTransaction(url, auth):
     params = {'output_format': 'JSON'}
     print('Starting transaction...')
