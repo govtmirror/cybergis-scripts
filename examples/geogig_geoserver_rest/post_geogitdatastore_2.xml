@@ -1,0 +1,6 @@
+<dataStore>
+<name>california</name>
+<connectionParameters>
+   <entry key="geogig_repository">/home/ubuntu/statedep_geogig_demo/repos/california</entry>
+</connectionParameters>
+</dataStore>
