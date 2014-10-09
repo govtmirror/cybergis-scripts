@@ -58,10 +58,14 @@ def downloadFromOSM(url, auth, transactionId):
     response = json.loads(request.read())
 
     print response
-    if not response['response']['success']:
+    if response['task']['status'] != 'RUNNING':
         raise Exception("An error occurred when pulling new data from OSM: {0}".format(response['response']['error']))
 
     print('Download from OpenStreetMap complete.')
+    
+    taskID = response['response']['task']['id']
+        
+    return taskID;
  
 def parse_url(args):
     url = args.url
@@ -96,11 +100,17 @@ def run(args):
         raise
     
     if transactionId != -1:
+        taskId = -1
         try:
-            downloadFromOSM(url, auth, transactionId)
+            taskId = downloadFromOSM(url, auth, transactionId)
         except Exception:
+            taskId = -1
             endTransaction(url, auth, True, transactionId)
             raise
+        
+        if taskID != -1:
+            
+        
     
     try:
         endTransaction(url, auth, False, transactionId)
