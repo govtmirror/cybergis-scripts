@@ -63,7 +63,8 @@ def getTaskStatus(url, auth, taskID, printStatus):
     if printStatus:
         if taskStatus == "RUNNING":
             print response
-            taskAmount = response['task']['amount']
+            #taskAmount = response['task']['amount']
+            taskAmount = "#" #Amount value isn't showing up in response.
             print "++Task "+str(taskID)+" is running and "+taskAmount+" percentage complete."
         elif taskStatus == "FAILED":
             errorMessage = response['task']['error']['message']
