@@ -83,7 +83,7 @@ def waitOnTask(url, auth, taskID):
     sleepCycle = 2
     
     while timeSlept < maxTime and getTaskStatus(url, auth, taskID, True) in ['WAITING','RUNNING']:
-        print "Time Slept: "+str(timeSlept)
+        #print "Time Slept: "+str(timeSlept)
         time.sleep(sleepCycle)
         timeSlept += sleepCycle
         
