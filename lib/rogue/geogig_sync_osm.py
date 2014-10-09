@@ -140,6 +140,12 @@ def run(args):
     if args.username and args.password:
       auth = b64encode('{0}:{1}'.format(args.username, args.password))
 
+    print "=================================="
+    print "#==#"
+    print "CyberGIS Script / geogig_sync_osm.py
+    print "Downloading Updates from OpenStreetMap"
+    print "#==#"
+    
     transID = -1
     try:
         transID = beginTransaction(url_repo, auth)
@@ -163,6 +169,8 @@ def run(args):
         endTransaction(url_repo, auth, False, transID)
     except Exception:
         pass
+    
+    print "=================================="
 
 parser = argparse.ArgumentParser(description='Synchronize GeoGig repository with OpenStreetMap (OSM)')
 parser.add_argument("--geoserver", help="The url of the GeoServer servicing the GeoGig repository.")
