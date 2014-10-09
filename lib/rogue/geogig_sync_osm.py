@@ -19,7 +19,7 @@ def make_request(self, url, params, auth=None):
 def beginTransaction(url, auth):
     params = {'output_format': 'JSON'}
     print('Starting transaction...')
-    request = self.make_request(url=url+'beginTransaction?', params=params, auth=auth)
+    request = make_request(url=url+'beginTransaction?', params=params, auth=auth)
 
     if request.getcode() != 200:
         raise Exception("BeginTransaction failed: Status Code {0}".format(request.getcode()))
@@ -36,7 +36,7 @@ def beginTransaction(url, auth):
 
 def endTransaction(url, auth, cancel, transactionId):
     params = {'output_format': 'JSON', 'cancel': cancel, 'transactionId': transactionId}
-    request = self.make_request(url=url+'endTransaction?', params=params, auth=auth)
+    request = make_request(url=url+'endTransaction?', params=params, auth=auth)
 
     if request.getcode() != 200:
         raise Exception("EndTransaction failed: Status Code {0}".format(request.getcode()))
@@ -49,7 +49,7 @@ def endTransaction(url, auth, cancel, transactionId):
 def pullFromOSM(url, auth, transactionId):
     params = {'output_format': 'JSON', 'update': 'true'}
     print('Starting transaction...')
-    request = self.make_request(url=url+'osm/download.xml?', params=params, auth=auth)
+    request = make_request(url=url+'osm/download.xml?', params=params, auth=auth)
 
     if request.getcode() != 200:
         raise Exception("OSM Download failed: Status Code {0}".format(request.getcode()))
