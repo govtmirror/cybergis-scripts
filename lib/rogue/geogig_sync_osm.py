@@ -59,11 +59,14 @@ def getTaskStatus(url, auth, taskID, printStatus):
     response = json.loads(request.read())
 
     taskStatus = response['task']['status']
-    taskAmount = response['task']['amount']
     
     if printStatus:
         if taskStatus == "RUNNING":
+            taskAmount = response['task']['amount']
             print "++Task "+str(taskID)+" is running and "+taskAmount+" percentage complete."
+        elif taskStatus == "FAILED":
+            errorMessage = response['task']['error']['message']
+            print "++Task "+str(taskID)+" failed with error message: "+errorMessage+"."
         else:
             print "++Task "+str(taskID)+" is "+taskStatus+"."
     
