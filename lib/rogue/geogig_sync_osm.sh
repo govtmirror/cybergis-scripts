@@ -3,7 +3,7 @@
 #Based on scripts from https://github.com/ROGUE-JCTD/rogue-scripts
 #=================#
 DATE=$(date)
-CTX_GEOGIT="/geoserver/geogit/"
+CTX_GEOGIG="/geoserver/geogig/"
 GEONODE_LOCAL="http://localhost"
 PYTHON=/var/lib/geonode/bin/python
 #MANAGE=/var/lib/geonode/rogue_geonode/manage.py
@@ -17,7 +17,7 @@ SYNC_ATTEMPTS=10
 ERROR_OCCURED=0
 #=================#
 if [[ $# -ne 6 ]]; then
-    echo "Usage: geogit_sync_osm.sh <repo> <remote> <authorname> <authoremail> <log_file> <error_file>"
+    echo "Usage: geogig_sync_osm.sh <repo> <remote> <authorname> <authoremail> <log_file> <error_file>"
     echo 'authorname and authoremail used when merging non-conflicting branches'
     echo 'repo points to the staging repo'
     echo 'remote points to the live repo to be updated'
@@ -39,9 +39,9 @@ else
     #=================#
     printf "\nUpdating OSM Data...";
     printf "\n===========================\n";
-    geogit checkout master
-    geogit osm download --update
-    geogit checkout master
+    geogig checkout master
+    geogig osm download --update
+    geogig checkout master
     #=================#
     printf "\n===========================";
     printf "\nSynchronizing repository...";
@@ -50,12 +50,12 @@ else
     do
 	echo "Attempt $i of $SYNC_ATTEMPTS."
         ERROR_OCCURED=0
-	geogit pull $REMOTE
+	geogig pull $REMOTE
         EXIT_CODE=$?
         if [ $EXIT_CODE -gt 0 ]; then
          ERROR_OCCURED=255
         fi
-        OUTPUT=$(geogit push $REMOTE)
+        OUTPUT=$(geogig push $REMOTE)
         EXIT_CODE=$?
         echo $OUTPUT
         if [ $EXIT_CODE -gt 0 ]; then 
