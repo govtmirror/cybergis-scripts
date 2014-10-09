@@ -51,7 +51,7 @@ def endTransaction(url, auth, cancel, transactionId):
 def getTaskStatus(url, auth, taskID):
     print('Downloading from OpenStreetMap ...')
     params = {'output_format': 'JSON', 'update': 'true'}
-    request = make_request(url=url+'tasks/'+str(taskID)+'+?', params=params, auth=auth)
+    request = make_request(url=url+'/'+str(taskID)+'+?', params=params, auth=auth)
 
     if request.getcode() != 200:
         raise Exception("Get Task Status Failed: Status Code {0}".format(request.getcode()))
@@ -68,10 +68,11 @@ def waitOnTask(url, auth, taskID):
     
     maxTime = 20
     timeSlept = 0
+    sleepCycle = 2
     
     while timeSlept < maxTime and getTaskStatus(url, auth,taskID) in ['WAITING','RUNNING']:
-        time.sleep(2)
-        timeSlept +=2
+        time.sleep(sleepCycle)
+        timeSlept += sleepCycle
         
     print "Task "+str(taskID)+" is done"
 
@@ -95,8 +96,7 @@ def downloadFromOSM(url, auth, transactionId):
         
     return taskID;
  
-def parse_url(args):
-    url = args.url
+def parse_geoserver(url):
     
     if (url is None) or len(url) == 0:
         return None
@@ -109,11 +109,16 @@ def parse_url(args):
     return url
 
 def run(args):
-    url = parse_url(args)
-    if url is None:
-        print "Please specify a url"
-        return 1
-        
+    #url = parse_url(args)
+    #if url is None:
+    #    print "Please specify a url"
+    #    return 1
+    
+    geoserver = parse_url(args.geoserver)
+    repo = args.repo
+    url_repo = geoserver+'geogig/'+repo+'/'
+    url_task = geoserver+'geogig/tasks'
+    
     authorname = args.authorname
     authoremail = args.authoremail
     auth = None
@@ -122,7 +127,7 @@ def run(args):
 
     transID = -1
     try:
-        transID = beginTransaction(url, auth)
+        transID = beginTransaction(url_repo, auth)
     except Exception:
         transID = -1
         raise
@@ -130,22 +135,23 @@ def run(args):
     if transID != -1:
         taskID = -1
         try:
-            taskID = downloadFromOSM(url, auth, transID)
+            taskID = downloadFromOSM(url_repo, auth, transID)
         except Exception:
             taskID = -1
-            endTransaction(url, auth, True, transID)
+            endTransaction(url_repo, auth, True, transID)
             raise
         
         if taskID != -1:
-            waitOnTask(url, auth, taskID)
+            waitOnTask(url_repo, auth, taskID)
     
     try:
-        endTransaction(url, auth, False, transID)
+        endTransaction(url_repo, auth, False, transID)
     except Exception:
         pass
 
 parser = argparse.ArgumentParser(description='Synchronize GeoGig repository with OpenStreetMap (OSM)')
-parser.add_argument("url", help="The url to the repository you want to sync.")
+parser.add_argument("--geoserver", help="The url of the GeoServer servicing the GeoGig repository.")
+parser.add_argument("--repo", help="The GeoServer id of the GeoGig repository you want to sync.")
 parser.add_argument("--username", help="The username to use for basic auth requests.")
 parser.add_argument("--password", help="The password to use for basic auth requests.")
 parser.add_argument("--authorname", help="The author name to use when merging non-conflicting branches.")
