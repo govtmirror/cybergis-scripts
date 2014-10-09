@@ -73,7 +73,7 @@ def waitOnTask(url, auth, taskID):
         time.sleep(2)
         timeSlept +=2
         
-    print "Task "+str(taskID)+" is done".
+    print "Task "+str(taskID)+" is done"
 
 def downloadFromOSM(url, auth, transactionId):
     print('Downloading from OpenStreetMap ...')
