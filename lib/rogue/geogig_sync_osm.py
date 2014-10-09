@@ -53,11 +53,9 @@ def getTaskStatus(url, auth, taskID):
     params = {}
     request = make_request(url=url+'/'+str(taskID)+'.json', params=params, auth=auth)
 
-    
     if request.getcode() != 200:
         raise Exception("Get Task Status Failed: Status Code {0}".format(request.getcode()))
     
-    print request.read()    
     response = json.loads(request.read())
     print response
 
@@ -88,8 +86,7 @@ def downloadFromOSM(url, auth, transactionId):
         raise Exception("OSM Download failed: Status Code {0}".format(request.getcode()))
         
     response = json.loads(request.read())
-
-    print response
+    #print response
     if response['task']['status'] == 'FAILED':
         raise Exception("An error occurred when pulling new data from OSM: {0}".format(response['task']['status']))
 
