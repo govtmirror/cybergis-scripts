@@ -17,8 +17,8 @@ def make_request(url, params, auth=None):
     return urllib2.urlopen(req)
 
 def beginTransaction(url, auth):
-    params = {'output_format': 'JSON'}
     print('Starting transaction...')
+    params = {'output_format': 'JSON'}
     request = make_request(url=url+'beginTransaction?', params=params, auth=auth)
 
     if request.getcode() != 200:
@@ -35,6 +35,7 @@ def beginTransaction(url, auth):
     return transactionId;
 
 def endTransaction(url, auth, cancel, transactionId):
+    print('Ending transaction...')
     params = {'output_format': 'JSON', 'cancel': cancel, 'transactionId': transactionId}
     request = make_request(url=url+'endTransaction?', params=params, auth=auth)
 
@@ -46,9 +47,9 @@ def endTransaction(url, auth, cancel, transactionId):
     if not response['response']['success']:
         raise Exception("An error occurred on endTransaction: {0}".format(response['response']['error']))
 
-def pullFromOSM(url, auth, transactionId):
+def downloadFromOSM(url, auth, transactionId):
+    print('Downloading from OpenStreetMap ...')
     params = {'output_format': 'JSON', 'update': 'true'}
-    print('Starting transaction...')
     request = make_request(url=url+'osm/download.xml?', params=params, auth=auth)
 
     if request.getcode() != 200:
@@ -59,7 +60,7 @@ def pullFromOSM(url, auth, transactionId):
     if not response['response']['success']:
         raise Exception("An error occurred when pulling new data from OSM: {0}".format(response['response']['error']))
 
-    print('Pull from OSM complete.')
+    print('Download from OpenStreetMap complete.')
  
 def parse_url(args):
     url = args.url
@@ -95,7 +96,7 @@ def run(args):
     
     if transactionId != -1:
         try:
-            pullFromOSM(url, auth, transactionId)
+            downloadFromOSM(url, auth, transactionId)
         except Exception:
             endTransaction(url, auth, True, transactionId)
     
