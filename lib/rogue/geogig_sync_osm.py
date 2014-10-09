@@ -109,8 +109,7 @@ def run(args):
             raise
         
         if taskID != -1:
-            
-        
+            print "Task ID: "+str(taskID)    
     
     try:
         endTransaction(url, auth, False, transactionId)
