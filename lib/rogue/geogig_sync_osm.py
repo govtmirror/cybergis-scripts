@@ -57,6 +57,7 @@ def downloadFromOSM(url, auth, transactionId):
         
     response = json.loads(request.read())
 
+    print response
     if not response['response']['success']:
         raise Exception("An error occurred when pulling new data from OSM: {0}".format(response['response']['error']))
 
