@@ -49,11 +49,11 @@ def endTransaction(url, auth, cancel, transactionId):
         raise Exception("An error occurred on endTransaction: {0}".format(response['response']['error']))
 
 def getTaskStatus(url, auth, taskID, printStatus):
-    print('Downloading from OpenStreetMap ...')
+    #print('Downloading from OpenStreetMap ...')
     params = {}
     request = make_request(url=url+'/'+str(taskID)+'.json', params=params, auth=auth)
 
-    print request.getcode()
+    #print request.getcode()
     if request.getcode() != 200:
         raise Exception("Get Task Status Failed: Status Code {0}".format(request.getcode()))
     
