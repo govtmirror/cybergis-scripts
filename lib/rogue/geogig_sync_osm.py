@@ -62,7 +62,7 @@ def getTaskStatus(url, auth, taskID, printStatus):
     taskStatus = response['task']['status']
     
     if printStatus:
-        print "++Task "+str(taskID)+" is "+taskStatus.
+        print "++Task "+str(taskID)+" is "+taskStatus+"."
     
     return taskID;
 
