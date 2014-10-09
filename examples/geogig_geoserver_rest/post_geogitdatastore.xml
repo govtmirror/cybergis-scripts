@@ -1,0 +1,9 @@
+<dataStore>
+  <name>california</name>
+  <description>california</description>
+  <type>GeoGIG</type>
+  <connectionParameters>
+    <geogig_repository>a9b243b4-270e-451d-a71e-cb307ff3164a</geogig_repository>
+    <resolver>org.geogig.geoserver.config.GeoServerStoreRepositoryResolver</resolver>
+  </connectionParameters>
+</dataStore>
