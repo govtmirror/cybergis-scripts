@@ -5,7 +5,7 @@ import urllib
 import urllib2
 import argparse
 
-def make_request(self, url, params, auth=None):
+def make_request(url, params, auth=None):
     """
     Prepares a request from a url, params, and optionally authentication.
     """
