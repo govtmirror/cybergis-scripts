@@ -53,10 +53,12 @@ def getTaskStatus(url, auth, taskID):
     params = {'output_format': 'JSON', 'update': 'true'}
     request = make_request(url=url+'/'+str(taskID)+'+?', params=params, auth=auth)
 
+    print request
     if request.getcode() != 200:
         raise Exception("Get Task Status Failed: Status Code {0}".format(request.getcode()))
         
     response = json.loads(request.read())
+    print response
 
     taskStatus = response['task']['status']
     
@@ -70,7 +72,7 @@ def waitOnTask(url, auth, taskID):
     timeSlept = 0
     sleepCycle = 2
     
-    while timeSlept < maxTime and getTaskStatus(url, auth,taskID) in ['WAITING','RUNNING']:
+    while timeSlept < maxTime and getTaskStatus(url, auth, taskID) in ['WAITING','RUNNING']:
         time.sleep(sleepCycle)
         timeSlept += sleepCycle
         
