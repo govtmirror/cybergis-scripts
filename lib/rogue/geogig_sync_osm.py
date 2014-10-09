@@ -57,12 +57,15 @@ def getTaskStatus(url, auth, taskID, printStatus):
         raise Exception("Get Task Status Failed: Status Code {0}".format(request.getcode()))
     
     response = json.loads(request.read())
-    print response
 
     taskStatus = response['task']['status']
+    taskAmount = response['task']['amount']
     
     if printStatus:
-        print "++Task "+str(taskID)+" is "+taskStatus+"."
+        if taskStatus == "RUNNING":
+            print "++Task "+str(taskID)+" is running and "+taskAmount+" percentage complete."
+        else:
+            print "++Task "+str(taskID)+" is "+taskStatus+"."
     
     return taskID;
 
