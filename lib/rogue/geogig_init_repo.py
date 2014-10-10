@@ -47,7 +47,8 @@ def buildPOSTDataDataStore(name, path):
     return data
 
 def createDataStore(geoserver, workspace, auth, name, path):
-    print('Creating GeoServer Datastore.')
+    if verbose > 0:
+        print('Creating GeoServer Datastore.')
     params = {}
     data = buildPOSTDataDataStore(name, path)
     url = geoserver+"rest/workspaces/"+workspace+"/datastores.json"
@@ -63,7 +64,8 @@ def createDataStore(geoserver, workspace, auth, name, path):
     #if not response['response']['success']:
     #    raise Exception("An error occurred when creating data store: {0}".format(response['response']['error']))
 
-    print('Datastore created.')
+    if verbose > 0:
+        print('Datastore created.')
 
     #return transactionId;
 
