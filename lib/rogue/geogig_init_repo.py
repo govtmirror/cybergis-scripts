@@ -45,16 +45,16 @@ def buildPOSTDataDataStore(name, path):
 
 def createDataStore(geoserver, workspace, auth, name, path):
     print('Creating GeoServer Datastore.')
-    params = {'output_format': 'JSON'}
+    params = {}
     data = buildPOSTDataDataStore(name, path)
     url = geoserver+"rest/workspaces/"+workspace+"/datastores.json"
-    print url
-    request = make_request(url=url+'?', params=params, auth=auth, data = data)
+    request = make_request(url=url+'?', params=params, auth=auth, data=data)
 
     if request.getcode() != 200:
         raise Exception("BeginTransaction failed: Status Code {0}".format(request.getcode()))
 
     response = json.loads(request.read())
+    print response
 
     if not response['response']['success']:
         raise Exception("An error occurred on beginTransaction: {0}".format(response['response']['error']))
