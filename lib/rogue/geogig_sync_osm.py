@@ -229,7 +229,7 @@ def run(args):
     print "Downloading Updates from OpenStreetMap"
     print "#==#"
 
-    if repo
+    if repo:
         pass
     elif geoserver and workspace and datastore:
         repo = getRepoID(geoserver, auth, workspace, datastore)
