@@ -162,7 +162,7 @@ def waitOnTask(url, auth, taskID, timeout):
         printTaskStatus(taskID, taskStatus, taskProgress, taskResult, errorMessage)
         if not (taskStatus in ['WAITING','RUNNING']):
             break
-        print "Time Slept: "+str(timeSlept)
+        print "Time: "+str(timeSlept)+"/"+str(maxTime)
         time.sleep(sleepCycle)
         timeSlept += sleepCycle
     
@@ -176,7 +176,7 @@ def waitOnTask(url, auth, taskID, timeout):
             taskStatus = cancelTask(url, auth, taskID, True)
             if not (taskStatus in ['WAITING','RUNNING']):
                 break
-            print "Time Slept: "+str(timeSlept)
+            print "Time: "+str(timeSlept)+"/"+str(maxTime)
             time.sleep(sleepCycle)
             timeSlept += sleepCycle
     
