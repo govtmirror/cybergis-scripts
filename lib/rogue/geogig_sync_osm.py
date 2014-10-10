@@ -251,7 +251,7 @@ def run(args):
     repo = args.repo
     datastore = args.datastore
     workspace = args.workspace
-    timeout = args.timeout || 30
+    timeout = args.timeout or 30
     #==#
     authorname = args.authorname
     authoremail = args.authoremail
