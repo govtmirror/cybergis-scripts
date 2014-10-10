@@ -160,15 +160,18 @@ def waitOnTask(url, auth, taskID, timeout):
     timeSlept = 0
     sleepCycle = 5
     taskStatus = None
+    
     print "----------------------------------"
     print "Waiting for task "+str(taskID)+"..."
     print "Maximum wait time is "+str(maxTime)+" seconds."
     while timeSlept < maxTime:
         taskStatus, taskProgress, taskResult, errorMessage = pollTask(url, auth, taskID)
-        printTaskStatus(taskID, taskStatus, taskProgress, taskResult, errorMessage)
+        if verbose > 0:
+            printTaskStatus(taskID, taskStatus, taskProgress, taskResult, errorMessage)
         if not (taskStatus in ['WAITING','RUNNING']):
             break
-        print "Time: "+str(timeSlept)+"/"+str(maxTime)
+        if verbose > 0:
+            print "Time: "+str(timeSlept)+"/"+str(maxTime)
         time.sleep(sleepCycle)
         timeSlept += sleepCycle
     
@@ -182,14 +185,17 @@ def waitOnTask(url, auth, taskID, timeout):
             taskStatus = cancelTask(url, auth, taskID, True)
             if not (taskStatus in ['WAITING','RUNNING']):
                 break
-            print "Time: "+str(timeSlept)+"/"+str(maxTime)
+            if verbose > 0:
+                print "Time: "+str(timeSlept)+"/"+str(maxTime)
             time.sleep(sleepCycle)
             timeSlept += sleepCycle
     
-    print "Task "+str(taskID)+" is done"
+    if verbose > 0:
+        print "Task "+str(taskID)+" is done"
 
-def downloadFromOSM(url, auth, transactionId, update, mapping, bbox):
-    print('Downloading from OpenStreetMap ...')
+def downloadFromOSM(verbose, url, auth, transactionId, update, mapping, bbox):
+    if verbose>0:
+        print('Downloading from OpenStreetMap ...')
     params = {'output_format': 'JSON', 'update': update, 'mapping': mapping, 'bbox': bbox, 'transactionId':transactionId}
     request = make_request(url=url+'osm/download.json?', params=params, auth=auth)
 
@@ -200,15 +206,17 @@ def downloadFromOSM(url, auth, transactionId, update, mapping, bbox):
     
     taskID = response['task']['id']
     
-    #print response
+    
     if response['task']['status'] == 'FAILED':
         raise Exception("An error occurred when pulling new data from OSM: {0}".format(response['task']['status']))
 
-    if response['task']['status'] == 'WAITING':
-        print('Download from OpenStreetMap is waiting to be processed.  Task ID is '+str(taskID)+'.')
+    if verbose > 0:
+        if response['task']['status'] == 'WAITING':
+            print('Download from OpenStreetMap is waiting to be processed.  Task ID is '+str(taskID)+'.')
     
-    if response['task']['status'] == 'RUNNING':
-        print('Download from OpenStreetMap is being processed.  Task ID is '+str(taskID)+'.')
+    if verbose > 0:    
+        if response['task']['status'] == 'RUNNING':
+            print('Download from OpenStreetMap is being processed.  Task ID is '+str(taskID)+'.')
         
     return taskID;
 
@@ -310,7 +318,7 @@ def run(args):
             branch = checkout(url_repo, auth, 'master', transID)
             if not branch:
                 raise Exception('An error occurred when checking out master.  Cancelling task.')
-            taskID = downloadFromOSM(url_repo, auth, transID, update, mapping, bbox)
+            taskID = downloadFromOSM(verbose, url_repo, auth, transID, update, mapping, bbox)
         except Exception:
             taskID = -1
             endTransaction(url_repo, auth, True, transID)
