@@ -206,7 +206,7 @@ def parse_bbox(extent):
     file_extent = "/opt/cybergis-osm-mappings.git/extents/"+extent.replace(":","/")+".txt"
     bbox = None
     with open (file_extent, "r") as f:
-        bbox = f.read().replace('\n', '')
+        bbox = f.read().replace('\n', '').replace(' ',',')
     return bbox
 
 def parse_mapping(ns_mapping):
