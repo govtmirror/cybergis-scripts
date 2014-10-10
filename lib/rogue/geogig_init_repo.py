@@ -73,8 +73,6 @@ def run(args):
     workspace = args.workspace
     #url_repo = geoserver+'geogig/'+repo+'/'
     
-    authorname = args.authorname
-    authoremail = args.authoremail
     auth = None
     if args.username and args.password:
       auth = b64encode('{0}:{1}'.format(args.username, args.password))
