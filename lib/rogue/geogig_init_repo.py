@@ -5,6 +5,7 @@ import urllib
 import urllib2
 import argparse
 import time
+import os
 
 def make_request(url, params, auth=None, data=None):
     """
