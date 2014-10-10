@@ -145,7 +145,7 @@ def cancelTask(url, auth, taskID, printStatus):
         if taskStatus == "CANCELLED":
             print "++Task "+str(taskID)+" was cancelled."
         else:
-            print "++Error.  Could not cancel task "+str(taskID)+"."
+            print "++Error.  Could not cancel task "+str(taskID)+".  Task is "+str(taskStatus)+"."
     
     return taskStatus;
 
