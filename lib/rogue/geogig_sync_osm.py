@@ -162,7 +162,7 @@ def waitOnTask(url, auth, taskID, timeout):
         printTaskStatus(taskID, taskStatus, taskProgress, taskResult, errorMessage)
         if not (taskStatus in ['WAITING','RUNNING']):
             break
-        #print "Time Slept: "+str(timeSlept)
+        print "Time Slept: "+str(timeSlept)
         time.sleep(sleepCycle)
         timeSlept += sleepCycle
     
@@ -176,6 +176,7 @@ def waitOnTask(url, auth, taskID, timeout):
             taskStatus = cancelTask(url, auth, taskID, True)
             if not (taskStatus in ['WAITING','RUNNING']):
                 break
+            print "Time Slept: "+str(timeSlept)
             time.sleep(sleepCycle)
             timeSlept += sleepCycle
     
@@ -326,7 +327,7 @@ def run(args):
 
 parser = argparse.ArgumentParser(description='Synchronize GeoGig repository with OpenStreetMap (OSM)')
 
-parser.add_argument("update", help="true/false.  Update existing features only or download new features.  If false, extent and mapping are required.")
+parser.add_argument("update", default= 'true', help="true/false.  Update existing features only or download new features.  If false, extent and mapping are required.")
 
 #
 parser.add_argument("--workspace", help="The workspace of the GeoServer data store of the GeoGig repository you want to sync.")
@@ -340,7 +341,7 @@ parser.add_argument("--authorname", help="The author name to use when merging no
 parser.add_argument("--authoremail", help="The author email to use when merging non-conflicting branches.")
 parser.add_argument("--extent", help="The extent of the OpenStreetMap extract. For example, basic:buildings_and_roads.")
 parser.add_argument("--mapping", help="The mapping of the OpenStreetMap extract.  For example, dominican_republic:santo_domingo.")
-parser.add_argument("--timeout", help="The number of seconds to wait for the osm download task to complete before cancelling.")
+parser.add_argument("--timeout", type=int, default=30, help="The number of seconds to wait for the osm download task to complete before cancelling.  Default is 30 seconds.")
   
 args = parser.parse_args()
 run(args)
