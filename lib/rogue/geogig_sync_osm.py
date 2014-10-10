@@ -86,10 +86,15 @@ def pollTask(url, auth, taskID):
         result = response['task']['result']
     except:
         result = None
+    errorMessage = None
+    try:
+        errorMessage = response['task']['error']['message']
+    except:
+        errorMessage = None
     
-    return status, result
+    return status, result, errorMessage
 
-def printTaskStatus(taskID, taskStatus, taskResult):
+def printTaskStatus(taskID, status, result, errorMessage):
 
     if status == "RUNNING":
         print "----"
@@ -97,21 +102,20 @@ def printTaskStatus(taskID, taskStatus, taskResult):
         #taskAmount = response['task']['amount']
         taskAmount = "#" #Amount value isn't showing up in response.
         print "++Task "+str(taskID)+" is running and "+taskAmount+" percentage complete."
-        print "Entities Processed: "+taskResult['OSMReport']['processedEntities']
+        print "Entities Processed: "+result['OSMReport']['processedEntities']
     elif status == "FAILED":
         print "----"
-        errorMessage = response['task']['error']['message']
         print "++Task "+str(taskID)+" failed with error message: "+errorMessage+"."
     elif status == "FINISHED":
         print "----"
         print response
         print "++Task "+str(taskID)+" is finished."
-        print "Entities Processed: "+taskResult['OSMReport']['processedEntities']
+        print "Entities Processed: "+result['OSMReport']['processedEntities']
     elif status == "CANCELLED":
         print "----"
         print response
         print "++Task "+str(taskID)+" was cancelled."
-        print "Entities Processed: "+taskResult['OSMReport']['processedEntities']
+        print "Entities Processed: "+result['OSMReport']['processedEntities']
     else:
         print "----"
         print "++Task "+str(taskID)+" is "+status+"."
@@ -145,8 +149,8 @@ def waitOnTask(url, auth, taskID):
     print "Waiting for task "+str(taskID)+"..."
     print "Maximum wait time is "+str(maxTime)+" seconds."
     while timeSlept < maxTime:
-        taskStatus, taskResult = pollTask(url, auth, taskID)
-        printTaskStatus(taskID, taskStatus, taskResult)
+        taskStatus, taskResult, errorMessage = pollTask(url, auth, taskID)
+        printTaskStatus(taskID, taskStatus, taskResult, errorMessage)
         if not (taskStatus in ['WAITING','RUNNING']):
             break
         #print "Time Slept: "+str(timeSlept)
