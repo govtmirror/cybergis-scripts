@@ -51,7 +51,7 @@ def endTransaction(url, auth, cancel, transactionId):
     print('Transaction ended.')
 
 def checkout(url, auth, branch, transactionId):
-    print "Checking out "+branch+" branch"
+    print "Checking out "+branch+" branch..."
     params = {'output_format': 'JSON', 'branch': branch, 'transactionId':transactionId}
     request = make_request(url=url+'checkout.json?', params=params, auth=auth)
 
@@ -61,8 +61,11 @@ def checkout(url, auth, branch, transactionId):
     response = json.loads(request.read())
     
     #taskID = response['task']['id']
-    
-    print response
+    #print response
+
+    newBranch = response['response']['NewTarget']
+    print "Checked out "+newBranch
+    return newBranch
 
 def getTaskStatus(url, auth, taskID, printStatus):
     #print('Downloading from OpenStreetMap ...')
@@ -210,10 +213,11 @@ def run(args):
     
     if transID != -1:
         taskID = -1
+        #==#
+        #Checkout master branch.  See: https://github.com/boundlessgeo/GeoGig/issues/788
         try:
             checkout(url_repo, auth, 'master', transID)
             taskID = downloadFromOSM(url_repo, auth, transID)
-            checkout(url_repo, auth, 'master', transID)
         except Exception:
             taskID = -1
             endTransaction(url_repo, auth, True, transID)
@@ -221,7 +225,14 @@ def run(args):
         
         if taskID != -1:
             waitOnTask(url_tasks, auth, taskID)
-    
+  
+        #==#
+        #Checkout master branch.  See: https://github.com/boundlessgeo/GeoGig/issues/788
+        try:
+            checkout(url_repo, auth, 'master', transID)
+        except Exception:
+            pass
+ 
     try:
         endTransaction(url_repo, auth, False, transID)
     except Exception:
