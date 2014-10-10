@@ -212,6 +212,8 @@ def run(args):
     #==#
     geoserver = parse_url(args.geoserver)
     repo = args.repo
+    datastore = args.datastore
+    workspace = args.workspace
     #==#
     authorname = args.authorname
     authoremail = args.authoremail
