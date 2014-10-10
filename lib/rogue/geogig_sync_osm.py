@@ -48,6 +48,20 @@ def endTransaction(url, auth, cancel, transactionId):
     if not response['response']['success']:
         raise Exception("An error occurred on endTransaction: {0}".format(response['response']['error']))
 
+def checkout(url, auth, branch, transactionId):
+    print "Checking out "+branch+" branch"
+    params = {'output_format': 'JSON', 'branch': branch, 'transactionId':transactionId}
+    request = make_request(url=url+'osm/checkout.json?', params=params, auth=auth)
+
+    if request.getcode() != 200:
+        raise Exception("Checkout for branch "+branch+" failed: Status Code {0}".format(request.getcode()))
+        
+    response = json.loads(request.read())
+    
+    #taskID = response['task']['id']
+    
+    print response
+
 def getTaskStatus(url, auth, taskID, printStatus):
     #print('Downloading from OpenStreetMap ...')
     params = {}
@@ -128,7 +142,7 @@ def waitOnTask(url, auth, taskID):
 
 def downloadFromOSM(url, auth, transactionId):
     print('Downloading from OpenStreetMap ...')
-    params = {'output_format': 'JSON', 'update': 'true'}
+    params = {'output_format': 'JSON', 'update': 'true','transactionId':transactionId}
     request = make_request(url=url+'osm/download.json?', params=params, auth=auth)
 
     if request.getcode() != 200:
@@ -195,7 +209,9 @@ def run(args):
     if transID != -1:
         taskID = -1
         try:
+            checkout(url_repo, auth, 'master', transID)
             taskID = downloadFromOSM(url_repo, auth, transID)
+            checkout(url_repo, auth, 'master', transID)
         except Exception:
             taskID = -1
             endTransaction(url_repo, auth, True, transID)
