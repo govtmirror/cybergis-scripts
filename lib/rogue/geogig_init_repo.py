@@ -99,7 +99,11 @@ def createLayer(verbose, geoserver, workspace, auth, datastore, layer):
     params = {}
     data = buildPOSTDataLayer(datastore+"_"+layer,layer)
     url = geoserver+"rest/workspaces/"+workspace+"/datastores/"+datastore+"/featuretypes.xml"
-    request = make_request(url=url+'?', params=params, auth=auth, data=data)
+    
+    try:
+        request = make_request(url=url+'?', params=params, auth=auth, data=data)
+    except:
+        raise Exception("Create layer failed: Status Code {0}".format(request.getcode()))
 
     if request.getcode() != 201:
         raise Exception("Create layer failed: Status Code {0}".format(request.getcode()))
@@ -165,7 +169,10 @@ def run(args):
         if trees:
             trees = ([t['path'] for t in trees if (not t['path'] in ['node','way'])])
             for tree in trees:
-                createLayer(verbose, geoserver, workspace, auth, datastore, tree)
+                try:
+                    createLayer(verbose, geoserver, workspace, auth, datastore, tree)
+                except:
+                    print "Couldn't create layer from datastore "+datastore+" for tree "+tree+"."
                     
     print "=================================="
 
