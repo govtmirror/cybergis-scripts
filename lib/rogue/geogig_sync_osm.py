@@ -70,8 +70,7 @@ def checkout(url, auth, branch, transactionId):
         print "Error Message: "+response['response']['error']
         return None
 
-def pollTask(url, auth, taskID, printStatus):
-    #print('Downloading from OpenStreetMap ...')
+def pollTask(url, auth, taskID):
     params = {}
     request = make_request(url=url+'/'+str(taskID)+'.json', params=params, auth=auth)
 
@@ -83,21 +82,6 @@ def pollTask(url, auth, taskID, printStatus):
 
     status = response['task']['status']
     result = response['task']['result']
-    
-    if printStatus:
-        if status == "RUNNING":
-            #print response
-            #taskAmount = response['task']['amount']
-            taskAmount = "#" #Amount value isn't showing up in response.
-            print "++Task "+str(taskID)+" is running and "+taskAmount+" percentage complete."
-        elif status == "FAILED":
-            errorMessage = response['task']['error']['message']
-            print "++Task "+str(taskID)+" failed with error message: "+errorMessage+"."
-        elif status == "FINISHED":
-            print response
-            print "++Task "+str(taskID)+" is finished."
-        else:
-            print "++Task "+str(taskID)+" is "+status+"."
     
     return status, result
 
