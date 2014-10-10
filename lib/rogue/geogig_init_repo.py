@@ -33,7 +33,7 @@ def parse_url(url):
 def createRepo(path):
     if not os.path.exists(path):
         os.makedirs(path)
-    #subprocess.Popen("geogig init",cwd=repo)
+    subprocess.Popen("geogig init", cwd=repo)
 
 def buildPOSTDataDataStore(name, path):
     file_data ="/opt/cybergis-scripts.git/lib/rogue/post_geogigdatastore.xml"
@@ -46,7 +46,6 @@ def createDataStore(geoserver, workspace, auth, name, path):
     print('Creating GeoServer Datastore.')
     params = {'output_format': 'JSON'}
     data = buildPOSTDataDataStore(name, path)
-    print data
     url = geoserver+"/workspaces/"+workspace+"/datastores.json"
     request = make_request(url=url+'?', params=params, auth=auth, data = data)
 
