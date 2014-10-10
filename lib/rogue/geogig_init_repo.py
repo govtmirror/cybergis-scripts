@@ -158,7 +158,7 @@ def run(args):
         if trees:
             trees = ([t['path'] for t in t if (not t['path'] in ['node',',way'])])
             for tree in trees:
-                createLayer(verbose, geoserver, workspace, auth, datastore, tree):
+                createLayer(verbose, geoserver, workspace, auth, datastore, tree)
                     
     print "=================================="
 
