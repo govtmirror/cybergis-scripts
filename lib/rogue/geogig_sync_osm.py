@@ -169,9 +169,9 @@ def waitOnTask(url, auth, taskID, timeout):
     if taskStatus in ['WAITING','RUNNING']:
         print "Task "+str(taskID)+" timed out after "+str(timeSlept)+" seconds."
         print "Attempting to cancel task "+str(taskID)
-        maxTime = 30
+        maxTime = 60
         timeSlept = 0
-        sleepCycle = 1
+        sleepCycle = 4
         while timeSlept < maxTime:
             taskStatus = cancelTask(url, auth, taskID, True)
             if not (taskStatus in ['WAITING','RUNNING']):
