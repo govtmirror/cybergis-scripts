@@ -102,7 +102,7 @@ def createLayer(verbose, geoserver, workspace, auth, datastore, layer):
 
 def getTrees(verbose, url, auth):
     
-    params = {'output_format': 'JSON', 'verbose': true}
+    params = {'output_format': 'JSON', 'verbose': 'true'}
     request = make_request(url=url+'ls-tree.json?', params=params, auth=auth)
 
     if request.getcode() != 200:
