@@ -254,6 +254,8 @@ def parse_mapping(ns_mapping):
 
 def run(args):
     #==#
+    verbose = args.verbose
+    #==#
     geoserver = parse_url(args.geoserver)
     repo = args.repo
     datastore = args.datastore
@@ -348,6 +350,7 @@ parser.add_argument("--authoremail", help="The author email to use when merging 
 parser.add_argument("--extent", help="The extent of the OpenStreetMap extract. For example, basic:buildings_and_roads.")
 parser.add_argument("--mapping", help="The mapping of the OpenStreetMap extract.  For example, dominican_republic:santo_domingo.")
 parser.add_argument("--timeout", type=int, default=30, help="The number of seconds to wait for the osm download task to complete before cancelling.  Default is 30 seconds.")
-  
+parser.add_argument('--verbose', '-v', default=0, action='count', help="Print out intermediate status messages.")
+
 args = parser.parse_args()
 run(args)
