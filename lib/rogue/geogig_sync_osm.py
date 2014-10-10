@@ -146,7 +146,7 @@ def waitOnTask(url, auth, taskID):
     print "Maximum wait time is "+str(maxTime)+" seconds."
     while timeSlept < maxTime:
         taskStatus, taskResult = pollTask(url, auth, taskID)
-        printTaskStatus(taskId, taskStatus, taskResult)
+        printTaskStatus(taskID, taskStatus, taskResult)
         if not (taskStatus in ['WAITING','RUNNING']):
             break
         #print "Time Slept: "+str(timeSlept)
