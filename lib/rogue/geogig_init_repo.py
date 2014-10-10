@@ -73,7 +73,6 @@ def createDataStore(geoserver, workspace, auth, name, path):
 
 def run(args):
     
-    print args
     name = args.name 
     geoserver = parse_url(args.geoserver)
     path = args.path
