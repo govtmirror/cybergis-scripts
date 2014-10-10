@@ -112,7 +112,7 @@ def printTaskStatus(taskID, status, progress, result, errorMessage):
             if progress_task == 'Committing features...':
                 print progress_task
             elif progress_task == 'Importing into GeoGig repo...':
-                print progress_task+' '+str(progress['amount'])+' entities imported'.
+                print progress_task+' '+str(progress['amount'])+' entities imported'
             else:
                 print "Current Step: "+str(progress['task'])
                 print "Entities Processed: "+str(progress['amount'])
