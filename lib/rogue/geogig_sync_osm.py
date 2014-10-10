@@ -54,8 +54,9 @@ def endTransaction(verbose, url, auth, cancel, transactionId):
     if verbose > 0:
         print('Transaction ended.')
 
-def checkout(url, auth, branch, transactionId):
-    print "Checking out "+branch+" branch..."
+def checkout(verbose, url, auth, branch, transactionId):
+    if verbose > 0:
+        print "Checking out "+branch+" branch..."
     params = {'output_format': 'JSON', 'branch': branch, 'transactionId':transactionId}
     request = make_request(url=url+'checkout.json?', params=params, auth=auth)
 
@@ -63,10 +64,11 @@ def checkout(url, auth, branch, transactionId):
         raise Exception("Checkout for branch "+branch+" failed: Status Code {0}".format(request.getcode()))
         
     response = json.loads(request.read())
-    #print response
+    
     if response['response']['success']:
         newBranch = response['response']['NewTarget']
-        print "Checked out "+newBranch+' branch.'
+        if verbose > 0:
+            print "Checked out "+newBranch+' branch.'
         return newBranch
     else:
         print "----"
