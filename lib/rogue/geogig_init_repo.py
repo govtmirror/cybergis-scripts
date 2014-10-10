@@ -52,18 +52,18 @@ def createDataStore(geoserver, workspace, auth, name, path):
     url = geoserver+"rest/workspaces/"+workspace+"/datastores.json"
     request = make_request(url=url+'?', params=params, auth=auth, data=data)
 
-    if request.getcode() != 200:
-        raise Exception("BeginTransaction failed: Status Code {0}".format(request.getcode()))
+    if request.getcode() != 201:
+        raise Exception("Create data store failed: Status Code {0}".format(request.getcode()))
 
     response = json.loads(request.read())
     print response
 
     if not response['response']['success']:
-        raise Exception("An error occurred on beginTransaction: {0}".format(response['response']['error']))
+        raise Exception("An error occurred when creating data store: {0}".format(response['response']['error']))
 
     print('Datastore created.')
 
-    return transactionId;
+    #return transactionId;
 
 #def getFeatureTypes(geoserver, repo):
 
