@@ -81,17 +81,18 @@ def run(args):
 
     print "=================================="
     print "#==#"
-    print "CyberGIS Script / geogig_sync_osm.py"
-    print "Downloading Updates from OpenStreetMap"
+    print "CyberGIS Script / geogig_init_repo.py"
+    print "Initialize GeoGig repository and optionally add to GeoServer instance."
     print "#==#"
     #Create GeoGig Repository and add to GeoServer
     createRepo(path)
-    createDataStore(geoserver,workspace,name,path)
+    if args.geoserver and args.workspace and args.name:
+        createDataStore(geoserver,workspace,name,path)
 
     return
     print "=================================="
 
-parser = argparse.ArgumentParser(description='Initialize GeoGig repository.')
+parser = argparse.ArgumentParser(description='Initialize GeoGig repository and optionally add to GeoServer instance.')
 parser.add_argument("path", help="The location in the filesystem of the Geogig repository.")
 parser.add_argument("--name", help="The name of the GeoGig repo and data store in GeoServer.")
 parser.add_argument("--geoserver", help="The url of the GeoServer servicing the GeoGig repository.")
