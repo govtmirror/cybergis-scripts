@@ -48,6 +48,7 @@ def createDataStore(geoserver, workspace, auth, name, path):
     params = {'output_format': 'JSON'}
     data = buildPOSTDataDataStore(name, path)
     url = geoserver+"/workspaces/"+workspace+"/datastores.json"
+    print url
     request = make_request(url=url+'?', params=params, auth=auth, data = data)
 
     if request.getcode() != 200:
