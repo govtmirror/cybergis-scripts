@@ -65,7 +65,8 @@ def createDataStore(geoserver, workspace, name, path):
 #def createLayers(geoserver, repo):
 
 def run(args):
-   
+    
+    print args
     name = args.name 
     geoserver = parse_url(args.geoserver)
     path = args.path
@@ -90,7 +91,7 @@ def run(args):
     return
     print "=================================="
 
-parser = argparse.ArgumentParser(description='Synchronize GeoGig repository with OpenStreetMap (OSM)')
+parser = argparse.ArgumentParser(description='Initialize GeoGig repository.')
 parser.add_argument("--name", help="The name of the GeoGig repo and data store in GeoServer.")
 parser.add_argument("--geoserver", help="The url of the GeoServer servicing the GeoGig repository.")
 parser.add_argument("--workspace", help="The GeoServer workspace to use for the data store.")
