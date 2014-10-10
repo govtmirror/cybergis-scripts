@@ -158,11 +158,6 @@ def run(args):
         createRepo(path)
     
     #Create GeoGig Data store in GeoServer
-    print publish_datastore
-    print args.geoserver 
-    print args.workspace
-    print args.name
-    print args.path
     if publish_datastore > 0 and args.geoserver and args.workspace and args.name and args.path:
         createDataStore(verbose,geoserver,workspace,auth,name,path)
 
