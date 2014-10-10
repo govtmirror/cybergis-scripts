@@ -29,6 +29,12 @@ apt-get install -y gdal-bin python-gdal python-numpy
 cd /opt
 git clone https://github.com/state-hiu/cybergis-scripts.git cybergis-scripts.git
 cp cybergis-scripts.git/profile/cybergis-scripts.sh /etc/profile.d/
+#==#
+#For GeoGig operations, you need to have the GeoGig command line tools installed.
+cd /opt
+#TBD
+#TBD
+#TBD
 ```
 Logout and Login
 
