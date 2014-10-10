@@ -67,7 +67,7 @@ def checkout(url, auth, branch, transactionId):
     print "Checked out "+newBranch+' branch.'
     return newBranch
 
-def getTaskStatus(url, auth, taskID, printStatus):
+def pollTask(url, auth, taskID, printStatus):
     #print('Downloading from OpenStreetMap ...')
     params = {}
     request = make_request(url=url+'/'+str(taskID)+'.json', params=params, auth=auth)
@@ -78,25 +78,53 @@ def getTaskStatus(url, auth, taskID, printStatus):
     
     response = json.loads(request.read())
 
-    taskStatus = response['task']['status']
+    status = response['task']['status']
+    result = response['task']['result']
     
     if printStatus:
-        if taskStatus == "RUNNING":
+        if status == "RUNNING":
             #print response
             #taskAmount = response['task']['amount']
             taskAmount = "#" #Amount value isn't showing up in response.
             print "++Task "+str(taskID)+" is running and "+taskAmount+" percentage complete."
-        elif taskStatus == "FAILED":
+        elif status == "FAILED":
             errorMessage = response['task']['error']['message']
             print "++Task "+str(taskID)+" failed with error message: "+errorMessage+"."
-        elif taskStatus == "FINISHED":
+        elif status == "FINISHED":
             print response
             print "++Task "+str(taskID)+" is finished."
         else:
-            print "++Task "+str(taskID)+" is "+taskStatus+"."
+            print "++Task "+str(taskID)+" is "+status+"."
     
-    return taskStatus;
-    
+    return status, result
+
+def printTaskStatus(taskID, taskStatus, taskResult):
+
+    if status == "RUNNING":
+        print "----"
+        #print response
+        #taskAmount = response['task']['amount']
+        taskAmount = "#" #Amount value isn't showing up in response.
+        print "++Task "+str(taskID)+" is running and "+taskAmount+" percentage complete."
+        print "Entities Processed: "+taskResult['OSMReport']['processedEntities']
+    elif status == "FAILED":
+        print "----"
+        errorMessage = response['task']['error']['message']
+        print "++Task "+str(taskID)+" failed with error message: "+errorMessage+"."
+    elif status == "FINISHED":
+        print "----"
+        print response
+        print "++Task "+str(taskID)+" is finished."
+        print "Entities Processed: "+taskResult['OSMReport']['processedEntities']
+    elif status == "CANCELLED":
+        print "----"
+        print response
+        print "++Task "+str(taskID)+" was cancelled."
+        print "Entities Processed: "+taskResult['OSMReport']['processedEntities']
+    else:
+        print "----"
+        print "++Task "+str(taskID)+" is "+status+"."
+ 
 def cancelTask(url, auth, taskID, printStatus):
     print('Downloading from OpenStreetMap ...')
     params = {}
@@ -126,7 +154,8 @@ def waitOnTask(url, auth, taskID):
     print "Waiting for task "+str(taskID)+"..."
     print "Maximum wait time is "+str(maxTime)+" seconds."
     while timeSlept < maxTime:
-        taskStatus = getTaskStatus(url, auth, taskID, True)
+        taskStatus, taskResult = getTaskStatus(url, auth, taskID)
+        printTaskStatus(taskId, taskStatus, taskResult)
         if not (taskStatus in ['WAITING','RUNNING']):
             break
         #print "Time Slept: "+str(timeSlept)
