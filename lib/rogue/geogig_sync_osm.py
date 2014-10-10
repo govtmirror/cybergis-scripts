@@ -151,6 +151,7 @@ def waitOnTask(url, auth, taskID):
 def downloadFromOSM(url, auth, transactionId, update, mapping, bbox):
     print('Downloading from OpenStreetMap ...')
     params = {'output_format': 'JSON', 'update': update, 'mapping': mapping, 'bbox': bbox, 'transactionId':transactionId}
+    print params
     request = make_request(url=url+'osm/download.json?', params=params, auth=auth)
 
     if request.getcode() != 200:
