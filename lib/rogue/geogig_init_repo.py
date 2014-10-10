@@ -72,7 +72,9 @@ def createDataStore(geoserver, workspace, auth, name, path):
 #def createLayers(geoserver, repo):
 
 def run(args):
-    
+    #==#
+    verbose = args.verbose
+    #==#
     name = args.name 
     geoserver = parse_url(args.geoserver)
     path = args.path
@@ -104,6 +106,7 @@ parser.add_argument("--workspace", help="The GeoServer workspace to use for the 
 #parser.add_argument("--path", help="The location in the filesystem of the Geogig repository.")
 parser.add_argument("--username", help="The username to use for basic auth requests.")
 parser.add_argument("--password", help="The password to use for basic auth requests.")
-  
+parser.add_argument('--verbose', '-v', default=0, action='count', help="Print out intermediate status messages.")
+
 args = parser.parse_args()
 run(args)
