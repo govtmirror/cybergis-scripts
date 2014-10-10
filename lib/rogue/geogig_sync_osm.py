@@ -102,7 +102,8 @@ def printTaskStatus(taskID, status, result, errorMessage):
         #taskAmount = response['task']['amount']
         taskAmount = "#" #Amount value isn't showing up in response.
         print "++Task "+str(taskID)+" is running and "+taskAmount+" percentage complete."
-        print "Entities Processed: "+result['OSMReport']['processedEntities']
+        if result:
+            print "Entities Processed: "+result['OSMReport']['processedEntities']
     elif status == "FAILED":
         print "----"
         print "++Task "+str(taskID)+" failed with error message: "+errorMessage+"."
