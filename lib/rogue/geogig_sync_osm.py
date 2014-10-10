@@ -17,26 +17,29 @@ def make_request(url, params, auth=None):
 
     return urllib2.urlopen(req)
 
-def beginTransaction(url, auth):
-    print('Starting transaction...')
+def beginTransaction(verbose, url, auth):
+    if verbose > 0:
+        print('Starting transaction...')
     params = {'output_format': 'JSON'}
     request = make_request(url=url+'beginTransaction.json?', params=params, auth=auth)
 
     if request.getcode() != 200:
         raise Exception("BeginTransaction failed: Status Code {0}".format(request.getcode()))
-        w
+
     response = json.loads(request.read())
 
     if not response['response']['success']:
         raise Exception("An error occurred on beginTransaction: {0}".format(response['response']['error']))
 
-    print('Transaction started.')
+    if verbose > 0:
+        print('Transaction started.')
     transactionId = response['response']['Transaction']['ID']
         
     return transactionId;
 
-def endTransaction(url, auth, cancel, transactionId):
-    print('Ending transaction...')
+def endTransaction(verbose, url, auth, cancel, transactionId):
+    if verbose > 0:
+        print('Ending transaction...')
     params = {'output_format': 'JSON', 'cancel': cancel, 'transactionId': transactionId}
     request = make_request(url=url+'endTransaction.json?', params=params, auth=auth)
 
@@ -48,7 +51,8 @@ def endTransaction(url, auth, cancel, transactionId):
     if not response['response']['success']:
         raise Exception("An error occurred on endTransaction: {0}".format(response['response']['error']))
 
-    print('Transaction ended.')
+    if verbose > 0:
+        print('Transaction ended.')
 
 def checkout(url, auth, branch, transactionId):
     print "Checking out "+branch+" branch..."
