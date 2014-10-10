@@ -16,6 +16,8 @@ def make_request(url, params, auth=None, data=None):
 
     if auth:
         req.add_header('AUTHORIZATION', 'Basic ' + auth)
+    if data:
+        req.add_header('Content-type', 'text/xml')
 
     return urllib2.urlopen(req)
 
