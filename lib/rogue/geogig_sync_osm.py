@@ -182,7 +182,7 @@ def getRepoID(geoserver, auth, workspace, datastore):
 
     response = json.loads(request.read())
     repoID = None
-    for entry in response['dataStore']['connectionParameters']['entry']
+    for entry in response['dataStore']['connectionParameters']['entry']:
         if entry['@key'] == 'geogig_repository'
             repoID = entry['$']
             break
