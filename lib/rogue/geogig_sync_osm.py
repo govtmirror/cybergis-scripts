@@ -321,7 +321,7 @@ def run(args):
         #==#
         #Checkout master branch.  See: https://github.com/boundlessgeo/GeoGig/issues/788
         try:
-            branch = checkout(url_repo, auth, 'master', transID)
+            branch = checkout(verbose, url_repo, auth, 'master', transID)
             if not branch:
                 raise Exception('An error occurred when checking out master.  Cancelling task.')
             taskID = downloadFromOSM(verbose, url_repo, auth, transID, update, mapping, bbox)
@@ -336,7 +336,7 @@ def run(args):
         #==#
         #Checkout master branch.  See: https://github.com/boundlessgeo/GeoGig/issues/788
         try:
-            checkout(url_repo, auth, 'master', transID)
+            checkout(verbose, url_repo, auth, 'master', transID)
         except Exception:
             pass
  
