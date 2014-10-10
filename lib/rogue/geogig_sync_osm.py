@@ -148,9 +148,9 @@ def waitOnTask(url, auth, taskID):
     
     print "Task "+str(taskID)+" is done"
 
-def downloadFromOSM(url, auth, transactionId):
+def downloadFromOSM(url, auth, transactionId, update, mapping, bbox):
     print('Downloading from OpenStreetMap ...')
-    params = {'output_format': 'JSON', 'update': 'true','transactionId':transactionId}
+    params = {'output_format': 'JSON', 'update': update, 'mapping': mapping, 'bbox': bbox, 'transactionId':transactionId}
     request = make_request(url=url+'osm/download.json?', params=params, auth=auth)
 
     if request.getcode() != 200:
@@ -184,29 +184,44 @@ def parse_url(url):
     
     return url
 
+def parse_bbox(extent):
+    file_extent ="/opt/cybergis-osm-mappings.git/extents/"+extent+".txt"
+    bbox = None
+    with open (file_extent, "r") as f:
+        bbox = f.read().replace('\n', '')
+    return bbox
+
 def run(args):
-    #url = parse_url(args)
-    #if url is None:
-    #    print "Please specify a url"
-    #    return 1
-    
+    #==#
     geoserver = parse_url(args.geoserver)
     repo = args.repo
     url_repo = geoserver+'geogig/'+repo+'/'
     url_tasks = geoserver+'geogig/tasks'
-    
+    #==#
     authorname = args.authorname
     authoremail = args.authoremail
+    #==#
     auth = None
     if args.username and args.password:
       auth = b64encode('{0}:{1}'.format(args.username, args.password))
-
+    #==#
+    update = args.update in ["1","y","t","true"]
+    bbox = parse_bbox(args.extent)
+    mapping = args.mapping
     print "=================================="
     print "#==#"
     print "CyberGIS Script / geogig_sync_osm.py"
     print "Downloading Updates from OpenStreetMap"
     print "#==#"
-    
+
+    boolean valid:   
+    if update:
+        pass
+    elif bbox and mapping:
+       pass
+    else:
+        return "Update is false and no new data will be brought in because the extent and mapping aren't specified"
+
     transID = -1
     try:
         transID = beginTransaction(url_repo, auth)
@@ -220,7 +235,7 @@ def run(args):
         #Checkout master branch.  See: https://github.com/boundlessgeo/GeoGig/issues/788
         try:
             checkout(url_repo, auth, 'master', transID)
-            taskID = downloadFromOSM(url_repo, auth, transID)
+            taskID = downloadFromOSM(url_repo, auth, transID, update, mapping, bbox)
         except Exception:
             taskID = -1
             endTransaction(url_repo, auth, True, transID)
@@ -244,12 +259,17 @@ def run(args):
     print "=================================="
 
 parser = argparse.ArgumentParser(description='Synchronize GeoGig repository with OpenStreetMap (OSM)')
+
+parser.add_argument("repo", help="The GeoServer id of the GeoGig repository you want to sync.")
+parser.add_argument("update", help="true/false.  Update existing features only or download new features.  If false, extent and mapping are required.")
+
 parser.add_argument("--geoserver", help="The url of the GeoServer servicing the GeoGig repository.")
-parser.add_argument("--repo", help="The GeoServer id of the GeoGig repository you want to sync.")
 parser.add_argument("--username", help="The username to use for basic auth requests.")
 parser.add_argument("--password", help="The password to use for basic auth requests.")
 parser.add_argument("--authorname", help="The author name to use when merging non-conflicting branches.")
 parser.add_argument("--authoremail", help="The author email to use when merging non-conflicting branches.")
+parser.add_argument("--extent", help="The extent of the OpenStreetMap extract. For example, basic:buildings_and_roads.")
+parser.add_argument("--mapping", help="The mapping of the OpenStreetMap extract.  For example, dominican_republic:santo_domingo.")
   
 args = parser.parse_args()
 run(args)
