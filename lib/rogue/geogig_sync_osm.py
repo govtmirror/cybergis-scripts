@@ -64,7 +64,7 @@ def checkout(url, auth, branch, transactionId):
     #print response
 
     newBranch = response['response']['NewTarget']
-    print "Checked out "+newBranch
+    print "Checked out "+newBranch+' branch.'
     return newBranch
 
 def getTaskStatus(url, auth, taskID, printStatus):
@@ -89,6 +89,9 @@ def getTaskStatus(url, auth, taskID, printStatus):
         elif taskStatus == "FAILED":
             errorMessage = response['task']['error']['message']
             print "++Task "+str(taskID)+" failed with error message: "+errorMessage+"."
+        elif taskStatus == "FINISHED":
+            print response
+            print "++Task "+str(taskID)+" is finished."
         else:
             print "++Task "+str(taskID)+" is "+taskStatus+"."
     
