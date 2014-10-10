@@ -108,8 +108,14 @@ def printTaskStatus(taskID, status, progress, result, errorMessage):
         print "----"
         print "++Task "+str(taskID)+" is running."
         if progress:
-            print "Current Step: "+str(progress['task'])
-            print "Entities Processed: "+str(progress['amount'])
+            progress_task = progress['task']
+            if progress_task == 'Committing features...':
+                print progress_task
+            elif progress_task = 'Importing into GeoGig repo...':
+                print progress_task+' '+str(progress['amount'])+' entities imported'.
+            else:
+                print "Current Step: "+str(progress['task'])
+                print "Entities Processed: "+str(progress['amount'])
         if result:
             print "Entities Processed: "+result['OSMReport']['processedEntities']
     elif status == "FAILED":
