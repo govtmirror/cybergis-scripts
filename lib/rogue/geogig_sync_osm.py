@@ -59,13 +59,16 @@ def checkout(url, auth, branch, transactionId):
         raise Exception("Checkout for branch "+branch+" failed: Status Code {0}".format(request.getcode()))
         
     response = json.loads(request.read())
-    
-    #taskID = response['task']['id']
     print response
-
-    newBranch = response['response']['NewTarget']
-    print "Checked out "+newBranch+' branch.'
-    return newBranch
+    if response['response']['success']:
+        newBranch = response['response']['NewTarget']
+        print "Checked out "+newBranch+' branch.'
+        return newBranch
+    else:
+        print "----"
+        print "Checkout for "+branch+" branch failed."
+        print "Error Message: "+response['response']['error']
+        return None
 
 def pollTask(url, auth, taskID, printStatus):
     #print('Downloading from OpenStreetMap ...')
@@ -294,7 +297,9 @@ def run(args):
         #==#
         #Checkout master branch.  See: https://github.com/boundlessgeo/GeoGig/issues/788
         try:
-            checkout(url_repo, auth, 'master', transID)
+            branch = checkout(url_repo, auth, 'master', transID)
+            if not branch:
+                raise Exception('An error occurred when checking out master.  Cancelling task.')
             taskID = downloadFromOSM(url_repo, auth, transID, update, mapping, bbox)
         except Exception:
             taskID = -1
