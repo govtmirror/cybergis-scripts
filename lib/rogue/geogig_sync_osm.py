@@ -203,11 +203,15 @@ def parse_url(url):
     return url
 
 def parse_bbox(extent):
-    file_extent ="/opt/cybergis-osm-mappings.git/extents/"+extent.replace(":","/")+".txt"
+    file_extent = "/opt/cybergis-osm-mappings.git/extents/"+extent.replace(":","/")+".txt"
     bbox = None
     with open (file_extent, "r") as f:
         bbox = f.read().replace('\n', '')
     return bbox
+
+def parse_mapping(ns_mapping):
+    file_mapping = "/opt/cybergis-osm-mappings.git/extents/"+ns_mapping.replace(":","/")+".txt"
+    return file_mapping
 
 def run(args):
     #==#
@@ -225,7 +229,7 @@ def run(args):
     #==#
     update = args.update in ["1","y","t","true"]
     bbox = parse_bbox(args.extent)
-    mapping = args.mapping
+    mapping = parse_mapping(args.mapping)
     print "=================================="
     print "#==#"
     print "CyberGIS Script / geogig_sync_osm.py"
