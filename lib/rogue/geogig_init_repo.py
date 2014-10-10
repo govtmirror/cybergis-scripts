@@ -34,7 +34,7 @@ def parse_url(url):
 def createRepo(path):
     if not os.path.exists(path):
         os.makedirs(path)
-    subprocess.Popen("geogig init", cwd=repo)
+    subprocess.Popen("geogig init", cwd=path)
 
 def buildPOSTDataDataStore(name, path):
     file_data ="/opt/cybergis-scripts.git/lib/rogue/post_geogigdatastore.xml"
