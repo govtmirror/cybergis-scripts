@@ -24,7 +24,7 @@ def beginTransaction(url, auth):
 
     if request.getcode() != 200:
         raise Exception("BeginTransaction failed: Status Code {0}".format(request.getcode()))
-        
+        w
     response = json.loads(request.read())
 
     if not response['response']['success']:
@@ -308,7 +308,7 @@ def run(args):
             raise
         
         if taskID != -1:
-            waitOnTask(url_tasks, auth, taskID)
+            waitOnTask(url_tasks, auth, taskID, timeout)
   
         #==#
         #Checkout master branch.  See: https://github.com/boundlessgeo/GeoGig/issues/788
