@@ -171,6 +171,23 @@ def downloadFromOSM(url, auth, transactionId, update, mapping, bbox):
         print('Download from OpenStreetMap is being processed.  Task ID is '+str(taskID)+'.')
         
     return taskID;
+
+def getRepoID(geoserver, auth, workspace, datastore):
+    params = {}
+    url = geoserver+"rest/workspaces/"+workspace+"/datastores/"+datastore+".json"
+    request = make_request(url=url, params=params, auth=auth)
+
+    if request.getcode() != 200:
+        raise Exception("Get Task Status Failed: Status Code {0}".format(request.getcode()))
+
+    response = json.loads(request.read())
+    repoID = None
+    for entry in response['dataStore']['connectionParameters']['entry']
+        if entry['@key'] == 'geogig_repository'
+            repoID = entry['$']
+            break
+
+    return repoID;
  
 def parse_url(url):
     
@@ -195,8 +212,6 @@ def run(args):
     #==#
     geoserver = parse_url(args.geoserver)
     repo = args.repo
-    url_repo = geoserver+'geogig/'+repo+'/'
-    url_tasks = geoserver+'geogig/tasks'
     #==#
     authorname = args.authorname
     authoremail = args.authoremail
@@ -214,7 +229,16 @@ def run(args):
     print "Downloading Updates from OpenStreetMap"
     print "#==#"
 
-    boolean valid:   
+    if repo
+        pass
+    elif geoserver and workspace and datastore:
+        repo = getRepoID(geoserver, auth, workspace, datastore)
+    else:
+        print "You need to include the repo id or the datastore name to sync"
+    #==#
+    url_repo = geoserver+'geogig/'+repo+'/'
+    url_tasks = geoserver+'geogig/tasks'
+    #==#
     if update:
         pass
     elif bbox and mapping:
@@ -260,8 +284,12 @@ def run(args):
 
 parser = argparse.ArgumentParser(description='Synchronize GeoGig repository with OpenStreetMap (OSM)')
 
-parser.add_argument("repo", help="The GeoServer id of the GeoGig repository you want to sync.")
 parser.add_argument("update", help="true/false.  Update existing features only or download new features.  If false, extent and mapping are required.")
+
+#
+parser.add_argument("--workspace", help="The workspace of the GeoServer data store of the GeoGig repository you want to sync.")
+parser.add_argument("--datastore", help="The name of the GeoServer data store of the GeoGig repository you want to sync.")
+parser.add_argument("--repo", help="The GeoServer id of the GeoGig repository you want to sync.")
 
 parser.add_argument("--geoserver", help="The url of the GeoServer servicing the GeoGig repository.")
 parser.add_argument("--username", help="The username to use for basic auth requests.")
