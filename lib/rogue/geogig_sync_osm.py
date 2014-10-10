@@ -202,7 +202,7 @@ def parse_url(url):
     return url
 
 def parse_bbox(extent):
-    file_extent ="/opt/cybergis-osm-mappings.git/extents/"+extent+".txt"
+    file_extent ="/opt/cybergis-osm-mappings.git/extents/"+extent.replace(":","/")+".txt"
     bbox = None
     with open (file_extent, "r") as f:
         bbox = f.read().replace('\n', '')
