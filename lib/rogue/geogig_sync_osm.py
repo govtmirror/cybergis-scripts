@@ -167,7 +167,8 @@ def waitOnTask(verbose, url, auth, taskID, timeout):
     sleepCycle = 5
     taskStatus = None
     
-    print "----------------------------------"
+    if verbose > 0:
+        print "----------------------------------"
     print "Maximum wait time is "+str(maxTime)+" seconds.  Waiting for task "+str(taskID)+"..."
     while timeSlept < maxTime:
         taskStatus, taskProgress, taskResult, errorMessage = pollTask(url, auth, taskID)
