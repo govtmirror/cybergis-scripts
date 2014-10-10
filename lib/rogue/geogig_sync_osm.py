@@ -30,7 +30,7 @@ def beginTransaction(url, auth):
     if not response['response']['success']:
         raise Exception("An error occurred on beginTransaction: {0}".format(response['response']['error']))
 
-    print('Transaction started')
+    print('Transaction started.')
     transactionId = response['response']['Transaction']['ID']
         
     return transactionId;
@@ -47,6 +47,8 @@ def endTransaction(url, auth, cancel, transactionId):
     
     if not response['response']['success']:
         raise Exception("An error occurred on endTransaction: {0}".format(response['response']['error']))
+
+    print('Transaction ended.')
 
 def checkout(url, auth, branch, transactionId):
     print "Checking out "+branch+" branch"
