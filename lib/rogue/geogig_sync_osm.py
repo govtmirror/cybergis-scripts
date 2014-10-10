@@ -117,7 +117,7 @@ def printTaskStatus(taskID, status, progress, result, errorMessage):
                 print "Current Step: "+str(progress['task'])
                 print "Entities Processed: "+str(progress['amount'])
         if result:
-            print "Entities Processed: "+result['OSMReport']['processedEntities']
+            print "Entities Processed: "+str(result['OSMReport']['processedEntities'])
     elif status == "FAILED":
         print "----"
         print "++Task "+str(taskID)+" failed with error message: "+errorMessage+"."
@@ -125,12 +125,12 @@ def printTaskStatus(taskID, status, progress, result, errorMessage):
         print "----"
         print "++Task "+str(taskID)+" is finished."
         if result:
-            print "Entities Processed: "+result['OSMReport']['processedEntities']
+            print "Entities Processed: "+str(result['OSMReport']['processedEntities'])
     elif status == "CANCELLED":
         print "----"
         print response
         print "++Task "+str(taskID)+" was cancelled."
-        print "Entities Processed: "+result['OSMReport']['processedEntities']
+        print "Entities Processed: "+str(result['OSMReport']['processedEntities'])
     else:
         print "----"
         print "++Task "+str(taskID)+" is "+status+"."
