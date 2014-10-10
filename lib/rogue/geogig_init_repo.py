@@ -33,6 +33,23 @@ def parse_url(url):
     
     return url
 
+def getRepoID(geoserver, auth, workspace, datastore):
+    params = {}
+    url = geoserver+"rest/workspaces/"+workspace+"/datastores/"+datastore+".json"
+    request = make_request(url=url, params=params, auth=auth)
+
+    if request.getcode() != 200:
+        raise Exception("Get Task Status Failed: Status Code {0}".format(request.getcode()))
+
+    response = json.loads(request.read())
+    repoID = None
+    for entry in response['dataStore']['connectionParameters']['entry']:
+        if entry['@key'] == 'geogig_repository':
+            repoID = entry['$']
+            break
+
+    return repoID;
+
 def createRepo(path):
     if not os.path.exists(path):
         os.makedirs(path)
@@ -69,15 +86,47 @@ def createDataStore(verbose, geoserver, workspace, auth, name, path):
 
     #return transactionId;
 
-#def getFeatureTypes(geoserver, repo):
+def createLayer(verbose, geoserver, workspace, auth, datastore, layer):
+    if verbose > 0:
+        print('Creating GeoServer Layer for '+layer+".")
+    params = {}
+    data = buildPOSTDataLayer(name)
+    url = geoserver+"rest/workspaces/"+workspace+"/datastores/"+datastore="/featuretypes.xml"
+    request = make_request(url=url+'?', params=params, auth=auth, data=data)
 
-#def createLayers(geoserver, repo):
+    if request.getcode() != 201:
+        raise Exception("Create layer failed: Status Code {0}".format(request.getcode()))
+        
+    if verbose > 0:
+        print('Layer created.')
+
+def getTrees(verbose, url, auth):
+    
+    params = {'output_format': 'JSON', 'verbose': true}
+    request = make_request(url=url+'ls-tree.json?', params=params, auth=auth)
+
+    if request.getcode() != 200:
+        raise Exception("Checkout for branch "+branch+" failed: Status Code {0}".format(request.getcode()))
+        
+    response = json.loads(request.read())
+    
+    if response['response']['success']:
+        trees = response['response']['node']
+        return trees
+    else:
+        print "----"
+        print "List trees failed."
+        print "Error Message: "+response['response']['error']
+        return None
 
 def run(args):
     #==#
     verbose = args.verbose
+    publish_datastores = args.publish_datastores
+    publish_layers = args.publish_layers
     #==#
-    name = args.name 
+    name = args.name
+    datastore = name
     geoserver = parse_url(args.geoserver)
     path = args.path
     workspace = args.workspace
@@ -92,16 +141,29 @@ def run(args):
     print "CyberGIS Script / geogig_init_repo.py"
     print "Initialize GeoGig repository and optionally add to GeoServer instance."
     print "#==#"
-    #Create GeoGig Repository and add to GeoServer
-    createRepo(path)
-    if args.geoserver and args.workspace and args.name:
+    
+    #Initialize GeoGig Repository
+    if path:
+        createRepo(path)
+    
+    #Create GeoGig Data store in GeoServer    
+    if publish_datastores > 0 and args.geoserver and args.workspace and args.name:
         createDataStore(verbose,geoserver,workspace,auth,name,path)
 
-    return
+    #Publish GeoGig Trees as Layers
+    if publish_layers > 0:
+        repo = getRepoID(geoserver, auth, workspace, datastore)
+        url_repo = geoserver+'geogig/'+repo+'/'
+        trees = getTrees(verbose, url_repo, auth)
+        if trees:
+            trees = ([t['path'] for t in t if (not t['path'] in ['node',',way'])])
+            for tree in trees:
+                createLayer(verbose, geoserver, workspace, auth, datastore, tree):
+                    
     print "=================================="
 
 parser = argparse.ArgumentParser(description='Initialize GeoGig repository and optionally add to GeoServer instance.  If you want to add the GeoGig repo include the optional parameters.')
-parser.add_argument("path", help="The location in the filesystem of the Geogig repository.")
+parser.add_argument("--path", help="The location in the filesystem of the Geogig repository.")
 parser.add_argument("--name", help="The name of the GeoGig repo and data store in GeoServer.")
 parser.add_argument("--geoserver", help="The url of the GeoServer servicing the GeoGig repository.")
 parser.add_argument("--workspace", help="The GeoServer workspace to use for the data store.")
@@ -109,6 +171,8 @@ parser.add_argument("--workspace", help="The GeoServer workspace to use for the 
 parser.add_argument("--username", help="The username to use for basic auth requests.")
 parser.add_argument("--password", help="The password to use for basic auth requests.")
 parser.add_argument('--verbose', '-v', default=0, action='count', help="Print out intermediate status messages.")
+parser.add_argument("--publish_datastores", help="Publish datastores in GeoServer for GeoGig repository")
+parser.add_argument('--publish_layers', default=0, action='count', help="Publish layers from GeoGig data store")
 
 args = parser.parse_args()
 run(args)
