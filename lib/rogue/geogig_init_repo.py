@@ -62,6 +62,13 @@ def buildPOSTDataDataStore(name, path):
     with open (file_data, "r") as f:
         data = f.read().replace('{{name}}', name).replace('{{path}}',path)
     return data
+    
+def buildPOSTDataLayer(name):
+    file_data ="/opt/cybergis-scripts.git/lib/rogue/post_geogiglayer.xml"
+    data = None
+    with open (file_data, "r") as f:
+        data = f.read().replace('{{name}}', name)
+    return data
 
 def createDataStore(verbose, geoserver, workspace, auth, name, path):
     if verbose > 0:
