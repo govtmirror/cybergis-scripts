@@ -81,7 +81,11 @@ def pollTask(url, auth, taskID):
     response = json.loads(request.read())
 
     status = response['task']['status']
-    result = response['task']['result']
+    result = None
+    try:
+        result = response['task']['result']
+    except:
+        result = None
     
     return status, result
 
