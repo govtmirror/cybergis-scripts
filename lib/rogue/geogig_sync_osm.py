@@ -61,7 +61,7 @@ def checkout(url, auth, branch, transactionId):
     response = json.loads(request.read())
     
     #taskID = response['task']['id']
-    #print response
+    print response
 
     newBranch = response['response']['NewTarget']
     print "Checked out "+newBranch+' branch.'
