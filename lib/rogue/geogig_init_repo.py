@@ -97,7 +97,7 @@ def createLayer(verbose, geoserver, workspace, auth, datastore, layer):
     if verbose > 0:
         print('Creating GeoServer Layer for '+layer+".")
     params = {}
-    data = buildPOSTDataLayer(name)
+    data = buildPOSTDataLayer(layer)
     url = geoserver+"rest/workspaces/"+workspace+"/datastores/"+datastore+"/featuretypes.xml"
     request = make_request(url=url+'?', params=params, auth=auth, data=data)
 
