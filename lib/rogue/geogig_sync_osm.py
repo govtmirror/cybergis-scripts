@@ -149,8 +149,8 @@ def cancelTask(url, auth, taskID, printStatus):
     
     return taskStatus;
 
-def waitOnTask(url, auth, taskID):
-    maxTime = 30
+def waitOnTask(url, auth, taskID, timeout):
+    maxTime = timeout
     timeSlept = 0
     sleepCycle = 5
     taskStatus = None
@@ -251,6 +251,7 @@ def run(args):
     repo = args.repo
     datastore = args.datastore
     workspace = args.workspace
+    timeout = args.timeout || 30
     #==#
     authorname = args.authorname
     authoremail = args.authoremail
@@ -339,6 +340,7 @@ parser.add_argument("--authorname", help="The author name to use when merging no
 parser.add_argument("--authoremail", help="The author email to use when merging non-conflicting branches.")
 parser.add_argument("--extent", help="The extent of the OpenStreetMap extract. For example, basic:buildings_and_roads.")
 parser.add_argument("--mapping", help="The mapping of the OpenStreetMap extract.  For example, dominican_republic:santo_domingo.")
+parser.add_argument("--timeout", help="The number of seconds to wait for the osm download task to complete before cancelling.")
   
 args = parser.parse_args()
 run(args)
