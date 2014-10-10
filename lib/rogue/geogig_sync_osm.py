@@ -117,9 +117,9 @@ def printTaskStatus(taskID, status, progress, result, errorMessage):
         print "++Task "+str(taskID)+" failed with error message: "+errorMessage+"."
     elif status == "FINISHED":
         print "----"
-        print response
         print "++Task "+str(taskID)+" is finished."
-        print "Entities Processed: "+result['OSMReport']['processedEntities']
+        if result:
+            print "Entities Processed: "+result['OSMReport']['processedEntities']
     elif status == "CANCELLED":
         print "----"
         print response
