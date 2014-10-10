@@ -42,7 +42,7 @@ def buildPOSTDataDataStore(name, path):
         data = f.read().replace('{{name}}', name).replace('{{path}}',path)
     return data
 
-def createDataStore(geoserver, workspace, name, path):
+def createDataStore(geoserver, workspace, auth, name, path):
     print('Creating GeoServer Datastore.')
     params = {'output_format': 'JSON'}
     data = buildPOSTDataDataStore(name, path)
@@ -87,7 +87,7 @@ def run(args):
     #Create GeoGig Repository and add to GeoServer
     createRepo(path)
     if args.geoserver and args.workspace and args.name:
-        createDataStore(geoserver,workspace,name,path)
+        createDataStore(geoserver,workspace,auth,name,path)
 
     return
     print "=================================="
