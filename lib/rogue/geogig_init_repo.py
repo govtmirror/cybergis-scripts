@@ -29,8 +29,9 @@ def parse_url(url):
     
     return url
 
-def createRepo(repo):
-    print repo
+def createRepo(path):
+    if not os.path.exists(path):
+        os.makedirs(path)
     #subprocess.Popen("geogig init",cwd=repo)
 
 def buildPOSTDataDataStore(name, path):
