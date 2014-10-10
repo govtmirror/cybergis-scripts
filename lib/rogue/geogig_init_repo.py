@@ -57,7 +57,7 @@ def createDataStore(geoserver, workspace, auth, name, path):
         raise Exception("Create data store failed: Status Code {0}".format(request.getcode()))
 
     #print request.read()
-    response = json.loads(request.read())
+    #response = json.loads(request.read())
     #print response
 
     #if not response['response']['success']:
@@ -97,7 +97,7 @@ def run(args):
     return
     print "=================================="
 
-parser = argparse.ArgumentParser(description='Initialize GeoGig repository and optionally add to GeoServer instance.')
+parser = argparse.ArgumentParser(description='Initialize GeoGig repository and optionally add to GeoServer instance.  If you want to add the GeoGig repo include the optional parameters.')
 parser.add_argument("path", help="The location in the filesystem of the Geogig repository.")
 parser.add_argument("--name", help="The name of the GeoGig repo and data store in GeoServer.")
 parser.add_argument("--geoserver", help="The url of the GeoServer servicing the GeoGig repository.")
