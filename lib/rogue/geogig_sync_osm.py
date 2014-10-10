@@ -155,7 +155,7 @@ def cancelTask(url, auth, taskID, printStatus):
     
     return taskStatus;
 
-def waitOnTask(url, auth, taskID, timeout):
+def waitOnTask(verbose, url, auth, taskID, timeout):
     maxTime = timeout
     timeSlept = 0
     sleepCycle = 5
@@ -325,7 +325,7 @@ def run(args):
             raise
         
         if taskID != -1:
-            waitOnTask(url_tasks, auth, taskID, timeout)
+            waitOnTask(verbose, url_tasks, auth, taskID, timeout)
   
         #==#
         #Checkout master branch.  See: https://github.com/boundlessgeo/GeoGig/issues/788
