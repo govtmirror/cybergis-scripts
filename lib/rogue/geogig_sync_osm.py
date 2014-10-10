@@ -210,7 +210,7 @@ def parse_bbox(extent):
     return bbox
 
 def parse_mapping(ns_mapping):
-    file_mapping = "/opt/cybergis-osm-mappings.git/extents/"+ns_mapping.replace(":","/")+".txt"
+    file_mapping = "/opt/cybergis-osm-mappings.git/mappings/"+ns_mapping.replace(":","/")+".json"
     return file_mapping
 
 def run(args):
