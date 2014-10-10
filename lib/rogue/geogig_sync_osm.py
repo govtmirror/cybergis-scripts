@@ -53,7 +53,7 @@ def endTransaction(url, auth, cancel, transactionId):
 def checkout(url, auth, branch, transactionId):
     print "Checking out "+branch+" branch"
     params = {'output_format': 'JSON', 'branch': branch, 'transactionId':transactionId}
-    request = make_request(url=url+'osm/checkout.json?', params=params, auth=auth)
+    request = make_request(url=url+'checkout.json?', params=params, auth=auth)
 
     if request.getcode() != 200:
         raise Exception("Checkout for branch "+branch+" failed: Status Code {0}".format(request.getcode()))
