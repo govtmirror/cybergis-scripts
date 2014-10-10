@@ -56,11 +56,12 @@ def createDataStore(geoserver, workspace, auth, name, path):
     if request.getcode() != 201:
         raise Exception("Create data store failed: Status Code {0}".format(request.getcode()))
 
+    #print request.read()
     response = json.loads(request.read())
-    print response
+    #print response
 
-    if not response['response']['success']:
-        raise Exception("An error occurred when creating data store: {0}".format(response['response']['error']))
+    #if not response['response']['success']:
+    #    raise Exception("An error occurred when creating data store: {0}".format(response['response']['error']))
 
     print('Datastore created.')
 
