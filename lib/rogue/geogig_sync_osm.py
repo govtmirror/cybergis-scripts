@@ -24,12 +24,12 @@ def beginTransaction(verbose, url, auth):
     request = make_request(url=url+'beginTransaction.json?', params=params, auth=auth)
 
     if request.getcode() != 200:
-        raise Exception("BeginTransaction failed: Status Code {0}".format(request.getcode()))
+        raise Exception("action failed: Status Code {0}".format(request.getcode()))
 
     response = json.loads(request.read())
 
     if not response['response']['success']:
-        raise Exception("An error occurred on beginTransaction: {0}".format(response['response']['error']))
+        raise Exception("An error occurred on action: {0}".format(response['response']['error']))
 
     if verbose > 0:
         print('Transaction started.')
@@ -309,7 +309,7 @@ def run(args):
 
     transID = -1
     try:
-        transID = beginTransaction(url_repo, auth)
+        transID = beginTransaction(verbose,url_repo, auth)
     except Exception:
         transID = -1
         raise
@@ -325,7 +325,7 @@ def run(args):
             taskID = downloadFromOSM(verbose, url_repo, auth, transID, update, mapping, bbox)
         except Exception:
             taskID = -1
-            endTransaction(url_repo, auth, True, transID)
+            endTransaction(verbose,url_repo, auth, True, transID)
             raise
         
         if taskID != -1:
@@ -339,7 +339,7 @@ def run(args):
             pass
  
     try:
-        endTransaction(url_repo, auth, False, transID)
+        endTransaction(verbose,url_repo, auth, False, transID)
     except Exception:
         pass
     
