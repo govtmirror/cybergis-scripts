@@ -81,27 +81,35 @@ def pollTask(url, auth, taskID):
     response = json.loads(request.read())
 
     status = response['task']['status']
+    
+    progress = None
+    try:
+        progress = response['task']['progress']
+    except:
+        progress = None
+    
     result = None
     try:
         result = response['task']['result']
     except:
         result = None
+        
     errorMessage = None
     try:
         errorMessage = response['task']['error']['message']
     except:
         errorMessage = None
     
-    return status, result, errorMessage
+    return status, progress, result, errorMessage
 
-def printTaskStatus(taskID, status, result, errorMessage):
+def printTaskStatus(taskID, status, progress, result, errorMessage):
 
     if status == "RUNNING":
         print "----"
-        #print response
-        #taskAmount = response['task']['amount']
-        taskAmount = "#" #Amount value isn't showing up in response.
-        print "++Task "+str(taskID)+" is running and "+taskAmount+" percentage complete."
+        print "++Task "+str(taskID)+" is running."
+        if progress:
+            print "Current Step: "+str(progress['task'])
+            print "Entities Processed: "+str(progress['amount'])
         if result:
             print "Entities Processed: "+result['OSMReport']['processedEntities']
     elif status == "FAILED":
@@ -150,8 +158,8 @@ def waitOnTask(url, auth, taskID):
     print "Waiting for task "+str(taskID)+"..."
     print "Maximum wait time is "+str(maxTime)+" seconds."
     while timeSlept < maxTime:
-        taskStatus, taskResult, errorMessage = pollTask(url, auth, taskID)
-        printTaskStatus(taskID, taskStatus, taskResult, errorMessage)
+        taskStatus, taskProgress, taskResult, errorMessage = pollTask(url, auth, taskID)
+        printTaskStatus(taskID, taskStatus, taskProgress, taskResult, errorMessage)
         if not (taskStatus in ['WAITING','RUNNING']):
             break
         #print "Time Slept: "+str(timeSlept)
