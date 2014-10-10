@@ -122,7 +122,7 @@ def getTrees(verbose, url, auth):
 def run(args):
     #==#
     verbose = args.verbose
-    publish_datastores = args.publish_datastores
+    publish_datastore = args.publish_datastore
     publish_layers = args.publish_layers
     #==#
     name = args.name
@@ -147,7 +147,7 @@ def run(args):
         createRepo(path)
     
     #Create GeoGig Data store in GeoServer    
-    if publish_datastores > 0 and args.geoserver and args.workspace and args.name:
+    if publish_datastore > 0 and args.geoserver and args.workspace and args.name:
         createDataStore(verbose,geoserver,workspace,auth,name,path)
 
     #Publish GeoGig Trees as Layers
@@ -171,7 +171,7 @@ parser.add_argument("--workspace", help="The GeoServer workspace to use for the 
 parser.add_argument("--username", help="The username to use for basic auth requests.")
 parser.add_argument("--password", help="The password to use for basic auth requests.")
 parser.add_argument('--verbose', '-v', default=0, action='count', help="Print out intermediate status messages.")
-parser.add_argument("--publish_datastores", help="Publish datastores in GeoServer for GeoGig repository")
+parser.add_argument("--publish_datastore", help="Publish datastore in GeoServer for GeoGig repository")
 parser.add_argument('--publish_layers', default=0, action='count', help="Publish layers from GeoGig data store")
 
 args = parser.parse_args()
