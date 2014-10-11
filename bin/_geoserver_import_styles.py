@@ -60,6 +60,7 @@ def createStyle(verbose, geoserver, auth, name, filename):
     url = geoserver+"rest/styles.json"
     request = make_request(url=url+'?', params=params, auth=auth, data=data)
 
+    print request.getcode()
     if request.getcode() != 201:
         raise Exception("Create data store failed: Status Code {0}".format(request.getcode()))
 
