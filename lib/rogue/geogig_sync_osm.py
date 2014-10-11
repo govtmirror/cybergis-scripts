@@ -12,12 +12,12 @@ parser = argparse.ArgumentParser(description='Synchronize GeoGig repository with
 
 parser.add_argument("update", default= 'true', help="true/false.  Update existing features only or download new features.  If false, extent and mapping are required.")
 
+parser.add_argument('-gs', '--geoserver', help="The url of the GeoServer servicing the GeoGig repository.")
+parser.add_argument('-ws', '--workspace', help="The GeoServer workspace to use for the data store.")
 #
-parser.add_argument("--workspace", help="The workspace of the GeoServer data store of the GeoGig repository you want to sync.")
 parser.add_argument("--datastore", help="The name of the GeoServer data store of the GeoGig repository you want to sync.")
 parser.add_argument("--repo", help="The GeoServer id of the GeoGig repository you want to sync.")
 
-parser.add_argument("--geoserver", help="The url of the GeoServer servicing the GeoGig repository.")
 parser.add_argument("--username", help="The username to use for basic auth requests.")
 parser.add_argument("--password", help="The password to use for basic auth requests.")
 parser.add_argument("--authorname", help="The author name to use when merging non-conflicting branches.")
