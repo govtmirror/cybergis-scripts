@@ -7,7 +7,10 @@ import argparse
 import time
 import os
 import subprocess
-
+#==#
+import _geogig_init_repo
+import _geogig_sync_osm
+#==#
 def run(args):
     print args
     #==#
@@ -31,12 +34,8 @@ def run(args):
     print "Initialize GeoGig repository, adds to GeoServer, downloads OSM extract, publishes layers"
     print "#==#"
     #==#
-    print "Subroutines"
-    import geogig_init_repo
-    import geogig_sync_osm
-    #==#
     print "Executing subroutines"
-    geogig_init_repo.run({
+    _geogig_init_repo.run({
         'path': path,
         'name': name,
         'geoserver': geoserver,
@@ -47,7 +46,7 @@ def run(args):
         'verbose': verbose
     })
     #==#
-    geogig_sync_osm.run({
+    _geogig_sync_osm.run({
         'update': 'false',
         'datastore': name,
         'geoserver': geoserver,
@@ -62,7 +61,7 @@ def run(args):
         'timeout': timeout
     })
     #==#
-    geogig_init_repo.run({
+    _geogig_init_repo.run({
         'name': name,
         'geoserver': geoserver,
         'workspace': workspace,
