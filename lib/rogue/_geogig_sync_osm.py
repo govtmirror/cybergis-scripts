@@ -215,6 +215,7 @@ def downloadFromOSM(verbose, url, auth, transactionId, update, mapping, bbox):
     print params
     print url
     print auth
+    print url +'osm/download.json?' + urllib.urlencode(params)
     #
     request = make_request(url=url+'osm/download.json?', params=params, auth=auth)
 
