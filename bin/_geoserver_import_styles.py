@@ -51,7 +51,7 @@ def run(args):
         print "Namespace: "+ns
         for path in glob.glob(ns+os.sep+"*.sld"):
             print "Path: "+path
-            head,tail = os.path.split(style)
+            head,tail = os.path.split(path)
             name, ext = os.path.splitext(tail)
             print "Name: "+name
     
