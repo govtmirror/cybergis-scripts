@@ -217,6 +217,15 @@ elif [[ "$ENV" = "rogue" ]]; then
         bash --login -c "rogue $ENV $CMD"
     fi
 
+elif [[ "$ENV" = "maploom" ]]; then
+    
+    if [[ $# -ne 2 ]]; then
+        echo "Usage: cybergis-script-env.sh maploom [install|reset]"
+    else
+        export -f maploom
+        bash --login -c "maploom $ENV $CMD"
+    fi
+
 elif [[ "$ENV" = "ittc" ]]; then
     
     if [[ $# -ne 2 ]]; then
@@ -227,5 +236,5 @@ elif [[ "$ENV" = "ittc" ]]; then
     fi
 
 else
-    echo "Usage: cybergis-script-env.sh [geonode|ittc]"
+    echo "Usage: cybergis-script-env.sh [geonode|rogue|maploom|ittc]"
 fi
