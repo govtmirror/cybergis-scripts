@@ -35,7 +35,7 @@ def run(args):
     print "#==#"
     #==#
     print "Executing subroutines"
-    _geogig_init_repo.run({
+    d = {
         'path': path,
         'name': name,
         'geoserver': geoserver,
@@ -44,7 +44,8 @@ def run(args):
         'username': username,
         'password': password,
         'verbose': verbose
-    })
+    }
+    _geogig_init_repo.run(d.__dict__)
     #==#
     _geogig_sync_osm.run({
         'update': 'false',
