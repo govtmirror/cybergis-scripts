@@ -103,7 +103,7 @@ def run(args):
             name, ext = os.path.splitext(tail)
             print "Name: "+name
             #==#
-            name_gs = namespace+"_"+name
+            name_gs = ns+"_"+name
             if prefix:
                 name_gs = prefix + name_gs
             try:
