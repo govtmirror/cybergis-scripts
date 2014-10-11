@@ -97,7 +97,7 @@ def populateStyle(verbose, geoserver, auth, name, sld):
     request = put_file(url=url+'?', params=params, auth=auth, data=data, contentType='application/vnd.ogc.sld+xml')
 
     print request.getcode()
-    if request.getcode() != 201:
+    if request.getcode() != 200:
         raise Exception("Populate style failed: Status Code {0}".format(request.getcode()))
 
     if verbose > 0:
