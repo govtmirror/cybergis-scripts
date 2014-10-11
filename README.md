@@ -50,6 +50,8 @@ cybergis-script-env.sh [geonode|ittc]
     cybergis-script-env.sh rogue [install|reset]
     
     cybergis-script-env.sh ittc install
+    
+    cybergis-script-env.sh maploom install
 ````
 ### EC2
 
