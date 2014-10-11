@@ -71,6 +71,7 @@ def run(args):
     }))
     #==#
     _geogig_init_repo.run(ov({
+        'path': None,
         'name': name,
         'geoserver': geoserver,
         'workspace': workspace,
