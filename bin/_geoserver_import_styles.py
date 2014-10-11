@@ -42,6 +42,7 @@ def run(args):
     #==#
     path = args.path
     geoserver = parse_url(args.geoserver)
+    prefix = args.prefix
     #==#
     auth = None
     if args.username and args.password:
@@ -55,5 +56,7 @@ def run(args):
             head,tail = os.path.split(path)
             name, ext = os.path.splitext(tail)
             print "Name: "+name
+            
+            
     
     print "=================================="
