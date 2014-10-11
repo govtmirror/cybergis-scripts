@@ -133,6 +133,7 @@ def getTrees(verbose, url, auth):
 def run(args):
     #==#
     verbose = args.verbose
+    #==#
     publish_datastore = args.publish_datastore
     publish_layers = args.publish_layers
     #==#
@@ -142,17 +143,17 @@ def run(args):
     path = args.path
     workspace = args.workspace
     #url_repo = geoserver+'geogig/'+repo+'/'
-    
+    #==#
     auth = None
     if args.username and args.password:
       auth = b64encode('{0}:{1}'.format(args.username, args.password))
-
+    #==#
     print "=================================="
     print "#==#"
     print "CyberGIS Script / geogig_init_repo.py"
     print "Initialize GeoGig repository and optionally add to GeoServer instance."
     print "#==#"
-    
+    #==#
     #Initialize GeoGig Repository
     if path:
         createRepo(path)
@@ -187,6 +188,6 @@ parser.add_argument("--password", help="The password to use for basic auth reque
 parser.add_argument('--verbose', '-v', default=0, action='count', help="Print out intermediate status messages.")
 parser.add_argument("--publish_datastore", default=0, action='count', help="Publish datastore in GeoServer for GeoGig repository")
 parser.add_argument('--publish_layers', default=0, action='count', help="Publish layers from GeoGig data store")
-
 args = parser.parse_args()
+#==#
 run(args)
