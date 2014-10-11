@@ -26,6 +26,27 @@ def make_request(url, params, auth=None, data=None, contentType=None):
 
     return urllib2.urlopen(req)
 
+
+def put_file(url, params, auth=None, data=None, contentType=None):
+
+
+    opener = urllib2.build_opener(urllib2.HTTPHandler)
+    
+    req = urllib2.Request(url + urllib.urlencode(params), data=data)
+    
+    if auth:
+        req.add_header('AUTHORIZATION', 'Basic ' + auth)
+        
+    if contentType:
+        req.add_header('Content-type', contentType)
+    else:
+        if data:
+            req.add_header('Content-type', 'text/xml')
+            
+    req.get_method = lambda: 'PUT'
+    
+    return opener.open(req)
+
 def parse_url(url):
     
     if (url is None) or len(url) == 0:
@@ -73,7 +94,7 @@ def populateStyle(verbose, geoserver, auth, name, sld):
     params = {}
     data = readStyleFile(sld)
     url = geoserver+"rest/styles/"+name+".json"
-    request = make_request(url=url+'?', params=params, auth=auth, data=data, contentType='application/vnd.ogc.sld+xml')
+    request = put_file(url=url+'?', params=params, auth=auth, data=data, contentType='application/vnd.ogc.sld+xml')
 
     if request.getcode() != 201:
         raise Exception("Create data store failed: Status Code {0}".format(request.getcode()))
