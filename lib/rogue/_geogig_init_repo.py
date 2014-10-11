@@ -131,6 +131,7 @@ def getTrees(verbose, url, auth):
         return None
 
 def run(args):
+    print args
     #==#
     verbose = args.verbose
     #==#
