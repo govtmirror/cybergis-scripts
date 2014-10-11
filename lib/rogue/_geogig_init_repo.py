@@ -122,8 +122,13 @@ def getTrees(verbose, url, auth):
     response = json.loads(request.read())
     
     if response['response']['success']:
-        trees = response['response']['node']
-        return trees
+        try:
+          trees = response['response']['node']
+          return trees
+        except:
+          print 'ls-tree reported success, but did not have any trees.  No data in OSM?"
+          print response
+          return None
     else:
         print "----"
         print "List trees failed."
