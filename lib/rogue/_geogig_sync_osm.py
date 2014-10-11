@@ -211,7 +211,11 @@ def downloadFromOSM(verbose, url, auth, transactionId, update, mapping, bbox):
     
     if mapping:
         params['mapping'] = mapping
-    
+    #
+    print params
+    print url
+    print auth
+    #
     request = make_request(url=url+'osm/download.json?', params=params, auth=auth)
 
     if request.getcode() != 200:
