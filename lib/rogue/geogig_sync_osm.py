@@ -15,7 +15,7 @@ parser.add_argument("update", default= 'true', help="true/false.  Update existin
 parser.add_argument('-gs', '--geoserver', help="The url of the GeoServer servicing the GeoGig repository.")
 parser.add_argument('-ws', '--workspace', help="The GeoServer workspace to use for the data store.")
 #
-parser.add_argument("--datastore", help="The name of the GeoServer data store of the GeoGig repository you want to sync.")
+parser.add_argument('-ds', '--datastore', help="The name of the GeoServer data store of the GeoGig repository you want to sync.")
 parser.add_argument("--repo", help="The GeoServer id of the GeoGig repository you want to sync.")
 
 parser.add_argument("--username", help="The username to use for basic auth requests.")
