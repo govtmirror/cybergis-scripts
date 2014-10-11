@@ -256,15 +256,21 @@ def parse_url(url):
     return url
 
 def parse_bbox(extent):
-    file_extent = "/opt/cybergis-osm-mappings.git/extents/"+extent.replace(":","/")+".txt"
-    bbox = None
-    with open (file_extent, "r") as f:
-        bbox = f.read().replace('\n', '').replace(' ',',')
-    return bbox
+    if extent:
+        file_extent = "/opt/cybergis-osm-mappings.git/extents/"+extent.replace(":","/")+".txt"
+        bbox = None
+        with open (file_extent, "r") as f:
+            bbox = f.read().replace('\n', '').replace(' ',',')
+        return bbox
+    else:
+        return None
 
 def parse_mapping(ns_mapping):
-    file_mapping = "/opt/cybergis-osm-mappings.git/mappings/"+ns_mapping.replace(":","/")+".json"
-    return file_mapping
+    if ns_mapping:
+        file_mapping = "/opt/cybergis-osm-mappings.git/mappings/"+ns_mapping.replace(":","/")+".json"
+        return file_mapping
+    else:
+        return None
 
 def run(args):
     #==#
