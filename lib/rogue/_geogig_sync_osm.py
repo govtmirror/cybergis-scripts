@@ -206,15 +206,13 @@ def downloadFromOSM(verbose, url, auth, transactionId, update, mapping, bbox):
     
     if bbox:
         params['bbox'] = bbox
-    else:
-        raise Exception("A bounding box (bbox) must be provided.")
     
     if mapping:
         params['mapping'] = mapping
     #
-    print params
-    print url
-    print auth
+    #print params
+    #print url
+   # print auth
     print url +'osm/download.json?' + urllib.urlencode(params)
     #
     request = make_request(url=url+'osm/download.json?', params=params, auth=auth)
