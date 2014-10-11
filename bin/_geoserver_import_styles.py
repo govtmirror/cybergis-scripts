@@ -66,7 +66,7 @@ def createStyle(verbose, geoserver, auth, name, filename):
     if verbose > 0:
         print('Style created.')
         
-def populatestyle(verbose, geoserver, auth, name, sld):
+def populateStyle(verbose, geoserver, auth, name, sld):
     if verbose > 0:
         print('Populating style...')
     params = {}
@@ -109,7 +109,7 @@ def run(args):
             try:
               createStyle(verbose,geoserver,auth,name_gs,name_gs+".sld")
             except:
-                raise
+                print "Error creating style"
             populateStyle(verbose,geoserver,auth,name_gs,path_sld)
             
     
