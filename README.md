@@ -71,7 +71,9 @@ cybergis-script-geoserver.sh [prod|dev] [tune]
 
     cybergis-script-geoserver.sh prod tune <repo> <Xmx>
     
-    cybergis-script-geoserver-import-styles.py --path PATH --prefix PREFIX --geoserver GEOSEVER --username USERNAME --password PASSWORD --verbose
+    cybergis-script-geoserver-import-styles.py --path PATH \
+    --prefix PREFIX --geoserver GEOSEVER --username USERNAME \
+    --password PASSWORD --verbose
 ```
 
 ### Imagery Processing
