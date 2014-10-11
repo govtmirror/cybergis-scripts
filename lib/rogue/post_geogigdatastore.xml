@@ -1,7 +1,0 @@
-<dataStore>
-  <name>{{name}}</name>
-  <description>{{name}}</description>
-  <connectionParameters>
-    <entry key="geogig_repository">{{path}}</entry>
-  </connectionParameters>
-</dataStore>
