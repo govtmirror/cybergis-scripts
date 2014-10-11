@@ -55,7 +55,7 @@ def run(args):
     }
     _geogig_init_repo.run(ov(d))
     #==#
-    _geogig_sync_osm.run({
+    _geogig_sync_osm.run(ov({
         'update': 'false',
         'datastore': name,
         'geoserver': geoserver,
@@ -68,9 +68,9 @@ def run(args):
         'extent': extent,
         'mapping': mapping,
         'timeout': timeout
-    })
+    }))
     #==#
-    _geogig_init_repo.run({
+    _geogig_init_repo.run(ov({
         'name': name,
         'geoserver': geoserver,
         'workspace': workspace,
@@ -79,7 +79,7 @@ def run(args):
         'username': username,
         'password': password,
         'verbose': verbose
-    })                    
+    }))                    
     print "=================================="
 
 parser = argparse.ArgumentParser(description='Initialize GeoGig repository and optionally add to GeoServer instance.  If you want to add the GeoGig repo include the optional parameters.')
