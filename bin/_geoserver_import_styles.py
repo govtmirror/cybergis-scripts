@@ -70,7 +70,7 @@ def populateStyle(verbose, geoserver, auth, name, sld):
     if verbose > 0:
         print('Populating style...')
     params = {}
-    data = readStyleFile(path)
+    data = readStyleFile(sld)
     url = geoserver+"rest/styles/"+name+".json"
     request = make_request(url=url+'?', params=params, auth=auth, data=data, contentType='application/vnd.ogc.sld+xml')
 
