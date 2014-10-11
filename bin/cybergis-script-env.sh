@@ -155,7 +155,8 @@ maploom(){
       sudo npm config set registry http://registry.npmjs.org/
       sudo apt-get install -y nodejs nodejs-dev npm
       #
-      sudo npm -g install grunt-cli karma bower
+      #sudo npm -g install grunt-cli karma bower
+      sudo npm -g install grunt-cli bower
       #
       cd ~/MapLoom
       npm install grunt-karma@0.9.x wordwrap
