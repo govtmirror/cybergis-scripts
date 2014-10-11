@@ -83,7 +83,7 @@ def createStyle(verbose, geoserver, auth, name, filename):
 
     print request.getcode()
     if request.getcode() != 201:
-        raise Exception("Create data store failed: Status Code {0}".format(request.getcode()))
+        raise Exception("Create style failed: Status Code {0}".format(request.getcode()))
 
     if verbose > 0:
         print('Style created.')
@@ -93,11 +93,12 @@ def populateStyle(verbose, geoserver, auth, name, sld):
         print('Populating style...')
     params = {}
     data = readStyleFile(sld)
-    url = geoserver+"rest/styles/"+name+".json"
+    url = geoserver+"rest/styles/"+name+""
     request = put_file(url=url+'?', params=params, auth=auth, data=data, contentType='application/vnd.ogc.sld+xml')
 
+    print request.getcode()
     if request.getcode() != 201:
-        raise Exception("Create data store failed: Status Code {0}".format(request.getcode()))
+        raise Exception("Populate style failed: Status Code {0}".format(request.getcode()))
 
     if verbose > 0:
         print('Style populated.')
