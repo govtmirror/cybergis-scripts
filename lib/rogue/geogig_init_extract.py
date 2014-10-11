@@ -45,6 +45,7 @@ def run(args):
         'geoserver': geoserver,
         'workspace': workspace,
         'publish_datastore': 1,
+        'publish_layers': 0,
         'username': username,
         'password': password,
         'verbose': verbose
@@ -70,6 +71,7 @@ def run(args):
         'name': name,
         'geoserver': geoserver,
         'workspace': workspace,
+        'publish_datastore': 0,
         'publish_layers': 1,
         'username': username,
         'password': password,
