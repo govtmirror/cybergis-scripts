@@ -94,7 +94,7 @@ def populateStyle(verbose, geoserver, auth, name, sld):
     params = {}
     data = readStyleFile(sld)
     url = geoserver+"rest/styles/"+name+""
-    request = put_file(url=url+'?', params=params, auth=auth, data=data)#, contentType='application/vnd.ogc.sld+xml')
+    request = put_file(url=url+'?', params=params, auth=auth, data=data, contentType='application/vnd.ogc.sld+xml')
 
     print request.getcode()
     if request.getcode() != 201:
