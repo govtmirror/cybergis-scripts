@@ -133,6 +133,46 @@ geonode_install(){
   #cd ~/geonode
 }
 
+maploom(){
+  echo "maploom"
+  if [[ $# -ne 2 ]]; then
+    echo "Usage: cybergis-script-env.sh maploom [install|reset]"
+  else
+    ENV=$1
+    CMD=$2
+    #
+    if [[ "$CMD" = "install" ]]; then
+      sudo apt-get update
+      #
+      sudo apt-get install -y python-software-properties
+      sudo add-apt-repository ppa:chris-lea/node.js
+      #
+      sudo apt-get update
+      #
+      sudo apt-get install -y curl vim git
+      #sudo apt-get install -y nodejs nodejs-dev npm
+      #
+      sudo npm config set registry http://registry.npmjs.org/
+      sudo apt-get install -y nodejs nodejs-dev npm
+      #
+      sudo npm -g install grunt-cli karma bower
+      #
+      cd ~/MapLoom
+      npm install grunt-karma@0.9.x wordwrap
+      sudo npm install
+      bower install
+      grunt watch
+      #
+    elif [[ "$CMD" = "reset" ]]; then
+      # 
+      echo "reset"
+      #
+    else
+      echo "Usage: cybergis-script-env.sh maploom [install|reset]"
+    fi
+  fi
+}
+
 ittc(){
   echo "ittc"
   if [[ $# -ne 2 ]]; then
