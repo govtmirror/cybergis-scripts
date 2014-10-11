@@ -43,7 +43,10 @@ def run(args):
     path = args.path
     geoserver = parse_url(args.geoserver)
     #==#
-    
+    auth = None
+    if args.username and args.password:
+        auth = b64encode('{0}:{1}'.format(args.username, args.password))
+    #==#
     
     
     print "=================================="
