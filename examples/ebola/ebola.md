@@ -37,6 +37,9 @@ Installation only requires 5 simple steps.  Most steps only require executing on
 1. Install CyberGIS scripts.  [[Jump]](#step-1)
 2. Install CyberGIS OSM mappings. [[Jump]](#step-2)
 3. Install CyberGIS styles [[Jump]](#step-3)
+4. Install OpenGeoSuite
+5. Install GeoServer GeoGit Plugin
+6. Execute Run list
 
 ###Kown Issues
 
