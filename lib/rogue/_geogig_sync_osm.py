@@ -241,6 +241,7 @@ def downloadFromOSM(verbose, url, auth, transactionId, update, mapping, bbox):
 def getRepoID(geoserver, auth, workspace, datastore):
     params = {}
     url = geoserver+"rest/workspaces/"+workspace+"/datastores/"+datastore+".json"
+    print url
     request = make_request(url=url, params=params, auth=auth)
 
     if request.getcode() != 200:
