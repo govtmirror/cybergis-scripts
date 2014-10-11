@@ -202,7 +202,16 @@ def waitOnTask(verbose, url, auth, taskID, timeout):
 def downloadFromOSM(verbose, url, auth, transactionId, update, mapping, bbox):
     if verbose>0:
         print('Downloading from OpenStreetMap ...')
-    params = {'output_format': 'JSON', 'update': update, 'mapping': mapping, 'bbox': bbox, 'transactionId':transactionId}
+    params = {'output_format': 'JSON', 'update': update, 'transactionId':transactionId}
+    
+    if bbox:
+        params['bbox'] = bbox
+    else:
+        raise Exception("A bounding box (bbox) must be provided.")
+    
+    if mapping:
+        params['mapping'] = mapping
+    
     request = make_request(url=url+'osm/download.json?', params=params, auth=auth)
 
     if request.getcode() != 200:
