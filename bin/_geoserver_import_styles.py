@@ -47,9 +47,10 @@ def run(args):
     if args.username and args.password:
         auth = b64encode('{0}:{1}'.format(args.username, args.password))
     #==#
-    for ns in glob.glob(path+os.sep+"*"):
+    for path_ns in glob.glob(path+os.sep+"*"):
+        head_ns, ns = os.path.split(path_ns)
         print "Namespace: "+ns
-        for path in glob.glob(ns+os.sep+"*.sld"):
+        for path in glob.glob(path_ns+os.sep+"*.sld"):
             print "Path: "+path
             head,tail = os.path.split(path)
             name, ext = os.path.splitext(tail)
