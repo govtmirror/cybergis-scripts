@@ -56,6 +56,7 @@ def run(args):
     #==#
     _geogig_sync_osm.run(ov({
         'update': 'false',
+        'repo':None,
         'datastore': name,
         'geoserver': geoserver,
         'workspace': workspace,
