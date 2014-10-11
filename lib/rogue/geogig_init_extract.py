@@ -16,7 +16,7 @@ class ov(object):
         self.__dict__ = d
         
 def run(args):
-    print args
+    #print args
     #==#
     verbose = args.verbose
     #==
@@ -42,7 +42,7 @@ def run(args):
     print "#==#"
     #==#
     print "Executing subroutines"
-    d = {
+    _geogig_init_repo.run(ov({
         'path': path,
         'name': name,
         'geoserver': geoserver,
@@ -52,8 +52,7 @@ def run(args):
         'username': username,
         'password': password,
         'verbose': verbose
-    }
-    _geogig_init_repo.run(ov(d))
+    }))
     #==#
     _geogig_sync_osm.run(ov({
         'update': 'false',
