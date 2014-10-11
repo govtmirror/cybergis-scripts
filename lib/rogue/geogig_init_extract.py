@@ -11,6 +11,10 @@ import subprocess
 import _geogig_init_repo
 import _geogig_sync_osm
 #==#
+class ov(object):
+    def __init__(self, d):
+        self.__dict__ = d
+        
 def run(args):
     print args
     #==#
@@ -45,7 +49,7 @@ def run(args):
         'password': password,
         'verbose': verbose
     }
-    _geogig_init_repo.run(d.__dict__)
+    _geogig_init_repo.run(ov(d))
     #==#
     _geogig_sync_osm.run({
         'update': 'false',
