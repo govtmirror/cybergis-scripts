@@ -6,7 +6,7 @@ GS='http://localhost:8080/geoserver/'
 WS=hiu
 AN=hiu
 AE='HIU_INFO@state.gov'
-TO=180
+TO=300
 RB=/home/ubuntu/statedep_geogig_demo/repos/
 #===================#
 #Monrovia - Basic
@@ -20,18 +20,38 @@ python /opt/cybergis-scripts.git/lib/rogue/geogig_init_extract.py  -v --path $RE
 #Monrovia - Landuse
 RN=monrovia_landuse
 REPO=$RB$RN
-EXTENT='liberia:monrovia' 
+EXTENT='liberia:monrovia'
 MAPPING='landuse:landuse_all'
 rm -fr $REPO
 python /opt/cybergis-scripts.git/lib/rogue/geogig_init_extract.py  -v --path $REPO --name $RN --username $USER --password $PASS -gs $GS -ws $WS -to $TO --extent $EXTENT --mapping $MAPPING -an $AN -ae $AE
 #===================#
 #Monrovia - Medical Centers
-RN=kenema_medicalcenters
+RN=monrovia_medicalcenters
 REPO=$RB$RN
-EXTENT='sierra_leone:kenema'
+EXTENT='liberia:monrovia'
 MAPPING='health:medical_centers'
 rm -fr $REPO
 python /opt/cybergis-scripts.git/lib/rogue/geogig_init_extract.py  -v --path $REPO --name $RN --username $USER --password $PASS -gs $GS -ws $WS -to $TO --extent $EXTENT --mapping $MAPPING -an $AN -ae $AE
+#===================#
+#Monrovia - Schools
+RN=monrovia_schools
+REPO=$RB$RN
+EXTENT='liberia:monrovia'
+MAPPING='education:schools'
+rm -fr $REPO
+python /opt/cybergis-scripts.git/lib/rogue/geogig_init_extract.py  -v --path $REPO --name $RN --username $USER --password $PASS -gs $GS -ws $WS -to $TO --extent $EXTENT --mapping $MAPPING -an $AN -ae $AE
+#===================#
+#Monrovia - Inland Waters
+RN=monrovia_inlandwaters
+REPO=$RB$RN
+EXTENT='liberia:monrovia'
+MAPPING='inlandWaters:inland_waters'
+rm -fr $REPO
+python /opt/cybergis-scripts.git/lib/rogue/geogig_init_extract.py  -v --path $REPO --name $RN --username $USER --password $PASS -gs $GS -ws $WS -to $TO --extent $EXTENT --mapping $MAPPING -an $AN -ae $AE
+#===================#
+#===================#
+#===================#
+#===================#
 #===================#
 #Kenema - Basic
 RN=kenema_basic
@@ -54,5 +74,21 @@ RN=kenema_medicalcenters
 REPO=$RB$RN
 EXTENT='sierra_leone:kenema'
 MAPPING='health:medical_centers'
+rm -fr $REPO
+python /opt/cybergis-scripts.git/lib/rogue/geogig_init_extract.py  -v --path $REPO --name $RN --username $USER --password $PASS -gs $GS -ws $WS -to $TO --extent $EXTENT --mapping $MAPPING -an $AN -ae $AE
+#===================#
+#Kenema - Schools
+RN=kenema_schools
+REPO=$RB$RN
+EXTENT='sierra_leone:kenema'
+MAPPING='education:schools'
+rm -fr $REPO
+python /opt/cybergis-scripts.git/lib/rogue/geogig_init_extract.py  -v --path $REPO --name $RN --username $USER --password $PASS -gs $GS -ws $WS -to $TO --extent $EXTENT --mapping $MAPPING -an $AN -ae $AE
+#===================#
+#Kenema - Inland Waters
+RN=kenema_inlandwaters
+REPO=$RB$RN
+EXTENT='sierra_leone:kenema'
+MAPPING='inlandWaters:inland_waters'
 rm -fr $REPO
 python /opt/cybergis-scripts.git/lib/rogue/geogig_init_extract.py  -v --path $REPO --name $RN --username $USER --password $PASS -gs $GS -ws $WS -to $TO --extent $EXTENT --mapping $MAPPING -an $AN -ae $AE
