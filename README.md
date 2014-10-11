@@ -70,6 +70,8 @@ cybergis-script-ec2.sh [prod|dev] [resize|swap|delete_swap]
 cybergis-script-geoserver.sh [prod|dev] [tune]
 
     cybergis-script-geoserver.sh prod tune <repo> <Xmx>
+    
+    cybergis-script-geoserver-import-styles.py --path PATH --prefix PREFIX --geoserver GEOSEVER --username USERNAME --password PASSWORD --verbose
 ```
 
 ### Imagery Processing
