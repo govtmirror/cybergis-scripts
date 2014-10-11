@@ -74,7 +74,7 @@ parser = argparse.ArgumentParser(description='Initialize GeoGig repository and o
 parser.add_argument("--path", help="The location in the filesystem of the Geogig repository.")
 parser.add_argument("--name", help="The name of the GeoGig repo and data store in GeoServer.")
 parser.add_argument('-gs', '--geoserver', help="The url of the GeoServer servicing the GeoGig repository.")
-parser.add_argument('-gs', '--workspace', "-ws", help="The GeoServer workspace to use for the data store.")
+parser.add_argument('-ws', '--workspace', help="The GeoServer workspace to use for the data store.")
 parser.add_argument("--username", help="The username to use for basic auth requests.")
 parser.add_argument("--password", help="The password to use for basic auth requests.")
 parser.add_argument('--verbose', '-v', default=0, action='count', help="Print out intermediate status messages.")
