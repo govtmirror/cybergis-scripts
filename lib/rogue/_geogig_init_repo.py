@@ -57,14 +57,14 @@ def createRepo(path):
     time.sleep(5)
 
 def buildPOSTDataDataStore(name, path):
-    file_data ="/opt/cybergis-scripts.git/lib/rogue/post_geogigdatastore.xml"
+    file_data ="/opt/cybergis-scripts.git/templates/post_geogigdatastore.xml"
     data = None
     with open (file_data, "r") as f:
         data = f.read().replace('{{name}}', name).replace('{{path}}',path)
     return data
     
 def buildPOSTDataLayer(name,nativeName):
-    file_data ="/opt/cybergis-scripts.git/lib/rogue/post_geogiglayer.xml"
+    file_data ="/opt/cybergis-scripts.git/templates/post_geogiglayer.xml"
     data = None
     with open (file_data, "r") as f:
         data = f.read().replace('{{name}}', name).replace('{{nativeName}}', nativeName)
