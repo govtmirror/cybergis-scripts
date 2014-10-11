@@ -32,6 +32,9 @@ def run(args):
     username = args.username
     password = args.password
     #==#
+    extent = args.extent
+    mapping = args.mapping
+    #==#
     print "=================================="
     print "#==#"
     print "CyberGIS Script / geogig_init_extract.py"
