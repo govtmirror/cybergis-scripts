@@ -9,6 +9,7 @@ import os
 import subprocess
 
 def run(args):
+    print args
     #==#
     verbose = args.verbose
     #==
@@ -30,9 +31,11 @@ def run(args):
     print "Initialize GeoGig repository, adds to GeoServer, downloads OSM extract, publishes layers"
     print "#==#"
     #==#
+    print "Subroutines"
     import geogig_init_repo
     import geogig_sync_osm
     #==#
+    print "Executing subroutines"
     geogig_init_repo.run({
         'path': path,
         'name': name,
