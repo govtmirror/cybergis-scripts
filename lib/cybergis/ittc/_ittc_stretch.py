@@ -420,6 +420,7 @@ def initProcesses(count)
     return processes
 
 def run(args):
+    start=datetime.now()
     #print args
     #==#
     verbose = args.verbose
