@@ -36,7 +36,6 @@ def parse_url(url):
 
 
 def run(args):
-    #print args
     #==#
     verbose = args.verbose
     #==#
@@ -48,6 +47,7 @@ def run(args):
         auth = b64encode('{0}:{1}'.format(args.username, args.password))
     #==#
     for ns in glob.glob(path+os.sep+"*"):
+        print "------------------"
         print "Namespace: "+ns
         for path in glob.glob(ns+os.sep+"*.sld"):
             print "Path: "+path
