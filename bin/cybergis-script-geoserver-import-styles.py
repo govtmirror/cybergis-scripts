@@ -21,4 +21,4 @@ parser.add_argument("--password", help="The password to use for basic auth reque
 parser.add_argument('--verbose', '-v', default=0, action='count', help="Print out intermediate status messages.")
 args = parser.parse_args()
 #==#
-cybergis.gs._geoserver_import_styles.run(args)
+gs._geoserver_import_styles.run(args)
