@@ -8,7 +8,7 @@ import time
 import os
 import subprocess
 
-def make_request(url, params, auth=None, data=None):
+def make_request(url, params, auth=None, data=None, contentType=None):
     """
     Prepares a request from a url, params, and optionally authentication.
     """
@@ -16,8 +16,12 @@ def make_request(url, params, auth=None, data=None):
 
     if auth:
         req.add_header('AUTHORIZATION', 'Basic ' + auth)
-    if data:
-        req.add_header('Content-type', 'text/xml')
+    
+    if contentType:
+        req.add_header('Content-type', contentType)
+    else:
+        if data:
+            req.add_header('Content-type', 'text/xml')
 
     return urllib2.urlopen(req)
 
