@@ -10,7 +10,7 @@ import os
 import subprocess
 #==#
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'lib')))
-import cybergis.gs._geoserver_import_styles
+import cybergis.gs
 #==#
 parser = argparse.ArgumentParser(description='')
 parser.add_argument("--path", help="The location in the filesystem of the styles directory")
