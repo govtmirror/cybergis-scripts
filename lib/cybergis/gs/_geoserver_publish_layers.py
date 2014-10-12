@@ -12,7 +12,7 @@ def make_request(url, params, auth=None, data=None, contentType=None):
     """
     Prepares a request from a url, params, and optionally authentication.
     """
-    print (url + urllib.urlencode(params)
+    print url + urllib.urlencode(params)
     req = urllib2.Request(url + urllib.urlencode(params), data=data)
 
     if auth:
