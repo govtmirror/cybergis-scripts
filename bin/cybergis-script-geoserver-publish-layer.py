@@ -68,15 +68,10 @@ def run(args):
     #==#
     verbose = args.verbose
     #==#
-    publish_datastore = args.publish_datastore
-    publish_layers = args.publish_layers
-    #==#
-    name = args.name
-    datastore = name
+    table = args.table
+    datastore = args.datastore
     geoserver = parse_url(args.geoserver)
-    path = args.path
     workspace = args.workspace
-    #url_repo = geoserver+'geogig/'+repo+'/'
     #==#
     auth = None
     if args.username and args.password:
@@ -84,14 +79,13 @@ def run(args):
     #==#
     print "=================================="
     print "#==#"
-    print "CyberGIS Script / geogig_init_repo.py"
-    print "Initialize GeoGig repository and optionally add to GeoServer instance."
+    print "CyberGIS Script / cybergis-scrit-geoserver-publish-layer.py"
+    print "Publish PostGIS Table as Layer"
     print "#==#"
     #==#
     #Publish PostGIS Table as Layer
-    if publish_layers > 0:
-        try:
-            createLayer(verbose, geoserver, workspace, auth, datastore, tree)
-        except:
-            print "Couldn't create layer from datastore "+datastore+" for tree "+tree+"."
+    try:
+        createLayer(verbose, geoserver, workspace, auth, datastore, table)
+    except:
+        print "Couldn't create layer from PostGIS data store "+datastore+" for table "+table+"."
     print "=================================="
