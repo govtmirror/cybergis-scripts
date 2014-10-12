@@ -419,4 +419,51 @@ def initProcesses(count)
     print "Initialized "+str(count)+" threads."
     return processes
 
-main()
+def run(args):
+    #print args
+    #==#
+    verbose = args.verbose
+    #==#
+    inputFile = args.input
+    breakPointsFile = args.breakpoints
+    outputFile = args.output
+    numberOfBands = args.bands
+    #==#
+    rows = args.rows
+    numberOfThreads = args.threads
+    #==#
+    print "=================================="
+    print "#==#"
+    print "CyberGIS Script / cybergis-script-ittc-stetch.py"
+    print "Apply stetch to raster image(s)."
+    print "#==#"
+    #==#
+    if rows <= 0:
+        print "You to process at least 1 row at a time."
+        return 0
+    if numberOfThreads <= 0:
+        print "You need at least 1 thread."
+        return 0
+    if(not os.path.exists(inputFile)):
+        print "Input file does not exist."
+        return 0
+    if(not os.path.exists(breakPointsFile)):
+        print "Breakpoints file does not exist."
+        return 0
+    if(os.path.exists(outputFile)):
+        print "Output file already exists."
+        return 0
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    print "=================================="
