@@ -29,6 +29,6 @@ do
     echo "Snapshoting"
     $BIN/cybergis-script-pull-wfs.sh $WFS $NS $FT $PRJ $HOST $DB $USER $PASS $SNAP
     echo "Publishing"
-    $BIN/cybergis-script-geoserver-publish-layers.py -gs $GS -ws $WS -ds $DS -ft $SNAP --username $USER --password $PASS
+    python $BIN/cybergis-script-geoserver-publish-layers.py -gs $GS -ws $WS -ds $DS -ft $SNAP --username $USER --password $PASS
 done
 #===================#
