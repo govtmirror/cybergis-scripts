@@ -313,7 +313,7 @@ def initDataset(outputFile,f,w,h,b):
     metadata = driver.GetMetadata()
     return driver.Create(outputFile,w,h,b,gdal.GDT_Byte,['ALPHA=YES'])
 
-def initProcesses(count)
+def initProcesses(count):
     print str(cpu_count())+" CPUs are available."
     processes = []
     processID = 1
