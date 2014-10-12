@@ -305,102 +305,6 @@ class LookUpTables:
 	def isValid(self):
 		return self.valid;
 
-def main():
-	start=datetime.now()
-	if(len(sys.argv)==6):
-		inputFile = sys.argv[1]
-		breakPointsFile = sys.argv[2]
-		outputFile = sys.argv[3]
-		rows = int(sys.argv[4])
-		numberOfThreads = int(sys.argv[5])
-		if numberOfThreads > 0:
-			if(os.path.exists(inputFile) and os.path.exists(breakPointsFile)):
-				if(not os.path.exists(outputFile)):
-					inputDataset = gdal.Open(inputFile,GA_ReadOnly)
-					lookUpTables = LookUpTables(breakPointsFile)
-					if ((not inputDataset is None) and (lookUpTables.isValid())):
-						outputFormat = "HFA"
-						numberOfBands = 3
-						w = inputDataset.RasterXSize
-						h = inputDataset.RasterYSize
-						outputDataset = initDataset(outputFile,outputFormat,w,h,numberOfBands)
-						outputDataset.SetGeoTransform(list(inputDataset.GetGeoTransform()))
-						outputDataset.SetProjection(inputDataset.GetProjection())
-						
-						if numberOfThreads == 1:
-							for b in range(numberOfBands):
-								print "Stretching Band "+str(b+1)
-								lut = numpy.array(lookUpTables.tables[b].table)
-								inBand = inputDataset.GetRasterBand(b+1)
-								outBand = outputDataset.GetRasterBand(b+1)
-						
-								r = rows
-								for y in range(int(inBand.YSize/r)):
-									outBand.WriteArray(lut[inBand.ReadAsArray(0,y*r,inBand.XSize,r,inBand.XSize,r)],0,y*r)
-						
-								y0 = inBand.YSize/rows
-								for y in range(inBand.YSize%r):
-									outBand.WriteArray(lut[inBand.ReadAsArray(0,y0+y,inBand.XSize,1,inBand.XSize,1)],0,y0+y)
-						elif numberOfThreads > 1:
-							print "not fully implemented yet"
-							global exitFlag
-							global queueLock
-							global writeLock
-							global workQueue
-							global tasks
-							#
-							exitFlag = 0
-							queueLock = Lock()
-							writeLock = Lock()
-							workQueue = Queue(0)
-							tasks = Tasks()
-							#
-							for b in range(numberOfBands):
-								print "Adding tasks for band "+str(b+1)
-								lut = numpy.array(lookUpTables.tables[b].table)
-								inBand = inputDataset.GetRasterBand(b+1)
-								outBand = outputDataset.GetRasterBand(b+1)
-								y0 = int(inBand.YSize/r)
-								for y in range(int(inBand.YSize/r)):
-									task = b+1, inBand, outBand, lut, y0, y, r, 1
-									tasks.add(task)
-								for y in range(inBand.YSize%r):
-									task = b+1, inBand, outBand, lut, y0, y, r, 2
-									tasks.add(task)
-									
-							print "tasks in main queue: "+str(len(tasks.tasks))
-							#Add tasks to queue
-							queueLock.acquire()
-							for taskID in range(len(tasks.tasks)):
-								workQueue.put(taskID)
-							queueLock.release()
-							
-							processes = initProcesses(numberOfThreads)
-
-							print "Queue is full with "+str(workQueue.qsize())+" tasks."
-							print "Rendering threads will now execute."
-							while not workQueue.empty():
-								pass
-							
-							exitFlag = 1 #tell's threads it's time to quit
-							
-							for process in processes:
-								process.join()
-					
-						inputDataset = None
-						outputDataset = None
-						print datetime.now()-start
-					else:
-						print "Error Opening File"
-				else:
-					print "Output file already exists"
-			else:
-				print "Input file does not exist."
-		else:
-			print "You need at least 1 thread."
-	else:
-		print "Usage: cybergis-script-stretch.py <input_file> <breakpoints_file> <output_file> <rows> <threads>"
-
 def initDataset(outputFile,f,w,h,b):
     driver = gdal.GetDriverByName(f)
     metadata = driver.GetMetadata()
@@ -428,10 +332,10 @@ def run(args):
     inputFile = args.input
     breakPointsFile = args.breakpoints
     outputFile = args.output
-    numberOfBands = args.bands
+    numberOfBands = int(args.bands)
     #==#
-    rows = args.rows
-    numberOfThreads = args.threads
+    rows = int(args.rows)
+    numberOfThreads = int(args.threads)
     #==#
     print "=================================="
     print "#==#"
@@ -470,78 +374,77 @@ def run(args):
     #==#
     #Create output file
     outputFormat = "HFA"
-	w = inputDataset.RasterXSize
-	h = inputDataset.RasterYSize
-	outputDataset = initDataset(outputFile,outputFormat,w,h,numberOfBands)
-	outputDataset.SetGeoTransform(list(inputDataset.GetGeoTransform()))
-	outputDataset.SetProjection(inputDataset.GetProjection())
+    w = inputDataset.RasterXSize
+    h = inputDataset.RasterYSize
+    outputDataset = initDataset(outputFile,outputFormat,w,h,numberOfBands)
+    outputDataset.SetGeoTransform(list(inputDataset.GetGeoTransform()))
+    outputDataset.SetProjection(inputDataset.GetProjection())
     #==#
     #Core Process
-	if numberOfThreads == 1:
-		for b in range(numberOfBands):
-			print "Stretching Band "+str(b+1)
-			lut = numpy.array(lookUpTables.tables[b].table)
-			inBand = inputDataset.GetRasterBand(b+1)
-			outBand = outputDataset.GetRasterBand(b+1)
-	
-			r = rows
-			for y in range(int(inBand.YSize/r)):
-				outBand.WriteArray(lut[inBand.ReadAsArray(0,y*r,inBand.XSize,r,inBand.XSize,r)],0,y*r)
-	
-			y0 = inBand.YSize/rows
-			for y in range(inBand.YSize%r):
-				outBand.WriteArray(lut[inBand.ReadAsArray(0,y0+y,inBand.XSize,1,inBand.XSize,1)],0,y0+y)
-	elif numberOfThreads > 1:
-		print "not fully implemented yet"
-		global exitFlag
-		global queueLock
-		global writeLock
-		global workQueue
-		global tasks
-		#
-		exitFlag = 0
-		queueLock = Lock()
-		writeLock = Lock()
-		workQueue = Queue(0)
-		tasks = Tasks()
-		#
-		for b in range(numberOfBands):
-			print "Adding tasks for band "+str(b+1)
-			lut = numpy.array(lookUpTables.tables[b].table)
-			inBand = inputDataset.GetRasterBand(b+1)
-			outBand = outputDataset.GetRasterBand(b+1)
-			y0 = int(inBand.YSize/r)
-			for y in range(int(inBand.YSize/r)):
-				task = b+1, inBand, outBand, lut, y0, y, r, 1
-				tasks.add(task)
-			for y in range(inBand.YSize%r):
-				task = b+1, inBand, outBand, lut, y0, y, r, 2
-				tasks.add(task)
-				
-		print "tasks in main queue: "+str(len(tasks.tasks))
-		#Add tasks to queue
-		queueLock.acquire()
-		for taskID in range(len(tasks.tasks)):
-			workQueue.put(taskID)
-		queueLock.release()
-		
-		processes = initProcesses(numberOfThreads)
-	
-		print "Queue is full with "+str(workQueue.qsize())+" tasks."
-		print "Rendering threads will now execute."
-		while not workQueue.empty():
-			pass
-		
-		exitFlag = 1 #tell's threads it's time to quit
-		
-		for process in processes:
-			process.join()    
-    
-    
+    if numberOfThreads == 1:
+        for b in range(numberOfBands):
+            print "Stretching Band "+str(b+1)
+            lut = numpy.array(lookUpTables.tables[b].table)
+            inBand = inputDataset.GetRasterBand(b+1)
+            outBand = outputDataset.GetRasterBand(b+1)
+
+            r = rows
+            for y in range(int(inBand.YSize/r)):
+                outBand.WriteArray(lut[inBand.ReadAsArray(0,y*r,inBand.XSize,r,inBand.XSize,r)],0,y*r)
+
+            y0 = inBand.YSize/rows
+            for y in range(inBand.YSize%r):
+                outBand.WriteArray(lut[inBand.ReadAsArray(0,y0+y,inBand.XSize,1,inBand.XSize,1)],0,y0+y)
+
+    elif numberOfThreads > 1:
+        print "not fully implemented yet"
+        global exitFlag
+        global queueLock
+        global writeLock
+        global workQueue
+        global tasks
+        #==#
+        exitFlag = 0
+        queueLock = Lock()
+        writeLock = Lock()
+        workQueue = Queue(0)
+        tasks = Tasks()
+        #==#
+        for b in range(numberOfBands):
+            print "Adding tasks for band "+str(b+1)
+            lut = numpy.array(lookUpTables.tables[b].table)
+            inBand = inputDataset.GetRasterBand(b+1)
+            outBand = outputDataset.GetRasterBand(b+1)
+            y0 = int(inBand.YSize/r)
+            for y in range(int(inBand.YSize/r)):
+                task = b+1, inBand, outBand, lut, y0, y, r, 1
+                tasks.add(task)
+            for y in range(inBand.YSize%r):
+                task = b+1, inBand, outBand, lut, y0, y, r, 2
+                tasks.add(task)		
+
+            print "tasks in main queue: "+str(len(tasks.tasks))
+            #Add tasks to queue
+            queueLock.acquire()
+            for taskID in range(len(tasks.tasks)):
+                workQueue.put(taskID)
+            queueLock.release()
+
+            processes = initProcesses(numberOfThreads)
+
+            print "Queue is full with "+str(workQueue.qsize())+" tasks."
+            print "Rendering threads will now execute."
+            while not workQueue.empty():
+                pass
+
+            exitFlag = 1 #tell's threads it's time to quit
+
+            for process in processes:
+                process.join()
     #==#
     #Post Process
     inputDataset = None
-	outputDataset = None
-	print datetime.now()-start
+    outputDataset = None
+    print datetime.now()-start
     return 0
     print "=================================="
