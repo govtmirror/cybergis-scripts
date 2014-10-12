@@ -50,6 +50,8 @@ cybergis-script-env.sh [geonode|ittc]
     cybergis-script-env.sh rogue [install|reset]
     
     cybergis-script-env.sh ittc install
+    
+    cybergis-script-env.sh maploom install
 ````
 ### EC2
 
@@ -68,6 +70,10 @@ cybergis-script-ec2.sh [prod|dev] [resize|swap|delete_swap]
 cybergis-script-geoserver.sh [prod|dev] [tune]
 
     cybergis-script-geoserver.sh prod tune <repo> <Xmx>
+    
+    cybergis-script-geoserver-import-styles.py --path PATH \
+    --prefix PREFIX --geoserver GEOSEVER --username USERNAME \
+    --password PASSWORD --verbose
 ```
 
 ### Imagery Processing

@@ -202,7 +202,19 @@ def waitOnTask(verbose, url, auth, taskID, timeout):
 def downloadFromOSM(verbose, url, auth, transactionId, update, mapping, bbox):
     if verbose>0:
         print('Downloading from OpenStreetMap ...')
-    params = {'output_format': 'JSON', 'update': update, 'mapping': mapping, 'bbox': bbox, 'transactionId':transactionId}
+    params = {'output_format': 'JSON', 'update': update, 'transactionId':transactionId}
+    
+    if bbox:
+        params['bbox'] = bbox
+    
+    if mapping:
+        params['mapping'] = mapping
+    #
+    #print params
+    #print url
+   # print auth
+    print url +'osm/download.json?' + urllib.urlencode(params)
+    #
     request = make_request(url=url+'osm/download.json?', params=params, auth=auth)
 
     if request.getcode() != 200:
@@ -229,6 +241,7 @@ def downloadFromOSM(verbose, url, auth, transactionId, update, mapping, bbox):
 def getRepoID(geoserver, auth, workspace, datastore):
     params = {}
     url = geoserver+"rest/workspaces/"+workspace+"/datastores/"+datastore+".json"
+    print url
     request = make_request(url=url, params=params, auth=auth)
 
     if request.getcode() != 200:
@@ -256,15 +269,21 @@ def parse_url(url):
     return url
 
 def parse_bbox(extent):
-    file_extent = "/opt/cybergis-osm-mappings.git/extents/"+extent.replace(":","/")+".txt"
-    bbox = None
-    with open (file_extent, "r") as f:
-        bbox = f.read().replace('\n', '').replace(' ',',')
-    return bbox
+    if extent:
+        file_extent = "/opt/cybergis-osm-mappings.git/extents/"+extent.replace(":","/")+".txt"
+        bbox = None
+        with open (file_extent, "r") as f:
+            bbox = f.read().replace('\n', '').replace(' ',',')
+        return bbox
+    else:
+        return None
 
 def parse_mapping(ns_mapping):
-    file_mapping = "/opt/cybergis-osm-mappings.git/mappings/"+ns_mapping.replace(":","/")+".json"
-    return file_mapping
+    if ns_mapping:
+        file_mapping = "/opt/cybergis-osm-mappings.git/mappings/"+ns_mapping.replace(":","/")+".json"
+        return file_mapping
+    else:
+        return None
 
 def run(args):
     #==#

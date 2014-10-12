@@ -1,0 +1,4 @@
+<style>
+  <name>{{name}}</name>
+  <filename>{{filename}}</filename>
+</style>

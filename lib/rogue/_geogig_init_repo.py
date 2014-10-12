@@ -57,14 +57,14 @@ def createRepo(path):
     time.sleep(5)
 
 def buildPOSTDataDataStore(name, path):
-    file_data ="/opt/cybergis-scripts.git/lib/rogue/post_geogigdatastore.xml"
+    file_data ="/opt/cybergis-scripts.git/templates/post_geogig_datastore.xml"
     data = None
     with open (file_data, "r") as f:
         data = f.read().replace('{{name}}', name).replace('{{path}}',path)
     return data
     
 def buildPOSTDataLayer(name,nativeName):
-    file_data ="/opt/cybergis-scripts.git/lib/rogue/post_geogiglayer.xml"
+    file_data ="/opt/cybergis-scripts.git/templates/post_geogig_layer.xml"
     data = None
     with open (file_data, "r") as f:
         data = f.read().replace('{{name}}', name).replace('{{nativeName}}', nativeName)
@@ -122,8 +122,13 @@ def getTrees(verbose, url, auth):
     response = json.loads(request.read())
     
     if response['response']['success']:
-        trees = response['response']['node']
-        return trees
+        try:
+          trees = response['response']['node']
+          return trees
+        except:
+          print 'ls-tree reported success, but did not have any trees.  No data in OSM?"
+          print response
+          return None
     else:
         print "----"
         print "List trees failed."

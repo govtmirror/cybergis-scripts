@@ -1,4 +1,5 @@
 <featureType>
   <name>{{name}}</name>
+  <title>{{title}}</title>
   <nativeName>{{nativeName}}</nativeName>
 </featureType>

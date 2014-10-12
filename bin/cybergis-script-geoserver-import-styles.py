@@ -14,7 +14,8 @@ import cybergis.gs._geoserver_import_styles
 #==#
 parser = argparse.ArgumentParser(description='')
 parser.add_argument("--path", help="The location in the filesystem of the styles directory")
-parser.add_argument("--geoserver", help="The url of the target GeoServer.")
+parser.add_argument("--prefix", help="The prefix to prepend to all the styles when loaded into GeoServer")
+parser.add_argument('-gs', '--geoserver', help="The url of the target GeoServer.")
 parser.add_argument("--username", help="The username to use for basic auth requests.")
 parser.add_argument("--password", help="The password to use for basic auth requests.")
 parser.add_argument('--verbose', '-v', default=0, action='count', help="Print out intermediate status messages.")

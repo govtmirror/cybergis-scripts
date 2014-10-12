@@ -375,8 +375,8 @@ osm(){
               REPO_GEOSERVER="/var/lib/geoserver_data/geogig/$REPO"
               REPO_URL="http://localhost/geoserver/geogig/geonode:$REPO"
               #
-              FILE_DATASTORE=/opt/cybergis-scripts.git/lib/rogue/post_geogigdatastore.xml
-              FILE_LAYER=/opt/cybergis-scripts.git/lib/rogue/post_geogiglayer.xml
+              FILE_DATASTORE=/opt/cybergis-scripts.git/lib/rogue/post_geogig_datastore.xml
+              FILE_LAYER=/opt/cybergis-scripts.git/lib/rogue/post_geogig_layer.xml
               #
               mkdir -p $REPO_STAGING
               cd $REPO_STAGING
