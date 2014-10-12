@@ -299,7 +299,7 @@ class LookUpTables:
     def init_tables(self,numberOfBands):
         self.tables = []
         if numberOfBands <= 0:
-            print "Error: number of Bands should be greater than 0".
+            print "Error: number of Bands should be greater than 0"
         else:
             for b in range(numberOfBands):
                 self.tables.append(LookUpTable(self.bps_list[b].bps))
