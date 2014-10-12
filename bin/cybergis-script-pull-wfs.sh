@@ -1,18 +1,20 @@
 #!/bin/bash
 
-if [[ $# -ne 7 ]]; then
-	echo "Usage: cybergis-script-pull-wfs.sh <wfs> <namespace> <featuretype> <dbname> <dbuser> <dbpass> <table>"
+if [[ $# -ne 8 ]]; then
+	echo "Usage: cybergis-script-pull-wfs.sh <wfs> <namespace> <featuretype> <projection> <dbname> <dbuser> <dbpass> <table>"
 	exit
 fi
 DATE=$(date)
+TIMESTAMP=$(date +%s)
 FORMAT=json
 WFS=$1
 NAMESPACE=$2
 FEATURETYPE=$3
-DBNAME=$4
-DBUSER=$5
-DBPASS=$6
-TABLE=$7
+PROJECTION=$4
+DBNAME=$5
+DBUSER=$6
+DBPASS=$7
+TABLE=$8
 URL="$WFS?typename=$NAMESPACE%3A$FEATURETYPE&outputFormat=$FORMAT&version=1.0.0&request=GetFeature&service=WFS"
 TEMP=/tmp/cybergis-pull
 
@@ -24,15 +26,14 @@ else
 	echo "Starting pull at "$DATE
 	if [ -d $TEMP ] ; then
 		echo "Removing data from previous pull"
-		rm -fr $TEMP
+		rm -fr $TEMP/*
 	fi
 
 	mkdir $TEMP
-	
 	cd $TEMP
 
 	echo "Retrieving data from "$URL
-	wget $URL -O pull.geojson
-	ogr2ogr -overwrite -a_srs EPSG:900913 -f "PostgreSQL" PG:"host=localhost user=$DBUSER dbname=$DBNAME password=$DBPASS" pull.geojson -nln "$TABLE"
-	echo "Pull completed"
+	wget $URL -O $NAMESPACE"_"$FEATURETYPE".geojson"
+	ogr2ogr -overwrite -a_srs $PROJECTION -f "PostgreSQL" PG:"host=localhost user=$DBUSER dbname=$DBNAME password=$DBPASS" $NAMESPACE"_"$FEATURETYPE".geojson" -nln "$TABLE"
+	echo "Finished pull of "$NAMESPACE":"$FEATURETYPE
 fi
