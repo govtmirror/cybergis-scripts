@@ -438,32 +438,109 @@ def run(args):
     print "Apply stetch to raster image(s)."
     print "#==#"
     #==#
+    if bands != 1 and bands !=3:
+        print "The number of bands specified is not expected."
+        return 0
     if rows <= 0:
         print "You to process at least 1 row at a time."
         return 0
     if numberOfThreads <= 0:
         print "You need at least 1 thread."
         return 0
-    if(not os.path.exists(inputFile)):
+    if not os.path.exists(inputFile):
         print "Input file does not exist."
         return 0
-    if(not os.path.exists(breakPointsFile)):
+    if not os.path.exists(breakPointsFile):
         print "Breakpoints file does not exist."
         return 0
-    if(os.path.exists(outputFile)):
+    if os.path.exists(outputFile):
         print "Output file already exists."
         return 0
+    #==#
+    #Load input image file and breakpoints file
+    inputDataset = gdal.Open(inputFile,GA_ReadOnly)
+    lookUpTables = LookUpTables(breakPointsFile)
+    if inputDataset is None:
+        print "Error opening input image file."
+        return 0
+    if not lookUpTables.isValid():
+        print "Error building lookup tables.  Are you sure the breakpoints file matches the right number of bands specified?"
+        return 0
+    #==#
+    #Create output file
+    outputFormat = "HFA"
+	w = inputDataset.RasterXSize
+	h = inputDataset.RasterYSize
+	outputDataset = initDataset(outputFile,outputFormat,w,h,numberOfBands)
+	outputDataset.SetGeoTransform(list(inputDataset.GetGeoTransform()))
+	outputDataset.SetProjection(inputDataset.GetProjection())
+    #==#
+    #Core Process
+	if numberOfThreads == 1:
+		for b in range(numberOfBands):
+			print "Stretching Band "+str(b+1)
+			lut = numpy.array(lookUpTables.tables[b].table)
+			inBand = inputDataset.GetRasterBand(b+1)
+			outBand = outputDataset.GetRasterBand(b+1)
+	
+			r = rows
+			for y in range(int(inBand.YSize/r)):
+				outBand.WriteArray(lut[inBand.ReadAsArray(0,y*r,inBand.XSize,r,inBand.XSize,r)],0,y*r)
+	
+			y0 = inBand.YSize/rows
+			for y in range(inBand.YSize%r):
+				outBand.WriteArray(lut[inBand.ReadAsArray(0,y0+y,inBand.XSize,1,inBand.XSize,1)],0,y0+y)
+	elif numberOfThreads > 1:
+		print "not fully implemented yet"
+		global exitFlag
+		global queueLock
+		global writeLock
+		global workQueue
+		global tasks
+		#
+		exitFlag = 0
+		queueLock = Lock()
+		writeLock = Lock()
+		workQueue = Queue(0)
+		tasks = Tasks()
+		#
+		for b in range(numberOfBands):
+			print "Adding tasks for band "+str(b+1)
+			lut = numpy.array(lookUpTables.tables[b].table)
+			inBand = inputDataset.GetRasterBand(b+1)
+			outBand = outputDataset.GetRasterBand(b+1)
+			y0 = int(inBand.YSize/r)
+			for y in range(int(inBand.YSize/r)):
+				task = b+1, inBand, outBand, lut, y0, y, r, 1
+				tasks.add(task)
+			for y in range(inBand.YSize%r):
+				task = b+1, inBand, outBand, lut, y0, y, r, 2
+				tasks.add(task)
+				
+		print "tasks in main queue: "+str(len(tasks.tasks))
+		#Add tasks to queue
+		queueLock.acquire()
+		for taskID in range(len(tasks.tasks)):
+			workQueue.put(taskID)
+		queueLock.release()
+		
+		processes = initProcesses(numberOfThreads)
+	
+		print "Queue is full with "+str(workQueue.qsize())+" tasks."
+		print "Rendering threads will now execute."
+		while not workQueue.empty():
+			pass
+		
+		exitFlag = 1 #tell's threads it's time to quit
+		
+		for process in processes:
+			process.join()    
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    #==#
+    #Post Process
+    inputDataset = None
+	outputDataset = None
+	print datetime.now()-start
+    return 0
     print "=================================="
