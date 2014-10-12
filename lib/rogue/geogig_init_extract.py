@@ -8,8 +8,9 @@ import time
 import os
 import subprocess
 #==#
-import _geogig_init_repo
-import _geogig_sync_osm
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'lib', 'cybergis')))
+import gg._geogig_init_repo
+import gg._geogig_sync_osm
 #==#
 class ov(object):
     def __init__(self, d):
@@ -42,7 +43,7 @@ def run(args):
     print "#==#"
     #==#
     print "Executing subroutines"
-    _geogig_init_repo.run(ov({
+   gg._geogig_init_repo.run(ov({
         'path': path,
         'name': name,
         'geoserver': geoserver,
@@ -54,7 +55,7 @@ def run(args):
         'verbose': verbose
     }))
     #==#
-    _geogig_sync_osm.run(ov({
+    gg._geogig_sync_osm.run(ov({
         'update': 'false',
         'repo':None,
         'datastore': name,
@@ -70,7 +71,7 @@ def run(args):
         'timeout': timeout
     }))
     #==#
-    _geogig_init_repo.run(ov({
+    gg._geogig_init_repo.run(ov({
         'path': None,
         'name': name,
         'geoserver': geoserver,

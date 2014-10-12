@@ -8,7 +8,8 @@ import time
 import os
 import subprocess
 #==#
-import _geogig_init_repo
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'lib', 'cybergis')))
+import gg._geogig_init_repo
 #==#
 parser = argparse.ArgumentParser(description='Initialize GeoGig repository and optionally add to GeoServer instance.  If you want to add the GeoGig repo include the optional parameters.')
 parser.add_argument("--path", help="The location in the filesystem of the Geogig repository.")
@@ -23,4 +24,4 @@ parser.add_argument("--publish_datastore", default=0, action='count', help="Publ
 parser.add_argument('--publish_layers', default=0, action='count', help="Publish layers from GeoGig data store")
 args = parser.parse_args()
 #==#
-_geogig_init_repo.run(args)
+gg._geogig_init_repo.run(args)

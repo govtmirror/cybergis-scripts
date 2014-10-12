@@ -6,7 +6,8 @@ import urllib2
 import argparse
 import time
 #==#
-import _geogig_sync_osm
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'lib', 'cybergis')))
+import gg._geogig_sync_osm
 #==#
 parser = argparse.ArgumentParser(description='Synchronize GeoGig repository with OpenStreetMap (OSM)')
 
@@ -28,4 +29,4 @@ parser.add_argument('-to', '--timeout', type=int, default=30, help="The number o
 parser.add_argument('--verbose', '-v', default=0, action='count', help="Print out intermediate status messages.")
 args = parser.parse_args()
 #==#
-_geogig_sync_osm.run(args)
+gg._geogig_sync_osm.run(args)
