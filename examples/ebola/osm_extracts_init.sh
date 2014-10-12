@@ -3,7 +3,7 @@
 USER=admin
 PASS=geoserver
 GS='http://localhost:8080/geoserver/'
-WS=hiu
+WS=osm-extracts
 AN=hiu
 AE='HIU_INFO@state.gov'
 TO=300
