@@ -64,7 +64,7 @@ def createLayer(verbose, geoserver, workspace, auth, datastore, layer):
         print('Layer created.')
         
 def parse_featuretypes(featureTypes):
-    if featureTypes and len(featureTypes) > 0
+    if featureTypes and len(featureTypes) > 0:
         try:
             return featureTypes.split(",")
         except:
