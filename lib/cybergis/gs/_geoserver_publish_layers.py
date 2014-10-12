@@ -103,4 +103,5 @@ def run(args):
             createLayer(verbose, geoserver, workspace, auth, datastore, ft)
         except:
             print "Couldn't create layer from data store "+datastore+" for feature type "+ft+"."
+            raise
     print "=================================="
