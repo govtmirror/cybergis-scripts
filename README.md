@@ -79,7 +79,8 @@ cybergis-script-geoserver.sh [prod|dev] [tune]
 ### Imagery Processing
 
 ```
-cybergis-script-stretch.py <input_file> <breakpoints_file> <output_file> <rows> <threads>
+cybergis-script-ittc-stretch.py <input_file> <breakpoints_file> \
+<output_file> <bands> --rows ROWS --threads THREADS --verbose 
 ```
 ```
 cybergis-script-burn-alpha.py <input_file> <alpha_file> <alpha_band_index> <output_file> <rows> <threads>
