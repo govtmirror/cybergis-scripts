@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [[ $# -ne 9 ]]; then
+if [[ $# -ne 10 ]]; then
 	echo "Usage: cybergis-script-pull-wfs.sh <wfs> <namespace> <featuretype> <projection> <dbhost> <dbname> <dbuser> <dbpass> <table> <temp>"
 	exit
 fi
@@ -16,6 +16,8 @@ DBNAME=$6
 DBUSER=$7
 DBPASS=$8
 TABLE=$9
+TEMP=${10}
+#==#
 URL="$WFS?typename=$NAMESPACE%3A$FEATURETYPE&outputFormat=$FORMAT&version=1.0.0&request=GetFeature&service=WFS"
 #==#
 CACHE=$NAMESPACE"_"$FEATURETYPE"_"$TIMESTAMP".geojson"
