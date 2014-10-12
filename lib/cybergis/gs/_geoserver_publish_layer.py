@@ -62,13 +62,22 @@ def createLayer(verbose, geoserver, workspace, auth, datastore, layer):
         
     if verbose > 0:
         print('Layer created.')
+        
+def parse_featuretypes(featureTypes):
+    if featureTypes and len(featureTypes) > 0
+        try:
+            return featureTypes.split(",")
+        except:
+            return None
+    else:
+        return None
 
 def run(args):
     #print args
     #==#
     verbose = args.verbose
     #==#
-    table = args.table
+    featureTypes = parse_featuretypes(args.featuretypes)
     datastore = args.datastore
     geoserver = parse_url(args.geoserver)
     workspace = args.workspace
@@ -83,9 +92,14 @@ def run(args):
     print "Publish PostGIS Table as Layer"
     print "#==#"
     #==#
-    #Publish PostGIS Table as Layer
-    try:
-        createLayer(verbose, geoserver, workspace, auth, datastore, table)
-    except:
-        print "Couldn't create layer from PostGIS data store "+datastore+" for table "+table+"."
+    if not featureTypes:
+        print "Could not parse featuretypes correctly."
+        return 1;
+    #==#
+    #Publish Feature Types as Layers
+    for ft in featureTypes:
+        try:
+            createLayer(verbose, geoserver, workspace, auth, datastore, ft)
+        except:
+            print "Couldn't create layer from data store "+datastore+" for feature type "+ft+"."
     print "=================================="
