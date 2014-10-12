@@ -1,7 +1,7 @@
 #!/bin/bash
 
-if [[ $# -ne 8 ]]; then
-	echo "Usage: cybergis-script-pull-wfs.sh <wfs> <namespace> <featuretype> <projection> <dbname> <dbuser> <dbpass> <table>"
+if [[ $# -ne 9 ]]; then
+	echo "Usage: cybergis-script-pull-wfs.sh <wfs> <namespace> <featuretype> <projection> <dbhost> <dbname> <dbuser> <dbpass> <table>"
 	exit
 fi
 DATE=$(date)
@@ -11,10 +11,11 @@ WFS=$1
 NAMESPACE=$2
 FEATURETYPE=$3
 PROJECTION=$4
-DBNAME=$5
-DBUSER=$6
-DBPASS=$7
-TABLE=$8
+DBHOST=$5
+DBNAME=$6
+DBUSER=$7
+DBPASS=$8
+TABLE=$9
 URL="$WFS?typename=$NAMESPACE%3A$FEATURETYPE&outputFormat=$FORMAT&version=1.0.0&request=GetFeature&service=WFS"
 TEMP=/tmp/cybergis-pull
 
@@ -34,6 +35,6 @@ else
 
 	echo "Retrieving data from "$URL
 	wget $URL -O $NAMESPACE"_"$FEATURETYPE".geojson"
-	ogr2ogr -overwrite -a_srs $PROJECTION -f "PostgreSQL" PG:"host=localhost user=$DBUSER dbname=$DBNAME password=$DBPASS" $NAMESPACE"_"$FEATURETYPE".geojson" -nln "$TABLE"
+	ogr2ogr -overwrite -a_srs $PROJECTION -f "PostgreSQL" PG:"host=$DBHOST user=$DBUSER dbname=$DBNAME password=$DBPASS" $NAMESPACE"_"$FEATURETYPE".geojson" -nln "$TABLE"
 	echo "Finished pull of "$NAMESPACE":"$FEATURETYPE
 fi
