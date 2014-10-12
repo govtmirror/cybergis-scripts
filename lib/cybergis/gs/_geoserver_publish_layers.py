@@ -56,7 +56,9 @@ def createLayer(verbose, geoserver, workspace, auth, datastore, layer):
     try:
         request = make_request(url=url+'?', params=params, auth=auth, data=data)
     except:
-        raise Exception("Create layer failed: Status Code {0}".format(request.getcode()))
+        #raise Exception("Create layer failed with url="+url+", params="+str(params)+", data="+data)
+        print "Create layer failed with url="+url+", params="+str(params)+", data="+data
+        raise
 
     if request.getcode() != 201:
         raise Exception("Create layer failed: Status Code {0}".format(request.getcode()))
