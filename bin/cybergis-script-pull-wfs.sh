@@ -33,6 +33,6 @@ fi
 
 cd $TEMP
 echo "Retrieving data from "$URL
-wget $URL -O $NAMESPACE"_"$FEATURETYPE".geojson"
+wget $URL -O $CACHE
 ogr2ogr -overwrite -a_srs $PROJECTION -f "PostgreSQL" PG:"host=$DBHOST user=$DBUSER dbname=$DBNAME password=$DBPASS" $CACHE -nln "$TABLE"
 echo "Finished pull of "$NAMESPACE":"$FEATURETYPE
