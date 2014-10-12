@@ -10,7 +10,7 @@ import os
 import subprocess
 #==#
 #sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'lib')))
-from ..lib import cybergis.gs
+from ..lib.cybergis import gs
 #==#
 parser = argparse.ArgumentParser(description='')
 parser.add_argument("--path", help="The location in the filesystem of the styles directory")
