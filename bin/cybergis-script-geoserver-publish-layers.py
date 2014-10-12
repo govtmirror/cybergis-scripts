@@ -10,7 +10,7 @@ import os
 import subprocess
 #==#
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'lib', 'cybergis')))
-import gs._geoserver_import_styles
+import gs._geoserver_publish_layers
 #==#
 parser = argparse.ArgumentParser(description='')
 #==#
@@ -26,4 +26,4 @@ parser.add_argument("--password", help="The password to use for basic auth reque
 parser.add_argument('--verbose', '-v', default=0, action='count', help="Print out intermediate status messages.")
 args = parser.parse_args()
 #==#
-gs._geoserver_import_styles.run(args)
+gs._geoserver_publish_layers.run(args)
