@@ -63,11 +63,11 @@ def buildPOSTDataDataStore(name, path):
         data = f.read().replace('{{name}}', name).replace('{{path}}',path)
     return data
     
-def buildPOSTDataLayer(name,nativeName):
+def buildPOSTDataLayer(name,nativeName,title):
     file_data ="/opt/cybergis-scripts.git/templates/post_geogig_layer.xml"
     data = None
     with open (file_data, "r") as f:
-        data = f.read().replace('{{name}}', name).replace('{{nativeName}}', nativeName)
+        data = f.read().replace('{{name}}', name).replace('{{nativeName}}', nativeName).replace('{{title}}', title)
     return data
 
 def createDataStore(verbose, geoserver, workspace, auth, name, path):
@@ -93,11 +93,15 @@ def createDataStore(verbose, geoserver, workspace, auth, name, path):
 
     #return transactionId;
 
-def createLayer(verbose, geoserver, workspace, auth, datastore, layer):
+def createLayer(verbose, geoserver, workspace, auth, datastore, layer, prefix):
     if verbose > 0:
         print('Creating GeoServer Layer for '+layer+".")
     params = {}
-    data = buildPOSTDataLayer(datastore+"_"+layer,layer)
+    if prefix:
+        name = prefix+"_"+layer
+    else:
+        name = layer
+    data = buildPOSTDataLayer(name,layer,name)
     url = geoserver+"rest/workspaces/"+workspace+"/datastores/"+datastore+"/featuretypes.xml"
     
     try:
@@ -177,7 +181,7 @@ def run(args):
             trees = ([t['path'] for t in trees if (not t['path'] in ['node','way'])])
             for tree in trees:
                 try:
-                    createLayer(verbose, geoserver, workspace, auth, datastore, tree)
+                    createLayer(verbose, geoserver, workspace, auth, datastore, tree, datastore)
                 except:
                     print "Couldn't create layer from datastore "+datastore+" for tree "+tree+"."
                     
