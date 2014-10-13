@@ -46,11 +46,15 @@ def buildPOSTDataLayer(name,nativeName,title):
         data = f.read().replace('{{name}}', name).replace('{{nativeName}}', nativeName).replace('{{title}}', title)
     return data
 
-def createLayer(verbose, geoserver, workspace, auth, datastore, layer):
+def createLayer(verbose, geoserver, workspace, auth, datastore, layer, prefix):
     if verbose > 0:
         print('Creating GeoServer Layer for '+layer+".")
     params = {}
-    data = buildPOSTDataLayer(datastore+"_"+layer,layer,datastore+"_"+layer)
+    if prefix:
+        name = prefix+"_"+layer
+    else:
+        name = layer
+    data = buildPOSTDataLayer(name,layer,name)
     url = geoserver+"rest/workspaces/"+workspace+"/datastores/"+datastore+"/featuretypes.xml"
     
     try:
@@ -84,6 +88,7 @@ def run(args):
     datastore = args.datastore
     geoserver = parse_url(args.geoserver)
     workspace = args.workspace
+    prefix = args.prefix
     #==#
     auth = None
     if args.username and args.password:
@@ -102,7 +107,7 @@ def run(args):
     #Publish Feature Types as Layers
     for ft in featureTypes:
         try:
-            createLayer(verbose, geoserver, workspace, auth, datastore, ft)
+            createLayer(verbose, geoserver, workspace, auth, datastore, ft, prefix)
         except:
             print "Couldn't create layer from data store "+datastore+" for feature type "+ft+"."
             raise
