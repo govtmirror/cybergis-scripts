@@ -428,7 +428,7 @@ def run(args):
         if extracts:
             for extract in extracts:
                 if validateExtract(extract,bbox,update):
-                    processExtract(extract)
+                    processExtract(extract,geoserver,auth,workspace,bbox,mapping,authorname,authoremail,timeout,update,verbose)
         else:
             print "Extracts file was not parsed correctly."
             return 1
