@@ -298,7 +298,7 @@ def getIndex(element,array):
     except:
         return -1
 
-def parse_extracts(extracts_file, geoserver, auth, workspace, datastore, update):
+def parse_extracts(extracts_file, geoserver, auth, workspace, datastore):
     if extracts_file:
         extracts_string = None
         with open (extracts_file, "r") as f:
@@ -414,7 +414,7 @@ def run(args):
     print "#==#"
 
     if extracts_file:
-        extracts = parse_extracts(extracts_file)
+        extracts = parse_extracts(extracts_file, geoserver, auth, workspace, datastore)
         if extracts:
             for extract in extracts:
                 if validateExtract(extract,bbox,update):
