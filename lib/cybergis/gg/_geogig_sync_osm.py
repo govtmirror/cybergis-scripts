@@ -287,32 +287,105 @@ def parse_mapping(ns_mapping):
 
 class Extract(object):
 
-    def __init__(self,repo,datastore,extent,mapping):
+    def __init__(self):
         self.repo = repo
-        self.extent = extent
+        self.bbox = bbox
         self.mapping = mapping
 
-def parse_extracts(extracts_file, geoserver, auth, workspace, datastore, update):
-    i
-    extracts = None
-        with open (file_extent, "r") as f:
-            bbox = f.read().replace('\n', '').replace(' ',',')
-        return bbox
-    
-            self.valid = false
-        if repo:
-             self.valid = true
-        elif gs and ws and datastore:
-            self.valid = true
-            self.repo = getRepoID(gs, auth, ws, datastore)
-        else:
-            print "You need to include the repo id or the datastore name to sync"
-        
-        if update
-        
-    
+def getIndex(element,array):
+    try:
+        return array.index(element)
+    except:
+        return -1
 
-def processExtract(geoserver,extract):
+def parse_extracts(extracts_file, geoserver, auth, workspace, datastore, update):
+    if extracts_file:
+        extracts_string = None
+        with open (extracts_file, "r") as f:
+            extracts_string = f.read()
+         if extracts_string:
+             extracts_rows = extracts_string.split("\n")
+             header = extracts_rows[0]
+             iRepo = getIndex("repo",header)
+             iDatastore = getIndex("datastore",header)
+             iExtent = getIndex("extent",header)
+             iMapping = getIndex("mapping",header)
+             extracts_list = []
+             for i in range(1,len(extracts_rows):
+                 row = extracts_rows[row].split("\t")
+                 extract = Extract()
+
+                 if iRepo >= 0:
+                     extract.repo = row[iRepo]
+                 elif iDataStore >= 0:
+                     extract.repo = getRepoID(geoserver, auth, workspace,row[iDataStore])
+
+                 if iExtent >= 0:
+                     extract.bbox = parse_bbox(row[iExtent])
+
+                 if iMapping >= 0:
+                     extract.mapping = parse_mapping(row[iMapping])
+             return extracts_list
+
+         else:
+             print "The extracts file is empty."
+             return None
+    else:
+        print "No extracts file specified."
+        return None
+
+def validateExtract(extract,bbox,update):
+    if extract.repo:
+        if update:
+            return True
+        else:
+            if bbox or extract.bbox:
+                return True
+            else:
+                return False
+    else:
+        return False
+
+def processExtract(extract,geoserver,auth,workspace,bbox,mapping,authorname,authoremail,timeout,update,verbose):
+    #
+    url_repo = geoserver+'geogig/'+extract.repo+'/'
+    url_tasks = geoserver+'geogig/tasks'
+    #
+    transID = -1
+    try:
+        transID = beginTransaction(verbose,url_repo,auth)
+    except Exception:
+        transID = -1
+        raise
+
+    if transID != -1:
+        taskID = -1
+        #==#
+        #Checkout master branch.  See: https://github.com/boundlessgeo/GeoGig/issues/788
+        try:
+            branch = checkout(verbose, url_repo, auth, 'master', transID)
+            if not branch:
+                raise Exception('An error occurred when checking out master.  Cancelling task.')
+            taskID = downloadFromOSM(verbose, url_repo, auth, transID, update, extract.mapping or mapping, extract.bbox or bbox)
+        except Exception:
+            taskID = -1
+            endTransaction(verbose,url_repo, auth, True, transID)
+            raise
+
+        if taskID != -1:
+            waitOnTask(verbose, url_tasks, auth, taskID, timeout)
+
+        #==#
+        #Checkout master branch.  See: https://github.com/boundlessgeo/GeoGig/issues/788
+        try:
+            checkout(verbose, url_repo, auth, 'master', transID)
+        except Exception:
+            pass
+
+    try:
+        endTransaction(verbose,url_repo, auth, False, transID)
+    except Exception:
+        pass
 
 def run(args):
     #==#
@@ -343,54 +416,24 @@ def run(args):
 
     if extracts_file:
         extracts = parse_extracts(extracts_file)
+        if extracts:
+            for extract in extracts:
+                if validateExtract(extract,bbox,update):
+                    processExtract(extract)
+        else:
+            print "Extracts file was not parse correctly."
+            return 1
     else:
-        extracts = [Extract(self,geoserver,auth,workspace,repo,datastore,extent,mapping,update)]
+        extract = Extract()
+        if repo:
+            extract.repo = repo
+        if datastore:
+            extract.repo = getRepoID(geoserver, auth, workspace, datastore)
+        if bbox:
+            extract.bbox = bbox
+        if mapping:
+            extract.mapping = mapping
 
-    #==#
-    url_repo = geoserver+'geogig/'+repo+'/'
-    url_tasks = geoserver+'geogig/tasks'
-    #==#
-    if update:
-        pass
-    elif bbox:
-       pass
-    else:
-        return "Update is false and no new data will be brought in because the extent and mapping aren't specified"
-
-    transID = -1
-    try:
-        transID = beginTransaction(verbose,url_repo, auth)
-    except Exception:
-        transID = -1
-        raise
-    
-    if transID != -1:
-        taskID = -1
-        #==#
-        #Checkout master branch.  See: https://github.com/boundlessgeo/GeoGig/issues/788
-        try:
-            branch = checkout(verbose, url_repo, auth, 'master', transID)
-            if not branch:
-                raise Exception('An error occurred when checking out master.  Cancelling task.')
-            taskID = downloadFromOSM(verbose, url_repo, auth, transID, update, mapping, bbox)
-        except Exception:
-            taskID = -1
-            endTransaction(verbose,url_repo, auth, True, transID)
-            raise
-        
-        if taskID != -1:
-            waitOnTask(verbose, url_tasks, auth, taskID, timeout)
-  
-        #==#
-        #Checkout master branch.  See: https://github.com/boundlessgeo/GeoGig/issues/788
-        try:
-            checkout(verbose, url_repo, auth, 'master', transID)
-        except Exception:
-            pass
- 
-    try:
-        endTransaction(verbose,url_repo, auth, False, transID)
-    except Exception:
-        pass
-    
+        if validateExtract(extract,bbox,update):
+            processExtract(extract,geoserver,auth,workspace,bbox,mapping,authorname,authoremail,timeout,update,verbose):
     print "=================================="
