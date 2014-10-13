@@ -315,6 +315,9 @@ def parse_extracts(extracts_file, geoserver, auth, workspace, datastore):
                 row = extracts_rows[i].split("\t")
                 extract = Extract()
 
+                print header
+                print row
+                print iDataStore
                 if iRepo >= 0:
                     extract.repo = row[iRepo]
                 elif iDataStore >= 0:
