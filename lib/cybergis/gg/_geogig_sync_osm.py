@@ -329,7 +329,8 @@ def parse_extracts(extracts_file, geoserver, auth, workspace, datastore):
 
                 if iMapping >= 0:
                     extract.mapping = parse_mapping(row[iMapping])
-
+                print iMapping
+                print row[iMapping]
                 print extract.mapping
                 extracts_list.append(extract)
 
