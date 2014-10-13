@@ -319,9 +319,6 @@ def parse_extracts(extracts_file, geoserver, auth, workspace, datastore):
                 row = sRow.split("\t")
                 extract = Extract()
 
-                print header
-                print row
-                print iDataStore
                 if iRepo >= 0:
                     extract.repo = row[iRepo]
                 elif iDataStore >= 0:
@@ -333,6 +330,7 @@ def parse_extracts(extracts_file, geoserver, auth, workspace, datastore):
                 if iMapping >= 0:
                     extract.mapping = parse_mapping(row[iMapping])
 
+                print extract.mapping
                 extracts_list.append(extract)
 
             return extracts_list
