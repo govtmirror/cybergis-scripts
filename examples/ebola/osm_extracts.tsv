@@ -1,4 +1,4 @@
-id	datastore	extent	mapping 
+id	datastore	extent	mapping
 1	monrovia_basic	liberia:monrovia	basic:buildings_and_roads
 2	monrovia_landuse	liberia:monrovia	landuse:landuse_all
 3	monrovia_medicalcenters	liberia:monrovia	health:medical_centers
