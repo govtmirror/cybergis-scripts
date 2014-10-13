@@ -20,7 +20,8 @@ parser.add_argument('-ws', '--workspace', help="The GeoServer workspace to use f
 #
 parser.add_argument('-ds', '--datastore', help="The name of the GeoServer data store of the GeoGig repository you want to sync.")
 parser.add_argument('-r', '--repo', help="The GeoServer id of the GeoGig repository you want to sync.")
-
+parser.add_argument('--extracts', help="A tab seperated file (TSV) specifying the datastore, extent, and mapping for each extract.")
+#
 parser.add_argument("--username", help="The username to use for basic auth requests.")
 parser.add_argument("--password", help="The password to use for basic auth requests.")
 parser.add_argument('-an', '--authorname', help="The author name to use when merging non-conflicting branches.")
