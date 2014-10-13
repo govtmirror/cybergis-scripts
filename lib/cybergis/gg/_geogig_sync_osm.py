@@ -434,5 +434,5 @@ def run(args):
             extract.mapping = mapping
 
         if validateExtract(extract,bbox,update):
-            processExtract(extract,geoserver,auth,workspace,bbox,mapping,authorname,authoremail,timeout,update,verbose):
+            processExtract(extract,geoserver,auth,workspace,bbox,mapping,authorname,authoremail,timeout,update,verbose)
     print "=================================="
