@@ -303,33 +303,32 @@ def parse_extracts(extracts_file, geoserver, auth, workspace, datastore, update)
         extracts_string = None
         with open (extracts_file, "r") as f:
             extracts_string = f.read()
-         if extracts_string:
-             extracts_rows = extracts_string.split("\n")
-             header = extracts_rows[0]
-             iRepo = getIndex("repo",header)
-             iDatastore = getIndex("datastore",header)
-             iExtent = getIndex("extent",header)
-             iMapping = getIndex("mapping",header)
-             extracts_list = []
-             for i in range(1,len(extracts_rows):
-                 row = extracts_rows[row].split("\t")
-                 extract = Extract()
+        if extracts_string:
+            extracts_rows = extracts_string.split("\n")
+            header = extracts_rows[0]
+            iRepo = getIndex("repo",header)
+            iDatastore = getIndex("datastore",header)
+            iExtent = getIndex("extent",header)
+            iMapping = getIndex("mapping",header)
+            extracts_list = []
+            for i in range(1,len(extracts_rows):
+                row = extracts_rows[row].split("\t")
+                extract = Extract()
 
-                 if iRepo >= 0:
-                     extract.repo = row[iRepo]
-                 elif iDataStore >= 0:
-                     extract.repo = getRepoID(geoserver, auth, workspace,row[iDataStore])
+                if iRepo >= 0:
+                    extract.repo = row[iRepo]
+                elif iDataStore >= 0:
+                    extract.repo = getRepoID(geoserver, auth, workspace,row[iDataStore])
 
-                 if iExtent >= 0:
-                     extract.bbox = parse_bbox(row[iExtent])
+                if iExtent >= 0:
+                    extract.bbox = parse_bbox(row[iExtent])
 
-                 if iMapping >= 0:
-                     extract.mapping = parse_mapping(row[iMapping])
-             return extracts_list
-
-         else:
-             print "The extracts file is empty."
-             return None
+                if iMapping >= 0:
+                    extract.mapping = parse_mapping(row[iMapping])
+            return extracts_list
+        else:
+            print "The extracts file is empty."
+            return None
     else:
         print "No extracts file specified."
         return None
