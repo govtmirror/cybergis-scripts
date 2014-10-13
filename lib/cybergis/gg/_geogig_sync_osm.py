@@ -305,7 +305,7 @@ def parse_extracts(extracts_file, geoserver, auth, workspace, datastore):
             extracts_string = f.read()
         if extracts_string:
             extracts_rows = extracts_string.split("\n")
-            header = extracts_rows[0].split("\t")
+            header = extracts_rows[0].strip().split("\t")
             iRepo = getIndex("repo",header)
             iDataStore = getIndex("datastore",header)
             iExtent = getIndex("extent",header)
@@ -329,9 +329,7 @@ def parse_extracts(extracts_file, geoserver, auth, workspace, datastore):
 
                 if iMapping >= 0:
                     extract.mapping = parse_mapping(row[iMapping])
-                print iMapping
-                print row[iMapping]
-                print extract.mapping
+
                 extracts_list.append(extract)
 
             return extracts_list
