@@ -312,7 +312,11 @@ def parse_extracts(extracts_file, geoserver, auth, workspace, datastore):
             iMapping = getIndex("mapping",header)
             extracts_list = []
             for i in range(1,len(extracts_rows)):
-                row = extracts_rows[i].split("\t")
+                sRow = extracts_rows[i]
+                if not sRow:
+                    continue
+
+                row = sRow.split("\t")
                 extract = Extract()
 
                 print header
