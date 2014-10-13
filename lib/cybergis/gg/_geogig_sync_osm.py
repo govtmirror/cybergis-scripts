@@ -323,7 +323,7 @@ def run(args):
     #==#
     if update:
         pass
-    elif bbox and mapping:
+    elif bbox:
        pass
     else:
         return "Update is false and no new data will be brought in because the extent and mapping aren't specified"
