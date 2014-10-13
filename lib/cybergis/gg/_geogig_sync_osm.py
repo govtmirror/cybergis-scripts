@@ -307,7 +307,7 @@ def parse_extracts(extracts_file, geoserver, auth, workspace, datastore):
             extracts_rows = extracts_string.split("\n")
             header = extracts_rows[0]
             iRepo = getIndex("repo",header)
-            iDatastore = getIndex("datastore",header)
+            iDataStore = getIndex("datastore",header)
             iExtent = getIndex("extent",header)
             iMapping = getIndex("mapping",header)
             extracts_list = []
