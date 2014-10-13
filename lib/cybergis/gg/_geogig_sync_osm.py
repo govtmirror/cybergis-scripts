@@ -285,6 +285,35 @@ def parse_mapping(ns_mapping):
     else:
         return None
 
+class Extract(object):
+
+    def __init__(self,repo,datastore,extent,mapping):
+        self.repo = repo
+        self.extent = extent
+        self.mapping = mapping
+
+def parse_extracts(extracts_file, geoserver, auth, workspace, datastore, update):
+    i
+    extracts = None
+        with open (file_extent, "r") as f:
+            bbox = f.read().replace('\n', '').replace(' ',',')
+        return bbox
+    
+            self.valid = false
+        if repo:
+             self.valid = true
+        elif gs and ws and datastore:
+            self.valid = true
+            self.repo = getRepoID(gs, auth, ws, datastore)
+        else:
+            print "You need to include the repo id or the datastore name to sync"
+        
+        if update
+        
+    
+
+def processExtract(geoserver,extract):
+
 def run(args):
     #==#
     verbose = args.verbose
@@ -292,6 +321,7 @@ def run(args):
     geoserver = parse_url(args.geoserver)
     repo = args.repo
     datastore = args.datastore
+    extracts_file = args.extracts
     workspace = args.workspace
     timeout = args.timeout or 30
     #==#
@@ -311,12 +341,11 @@ def run(args):
     print "Downloading Updates from OpenStreetMap"
     print "#==#"
 
-    if repo:
-        pass
-    elif geoserver and workspace and datastore:
-        repo = getRepoID(geoserver, auth, workspace, datastore)
+    if extracts_file:
+        extracts = parse_extracts(extracts_file)
     else:
-        print "You need to include the repo id or the datastore name to sync"
+        extracts = [Extract(self,geoserver,auth,workspace,repo,datastore,extent,mapping,update)]
+
     #==#
     url_repo = geoserver+'geogig/'+repo+'/'
     url_tasks = geoserver+'geogig/tasks'
