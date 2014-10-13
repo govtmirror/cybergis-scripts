@@ -19,6 +19,7 @@ parser.add_argument('-ws', '--workspace', help="The GeoServer workspace to use f
 #==#
 parser.add_argument('-ds', '--datastore', help="The name of the GeoServer data store of the GeoGig repository you want to sync.")
 parser.add_argument('-ft','--featuretypes', help="The featuretypes comma-separated in the datastore to be published.")
+parser.add_argument("--prefix", help="The prefix to prepend to all the layer names when loaded into GeoServer")
 #==#
 parser.add_argument("--username", help="The username to use for basic auth requests.")
 parser.add_argument("--password", help="The password to use for basic auth requests.")
