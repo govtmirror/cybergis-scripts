@@ -288,9 +288,9 @@ def parse_mapping(ns_mapping):
 class Extract(object):
 
     def __init__(self):
-        self.repo = repo
-        self.bbox = bbox
-        self.mapping = mapping
+        self.repo = None
+        self.bbox = None
+        self.mapping = None
 
 def getIndex(element,array):
     try:
