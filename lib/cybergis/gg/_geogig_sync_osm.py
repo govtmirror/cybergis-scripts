@@ -332,6 +332,9 @@ def parse_extracts(extracts_file, geoserver, auth, workspace, datastore):
 
                 if iMapping >= 0:
                     extract.mapping = parse_mapping(row[iMapping])
+
+                extracts_list.append(extract)
+
             return extracts_list
         else:
             print "The extracts file is empty."
@@ -427,7 +430,7 @@ def run(args):
                 if validateExtract(extract,bbox,update):
                     processExtract(extract)
         else:
-            print "Extracts file was not parse correctly."
+            print "Extracts file was not parsed correctly."
             return 1
     else:
         extract = Extract()
