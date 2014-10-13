@@ -311,7 +311,7 @@ def parse_extracts(extracts_file, geoserver, auth, workspace, datastore, update)
             iExtent = getIndex("extent",header)
             iMapping = getIndex("mapping",header)
             extracts_list = []
-            for i in range(1,len(extracts_rows):
+            for i in range(1,len(extracts_rows)):
                 row = extracts_rows[row].split("\t")
                 extract = Extract()
 
