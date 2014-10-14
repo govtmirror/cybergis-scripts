@@ -39,14 +39,22 @@ def parse_url(url):
     return url
 
     
-def buildPOSTDataLayerGroup(layergroup,layers):
-    data = "<layerGroup><name>"+layergroup+"</name><layers>"
+def buildPOSTDataLayerGroup(layergroup, layers, styles):
+    data = "<layerGroup><name>"+layergroup+"</name>"
+    data += "<layers>"
     for layer in layers:
         data += "<layer>"+layer+"</layer>"
-    data += "</layers></layerGroup>"
+    data += "</layers>"
+    if styles:
+        data += "<styles>"
+        for style in styles:
+            data += "<style>"+style+"</style>"
+        data += "</styles>"
+    data += "</layers>"
+    data +="</layerGroup>"
     return data
 
-def createLayerGroup(verbose, geoserver, workspace, auth, layergroup, layers):
+def createLayerGroup(verbose, geoserver, workspace, auth, layergroup, layers, styles):
     if verbose > 0:
         print('Creating GeoServer Layergroup for '+layergroup+".")
     params = {}
@@ -75,12 +83,22 @@ def parse_layers(layers):
     else:
         return None
 
+def parse_styles(styles):
+    if styles and len(styles) > 0:
+        try:
+            return styles.split(",")
+        except:
+            return None
+    else:
+        return None
+
 def run(args):
     #print args
     #==#
     verbose = args.verbose
     #==#
     layers = parse_layers(args.layers)
+    styles = parse_styles(args.styles)
     geoserver = parse_url(args.geoserver)
     workspace = args.workspace
     layergroup = args.layergroup
@@ -97,11 +115,16 @@ def run(args):
     #==#
     if not layers:
         print "Could not parse layers correctly."
-        return 1;
+        return 1
+    
+    if styles:
+        if len(styles) != len(layers):
+            print "Layers and styles arrays do not have the same length."
+            return 1
     #==#
     #Publish Layers as Layer Group
     try:
-        createLayerGroup(verbose, geoserver, workspace, auth, layergroup, layers)
+        createLayerGroup(verbose, geoserver, workspace, auth, layergroup, layers, styles)
     except:
         print "Couldn't create layergroup from layers "+args.layers+"."
         raise
