@@ -24,6 +24,7 @@ DS=<Data Store>
 LG=monrovia_$TIMESTAMP
 FTA=( "monrovia_basic_osm_buildings" "monrovia_basic_osm_roads")
 SNAPA=()
+STYLESA= ( "cybergis_structure_buildings" "cybergis_roads_roads_minor")
 for FT in "${FTA[@]}"
 do
     #SNAP=$NS"_"$FT"_"$TIMESTAMP
@@ -36,7 +37,9 @@ do
 done
 LAYERS=$(printf ",%s" "${SNAPA[@]}")
 LAYERS=$(echo $LAYERS | cut -c 2- )
-python $BIN/cybergis-script-geoserver-publish-layergroup.py -gs $GS -ws $WS -lg $LG --layers "$LAYERS" --username $GS_USER --password $GS_PASS
+STYLES=$(printf ",%s" "${STYLESA[@]}")
+STYLES=$(echo $STYLES | cut -c 2- )
+python $BIN/cybergis-script-geoserver-publish-layergroup.py -gs $GS -ws $WS -lg $LG --layers "$LAYERS" --styles "$STYLES" --username $GS_USER --password $GS_PASS
 #===================#
 #Kenema
 FTA=( "kenema_basic_osm_buildings" "kenema_basic_osm_roads")
