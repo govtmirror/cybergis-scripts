@@ -40,10 +40,10 @@ def parse_url(url):
 
     
 def buildPOSTDataLayerGroup(layergroup,layers):
-    data = "<layerGroup><name>"+layergroup+"</name>"
+    data = "<layerGroup><name>"+layergroup+"</name><layers>"
     for layer in layers:
         data += "<layer>"+layer+"</layer>"
-    data += "</layerGroup>"
+    data += "</layers></layerGroup>"
     return data
 
 def createLayerGroup(verbose, geoserver, workspace, auth, layergroup, layers):
