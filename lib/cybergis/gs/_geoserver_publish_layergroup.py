@@ -43,7 +43,7 @@ def buildPOSTDataLayerGroup(layergroup,layers):
     data = "<layerGroup><name>"+layergroup+"</name>"
     for layer in layers:
         data += "<layer>"+layer+"</layer>"
-    data += "</layergroup>"
+    data += "</layerGroup>"
     return data
 
 def createLayerGroup(verbose, geoserver, workspace, auth, layergroup, layers):
