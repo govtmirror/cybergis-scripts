@@ -20,15 +20,36 @@ PRJ='EPSG:4326'
 WS=<Workspace>
 DS=<Data Store>
 #===================#
-FTA=( "monrovia_basic_osm_buildings" "kenema_basic_osm_buildings")
+#Monrovia
+LG=monrovia_$TIMESTAMP
+FTA=( "monrovia_basic_osm_buildings" "monrovia_basic_osm_roads")
+SNAPA=()
 for FT in "${FTA[@]}"
 do
-    SNAP=$NS"_"$FT"_"$TIMESTAMP
+    #SNAP=$NS"_"$FT"_"$TIMESTAMP
+    SNAP=$FT"_"$TIMESTAMP
+    SNAPA+=($SNAP)
     echo "-----------"
     echo "Snapshoting "$FT" as "$NS"_"$FT"_"$TIMESTAMP
-    echo "Snapshoting"
-    $BIN/cybergis-script-pull-wfs.sh $WFS $NS $FT $PRJ $HOST $DB $USER $PASS $SNAP
-    echo "Publishing"
-    python $BIN/cybergis-script-geoserver-publish-layers.py -gs $GS -ws $WS -ds $DS -ft $SNAP --username $USER --password $PASS
+    $BIN/cybergis-script-pull-wfs.sh $WFS $NS $FT $PRJ $HOST $DB $DB_USER $DB_PASS $SNAP $TEMP
+    python $BIN/cybergis-script-geoserver-publish-layers.py -gs $GS -ws $WS -ds $DS -ft $SNAP --username $GS_USER --password $GS_PASS
 done
+LAYERS=$(printf ",%s" "${SNAPA[@]}")
+python $BIN/cybergis-script-geoserver-publish-layergroup.py -gs $GS -ws $WS -lg $LG --layers "$LAYERS" --username $GS_USER --password $GS_PASS
+#===================#
+#Kenema
+FTA=( "kenema_basic_osm_buildings" "kenema_basic_osm_roads")
+SNAPA=()
+for FT in "${FTA[@]}"
+do
+    #SNAP=$NS"_"$FT"_"$TIMESTAMP
+    SNAP=$FT"_"$TIMESTAMP
+    SNAPA+=($SNAP)
+    echo "-----------"
+    echo "Snapshoting "$FT" as "$NS"_"$FT"_"$TIMESTAMP
+    $BIN/cybergis-script-pull-wfs.sh $WFS $NS $FT $PRJ $HOST $DB $DB_USER $DB_PASS $SNAP $TEMP
+    python $BIN/cybergis-script-geoserver-publish-layers.py -gs $GS -ws $WS -ds $DS -ft $SNAP --username $GS_USER --password $GS_PASS
+done
+LAYERS=$(printf ",%s" "${SNAPA[@]}")
+python $BIN/cybergis-script-geoserver-publish-layergroup.py -gs $GS -ws $WS -lg $LG --layers "$LAYERS" --username $GS_USER --password $GS_PASS
 #===================#
