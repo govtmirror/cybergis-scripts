@@ -58,7 +58,7 @@ def createLayerGroup(verbose, geoserver, workspace, auth, layergroup, layers, st
     if verbose > 0:
         print('Creating GeoServer Layergroup for '+layergroup+".")
     params = {}
-    data = buildPOSTDataLayerGroup(layergroup,layers)
+    data = buildPOSTDataLayerGroup(layergroup, layers, styles)
     url = geoserver+"rest/workspaces/"+workspace+"/layergroups.xml"
     
     try:
