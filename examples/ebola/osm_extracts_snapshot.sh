@@ -35,6 +35,7 @@ do
     python $BIN/cybergis-script-geoserver-publish-layers.py -gs $GS -ws $WS -ds $DS -ft $SNAP --username $GS_USER --password $GS_PASS
 done
 LAYERS=$(printf ",%s" "${SNAPA[@]}")
+LAYERS=$(echo $LAYERS | cut -c 2- )
 python $BIN/cybergis-script-geoserver-publish-layergroup.py -gs $GS -ws $WS -lg $LG --layers "$LAYERS" --username $GS_USER --password $GS_PASS
 #===================#
 #Kenema
@@ -51,5 +52,6 @@ do
     python $BIN/cybergis-script-geoserver-publish-layers.py -gs $GS -ws $WS -ds $DS -ft $SNAP --username $GS_USER --password $GS_PASS
 done
 LAYERS=$(printf ",%s" "${SNAPA[@]}")
+LAYERS=$(echo $LAYERS | cut -c 2- )
 python $BIN/cybergis-script-geoserver-publish-layergroup.py -gs $GS -ws $WS -lg $LG --layers "$LAYERS" --username $GS_USER --password $GS_PASS
 #===================#
