@@ -19,6 +19,7 @@ parser.add_argument('-ws', '--workspace', help="The GeoServer workspace to use f
 #==#
 parser.add_argument('-lg','--layergroup', help="The name of the new layer group.")
 parser.add_argument('--layers', help="The layers comma-separated in GeoServer to be combined into the layer group.")
+parser.add_argument('--styles', help="The styles comma-separated in GeoServer to be used for each layer.  Layers and Styles must have the same length.")
 #==#
 parser.add_argument("--username", help="The username to use for basic auth requests.")
 parser.add_argument("--password", help="The password to use for basic auth requests.")
