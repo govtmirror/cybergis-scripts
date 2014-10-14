@@ -50,7 +50,6 @@ def buildPOSTDataLayerGroup(layergroup, layers, styles):
         for style in styles:
             data += "<style>"+style+"</style>"
         data += "</styles>"
-    data += "</layers>"
     data +="</layerGroup>"
     return data
 
