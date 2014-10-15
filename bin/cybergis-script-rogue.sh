@@ -93,6 +93,7 @@ conf_application(){
     cd /opt/chef-run
     rm dna.json
     rm dna_database.json
+    rm dna_standalone.json
     mv dna_application.json dna.json
     #==#
     sed -i "s/{{fqdn}}/$FQDN/g" dna.json
@@ -160,6 +161,7 @@ conf_standalone(){
     cd /opt/chef-run
     rm dna.json
     rm dna_database.json
+    rm dna_application.json
     mv dna_standalone.json dna.json
     #==#
     sed -i "s/{{fqdn}}/$FQDN/g" dna.json
