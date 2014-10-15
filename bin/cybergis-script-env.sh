@@ -152,8 +152,8 @@ maploom(){
       sudo apt-get install -y curl vim git
       #sudo apt-get install -y nodejs nodejs-dev npm
       #
-      sudo npm config set registry http://registry.npmjs.org/
       sudo apt-get install -y nodejs nodejs-dev npm
+      sudo npm config set registry http://registry.npmjs.org/
       #
       #sudo npm -g install grunt-cli karma bower
       sudo npm -g install grunt-cli bower
