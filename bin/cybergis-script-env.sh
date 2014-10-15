@@ -140,12 +140,13 @@ maploom(){
   else
     ENV=$1
     CMD=$2
-    #!!! MapLoom Environment is broken right now.  Need to automate installing lower version.  See https://groups.google.com/forum/#!topic/nodejs/9HjStFy2ohY
+    
     if [[ "$CMD" = "install" ]]; then
       sudo apt-get update
       #
       sudo apt-get install -y python-software-properties
-      sudo add-apt-repository ppa:chris-lea/node.js
+      #sudo add-apt-repository ppa:chris-lea/node.js
+      sudo apt-add-repository ppa:chris-lea/node.js-legacy
       #
       sudo apt-get update
       #
@@ -153,7 +154,14 @@ maploom(){
       #For compiling nodejs, version 8.22
       sudo apt-get install -y make gcc
       #
-      sudo apt-get install -y nodejs nodejs-dev npm
+      #sudo apt-get install -y nodejs nodejs-dev npm
+      #Need old version of NodeJS for dev and npm.
+      #See: http://stackoverflow.com/questions/16898001/installing-a-specific-node-version-in-ubuntu
+      #See: https://launchpad.net/~chris-lea/+archive/ubuntu/node.js-legacy
+      #See: https://groups.google.com/forum/#!topic/nodejs/9HjStFy2ohY
+      sudo apt-get install nodejs=0.8.28-1chl1~precise1
+      sudo apt-get install -y nodejs-dev npm
+      sudo apt-get install -y npm
       sudo npm config set registry http://registry.npmjs.org/
       #
       #sudo npm -g install grunt-cli karma bower
