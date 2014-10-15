@@ -89,21 +89,21 @@ conf_application(){
     cp -r /opt/rogue-chef-repo/solo/* /opt/chef-run/
     cd /opt/chef-run
     #
-    sed -i "s/{{fqdn}}/$FQDN/g" dna.json
-    sed -i "s/{{db-host}}/$DB_HOST/g" dna.json
+    sed -i "s/{{fqdn}}/$FQDN/g" dna_application.json
+    sed -i "s/{{db-host}}/$DB_HOST/g" dna_application.json
     if [[ "$DB_IP" == "false" ]]; then
-      sed -i "s/{{db-ip}}/false/g" dna.json
+      sed -i "s/{{db-ip}}/false/g" dna_application.json
     else
-      sed -i "s/{{db-ip}}/\"$DB_IP\"/g" dna.json
+      sed -i "s/{{db-ip}}/\"$DB_IP\"/g" dna_application.json
     fi
-    sed -i "s/{{db-pass}}/$DB_PASS/g" dna.json
-    sed -i "s/{{db-port}}/$DB_PORT/g" dna.json
-    sed -i "s/{{gs-baseline}}/$GS_BASELINE/g" dna.json
+    sed -i "s/{{db-pass}}/$DB_PASS/g" dna_application.json
+    sed -i "s/{{db-port}}/$DB_PORT/g" dna_application.json
+    sed -i "s/{{gs-baseline}}/$GS_BASELINE/g" dna_application.json
     #==#
-    sed -i "s/{{banner-on}}/$BANNER_ON/g" dna.json
-    sed -i "s/{{banner-color-text}}/$BANNER_COLOR_TEXT/g" dna.json
-    sed -i "s/{{banner-color-background}}/$BANNER_COLOR_BACKGROUND/g" dna.json
-    sed -i "s/{{banner-text}}/$BANNER_TEXT/g" dna.json
+    sed -i "s/{{banner-on}}/$BANNER_ON/g" dna_application.json
+    sed -i "s/{{banner-color-text}}/$BANNER_COLOR_TEXT/g" dna_application.json
+    sed -i "s/{{banner-color-background}}/$BANNER_COLOR_BACKGROUND/g" dna_application.json
+    sed -i "s/{{banner-text}}/$BANNER_TEXT/g" dna_application.json
   fi
 }
 
