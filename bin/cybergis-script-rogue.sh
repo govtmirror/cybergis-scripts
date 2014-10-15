@@ -42,8 +42,10 @@ install_bundler(){
 }
 
 conf_application(){
-  if [[ $# -ne 8 ]]; then
+  if [ $# -ne 8 ] && [ $# -ne 11 ]; then
     echo "Usage: cybergis-script-rogue.sh prod conf_application <fqdn> <db_host> <db_ip> <db_port> <db_pass> <gs_baseline>"
+        echo "or"
+    echo "Usage: cybergis-script-rogue.sh prod conf_application <fqdn> <db_host> <db_ip> <db_port> <db_pass> <gs_baseline> <banner_text> <banner_color_text> <banner_color_background>"
   else
     INIT_ENV=$1
     INIT_CMD=$2
@@ -56,6 +58,18 @@ conf_application(){
     #
     DB_PASS="$(echo "$DB_PASS" | sed -e 's/[()&]/\\&/g')"
     #
+    if [[ $# -eq 8 ]]; then
+      BANNER_ON="false"
+      BANNER_TEXT=""
+      BANNER_COLOR_TEXT=""
+      BANNER_COLOR_BACKGROUND=""
+    else
+      BANNER_ON="true"
+      BANNER_TEXT=${5}
+      BANNER_COLOR_TEXT=${6}
+      BANNER_COLOR_BACKGROUND=${7}
+    fi
+    #==#
     cd /opt
     if [ ! -d "/opt/rogue-chef-repo" ]; then
       git clone https://github.com/state-hiu/rogue-chef-repo.git
@@ -85,6 +99,11 @@ conf_application(){
     sed -i "s/{{db-pass}}/$DB_PASS/g" dna.json
     sed -i "s/{{db-port}}/$DB_PORT/g" dna.json
     sed -i "s/{{gs-baseline}}/$GS_BASELINE/g" dna.json
+    #==#
+    sed -i "s/{{banner-on}}/$BANNER_ON/g" dna.json
+    sed -i "s/{{banner-color-text}}/$BANNER_COLOR_TEXT/g" dna.json
+    sed -i "s/{{banner-color-background}}/$BANNER_COLOR_BACKGROUND/g" dna.json
+    sed -i "s/{{banner-text}}/$BANNER_TEXT/g" dna.json
   fi
 }
 
@@ -99,6 +118,7 @@ conf_standalone(){
     INIT_CMD=$2
     FQDN=$3
     GS_BASELINE=$4
+    #==#
     if [[ $# -eq 4 ]]; then
       BANNER_ON="false"
       BANNER_TEXT=""
@@ -110,6 +130,7 @@ conf_standalone(){
       BANNER_COLOR_TEXT=${6}
       BANNER_COLOR_BACKGROUND=${7}
     fi
+    #==#
     cd /opt
     if [ ! -d "/opt/rogue-chef-repo" ]; then
       git clone https://github.com/state-hiu/rogue-chef-repo.git
@@ -131,6 +152,7 @@ conf_standalone(){
     #
     sed -i "s/{{fqdn}}/$FQDN/g" dna.json
     sed -i "s/{{gs-baseline}}/$GS_BASELINE/g" dna.json
+    #==#
     sed -i "s/{{banner-on}}/$BANNER_ON/g" dna.json
     sed -i "s/{{banner-color-text}}/$BANNER_COLOR_TEXT/g" dna.json
     sed -i "s/{{banner-color-background}}/$BANNER_COLOR_BACKGROUND/g" dna.json
