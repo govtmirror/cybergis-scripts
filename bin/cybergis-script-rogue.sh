@@ -75,8 +75,8 @@ conf_application(){
       git clone https://github.com/state-hiu/rogue-chef-repo.git
     fi
     cd /opt/rogue-chef-repo
-    git checkout -b hiu_application origin/hiu_application
-    git pull origin hiu_application
+    git checkout -b hiu_baseline origin/hiu_baseline
+    git pull origin hiu_baseline
     if [ -d "/opt/chef-run" ]; then
       rm -fr /opt/chef-run
     fi
@@ -136,8 +136,8 @@ conf_standalone(){
       git clone https://github.com/state-hiu/rogue-chef-repo.git
     fi
     cd /opt/rogue-chef-repo
-    git checkout -b hiu_standalone origin/hiu_standalone
-    git pull origin hiu_standalone
+    git checkout -b hiu_baseline origin/hiu_baseline
+    git pull origin hiu_baseline
     if [ -d "/opt/chef-run" ]; then
       rm -fr /opt/chef-run
     fi
