@@ -140,7 +140,7 @@ maploom(){
   else
     ENV=$1
     CMD=$2
-    #
+    #!!! MapLoom Environment is broken right now.  Need to automate installing lower version.  See https://groups.google.com/forum/#!topic/nodejs/9HjStFy2ohY
     if [[ "$CMD" = "install" ]]; then
       sudo apt-get update
       #
