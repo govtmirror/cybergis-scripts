@@ -65,9 +65,9 @@ conf_application(){
       BANNER_COLOR_BACKGROUND=""
     else
       BANNER_ON="true"
-      BANNER_TEXT=${5}
-      BANNER_COLOR_TEXT=${6}
-      BANNER_COLOR_BACKGROUND=${7}
+      BANNER_TEXT=${9}
+      BANNER_COLOR_TEXT=${10}
+      BANNER_COLOR_BACKGROUND=${11}
     fi
     #==#
     cd /opt
