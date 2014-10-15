@@ -88,6 +88,7 @@ conf_application(){
     berks install
     #==#
     mkdir /opt/chef-run
+    print "Copying files into config directory /opt/chef-run/"
     cp -r /opt/rogue-chef-repo/solo/* /opt/chef-run/
     cd /opt/chef-run
     #==#
