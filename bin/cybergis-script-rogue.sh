@@ -145,6 +145,7 @@ conf_standalone(){
     fi
     #
     #Install GEM Dependencies if missing.
+    echo "If the server stalls on installing GEMS, run <gem install dep-selector-libgecode -v '1.0.2'> from the command line and then run again."
     source /usr/local/rvm/scripts/rvm
     bundle install
     berks install
