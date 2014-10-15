@@ -44,7 +44,7 @@ install_bundler(){
 conf_application(){
   if [ $# -ne 8 ] && [ $# -ne 11 ]; then
     echo "Usage: cybergis-script-rogue.sh prod conf_application <fqdn> <db_host> <db_ip> <db_port> <db_pass> <gs_baseline>"
-        echo "or"
+    echo "or"
     echo "Usage: cybergis-script-rogue.sh prod conf_application <fqdn> <db_host> <db_ip> <db_port> <db_pass> <gs_baseline> <banner_text> <banner_color_text> <banner_color_background>"
   else
     INIT_ENV=$1
@@ -483,11 +483,16 @@ if [[ "$INIT_ENV" = "prod" ]]; then
 
     elif [[ "$INIT_CMD" == "conf_application" ]]; then
 
-        if [[ $# -ne 8 ]]; then
+        if [ $# -ne 8 ] && [ $# -ne 11 ]; then
             echo "Usage: cybergis-script-rogue.sh prod conf_application <fqdn> <db_host> <db_ip> <db_port> <db_pass> <gs_baseline>"
-        else
+            echo "or"
+            echo "Usage: cybergis-script-rogue.sh prod conf_application <fqdn> <db_host> <db_ip> <db_port> <db_pass> <gs_baseline> <banner_text> <banner_color_text> <banner_color_background>"
+        elif [[ $# -eq 8 ]]; then
             export -f conf_application
             bash --login -c "conf_application $INIT_ENV $INIT_CMD '${3}' '${4}' '${5}' '${6}' '${7}' '${8}'"
+        elif [[ $# -eq 11 ]]; then
+            export -f conf_application
+            bash --login -c "conf_application $INIT_ENV $INIT_CMD '${3}' '${4}' '${5}' '${6}' '${7}' '${8}' '${9}' '${10}' '${11}'"
         fi
     
     elif [[ "$INIT_CMD" == "conf_standalone" ]]; then
