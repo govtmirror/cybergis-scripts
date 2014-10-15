@@ -82,13 +82,14 @@ conf_application(){
     fi
     #
     #Install GEM Dependencies if missing.
+    source /usr/local/rvm/scripts/rvm
     bundle install
     berks install
-    #
+    #==#
     mkdir /opt/chef-run
     cp -r /opt/rogue-chef-repo/solo/* /opt/chef-run/
     cd /opt/chef-run
-    #
+    #==#
     sed -i "s/{{fqdn}}/$FQDN/g" dna_application.json
     sed -i "s/{{db-host}}/$DB_HOST/g" dna_application.json
     if [[ "$DB_IP" == "false" ]]; then
@@ -143,13 +144,14 @@ conf_standalone(){
     fi
     #
     #Install GEM Dependencies if missing.
+    source /usr/local/rvm/scripts/rvm
     bundle install
     berks install
-    #
+    #==#
     mkdir /opt/chef-run
     cp -r /opt/rogue-chef-repo/solo/* /opt/chef-run/
     cd /opt/chef-run
-    #
+    #==#
     sed -i "s/{{fqdn}}/$FQDN/g" dna.json
     sed -i "s/{{gs-baseline}}/$GS_BASELINE/g" dna.json
     #==#
