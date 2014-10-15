@@ -151,7 +151,7 @@ maploom(){
       #
       sudo apt-get install -y curl vim git
       #For compiling nodejs, version 8.22
-      sudo apt-get update make gcc
+      sudo apt-get install -y make gcc
       #
       sudo apt-get install -y nodejs nodejs-dev npm
       sudo npm config set registry http://registry.npmjs.org/
