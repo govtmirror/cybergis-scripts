@@ -6,7 +6,7 @@
 DATE=$(date)
 RUBY_VERSION="2.0.0-p353"
 CTX_GEOGIG="/geoserver/geogig/"
-FILE_SETTINGS="/var/lib/geonode/rogue_geonode/rogue_geonode/settings.py"
+FILE_SETTINGS="/var/lib/geonode/rogue_geonode/geoshape/settings.py"
 #==================================#
 INIT_ENV=$1
 INIT_CMD=$2
