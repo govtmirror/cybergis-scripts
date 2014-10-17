@@ -130,7 +130,7 @@ def getTrees(verbose, url, auth):
           trees = response['response']['node']
           return trees
         except:
-          print 'ls-tree reported success, but did not have any trees.  No data in OSM?"
+          print "ls-tree reported success, but did not have any trees.  No data in OSM?"
           print response
           return None
     else:
