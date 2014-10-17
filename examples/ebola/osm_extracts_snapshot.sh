@@ -6,6 +6,8 @@ TIMESTAMP=$(date +%s)
 GS_USER=admin
 GS_PASS=geoserver
 #==#
+TEMP=/home/ubuntu/temp/
+#==#
 GS='http://localhost:8080/geoserver/'
 #==#
 WFS=$GS"wfs"
