@@ -3,16 +3,16 @@
 BIN=/opt/cybergis-scripts.git/bin
 TIMESTAMP=$(date +%s)
 #==#
-USER=admin
-PASS=geoserver
+GS_USER=admin
+GS_PASS=geoserver
 #==#
 GS='http://localhost:8080/geoserver/'
 #==#
 WFS=$GS"wfs"
 HOST='<Database Host>'
 DB=<Database Name>
-USER='postgres'
-PASS=<Database Password>
+DB_USER='postgres'
+DB_PASS=<Database Password>
 NS=osm-extracts
 PRJ='EPSG:4326'
 #==#
