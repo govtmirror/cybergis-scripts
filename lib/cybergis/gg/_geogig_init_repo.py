@@ -153,8 +153,8 @@ def run(args):
     path = args.path
     workspace = args.workspace
     #==#
-    include_nodes = args.nodes === 1
-    include_ways = args.ways === 1
+    include_nodes = args.nodes == 1
+    include_ways = args.ways == 1
     #url_repo = geoserver+'geogig/'+repo+'/'
     #==#
     auth = None
