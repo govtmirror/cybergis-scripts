@@ -37,6 +37,9 @@ def run(args):
     extent = args.extent
     mapping = args.mapping
     #==#
+    include_nodes = args.nodes
+    include_ways = args.ways
+    #==#
     print "=================================="
     print "#==#"
     print "CyberGIS Script / geogig_init_extract.py"
@@ -85,8 +88,8 @@ def run(args):
         'username': username,
         'password': password,
         'verbose': verbose,
-        'nodes': nodes,
-        'ways': ways
+        'nodes': include_nodes,
+        'ways': include_ways
     }))                    
     print "=================================="
 
