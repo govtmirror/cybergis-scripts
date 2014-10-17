@@ -69,7 +69,7 @@ def run(args):
         'authoremail': authoremail,
         'extent': extent,
         'mapping': mapping,
-        'timeout': timeout
+        'timeout': timeout,
         'extracts': None
     }))
     #==#
