@@ -22,6 +22,8 @@ parser.add_argument("--password", help="The password to use for basic auth reque
 parser.add_argument('--verbose', '-v', default=0, action='count', help="Print out intermediate status messages.")
 parser.add_argument("--publish_datastore", default=0, action='count', help="Publish datastore in GeoServer for GeoGig repository")
 parser.add_argument('--publish_layers', default=0, action='count', help="Publish layers from GeoGig data store")
+parser.add_argument('--nodes', default=0, action='count', help="If publishing layers, include nodes.")
+parser.add_argument('--ways', default=0, action='count', help="If publishing layers, include ways.")
 args = parser.parse_args()
 #==#
 gg._geogig_init_repo.run(args)
