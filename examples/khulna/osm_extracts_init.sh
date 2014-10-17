@@ -46,5 +46,5 @@ RN=khulna_inlandwaters
 REPO=$RB$RN
 MAPPING='inlandWaters:inland_waters'
 rm -fr $REPO
-python /opt/cybergis-scripts.git/lib/rogue/geogig_init_extract.py  -v --path $REPO --name $RN --username $USER --password $PASS -gs $GS -ws $WS -to $TO --extent $EXTENT --mapping $MAPPING -an $AN -ae $AE
+python $BIN/cybergis-script-geogig-osm-init.py  -v --path $REPO --name $RN --username $USER --password $PASS -gs $GS -ws $WS -to $TO --extent $EXTENT --mapping $MAPPING -an $AN -ae $AE
 #===================#
