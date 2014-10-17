@@ -22,9 +22,9 @@ DS=<Data Store>
 #===================#
 #Khulna, Bangladesh
 LG=khulna_$TIMESTAMP
-FTA=( "khulna_medicalcenters_osm_medical_centers" "khulna_basic_osm_buildings" "khulna_basic_osm_roads" "khulna_schools_osm_schools_areas" "khulna_landuse_osm_landuse_farmland" "khulna_landuse_osm_landuse_residential" "khulna_landuse_osm_landuse_military" "khulna_landuse_osm_landuse_forest")
+FTA=( "khulna_medicalcenters_osm_medical_centers" "khulna_basic_osm_buildings" "khulna_basic_osm_roads" "khulna_schools_osm_schools_areas" "khulna_landuse_osm_landuse_farmland" "khulna_landuse_osm_landuse_residential" "khulna_landuse_osm_landuse_military" "khulna_landuse_osm_landuse_forest" )
 SNAPA=()
-STYLESA= ( "cybergis_health_medical_center" "cybergis_structure_buildings" "cybergis_basic_line_blue" "cybergis_education_schools_areas" "cybergis_landuse_farmland" "cybergis_landuse_residential" "cybergis_landuse_military" "cybergis_landuse_forest" )
+STYLESA=( "cybergis_health_medical_center" "cybergis_structure_buildings" "cybergis_basic_line_blue" "cybergis_education_schools_areas" "cybergis_landuse_farmland" "cybergis_landuse_residential" "cybergis_landuse_military" "cybergis_landuse_forest" )
 for FT in "${FTA[@]}"
 do
     #SNAP=$NS"_"$FT"_"$TIMESTAMP
