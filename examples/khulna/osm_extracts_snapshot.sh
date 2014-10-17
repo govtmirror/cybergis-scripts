@@ -24,7 +24,7 @@ DS=<Data Store>
 #===================#
 #Khulna, Bangladesh / Raw
 LG=khulna_raw_$TIMESTAMP
-FTA=( "khulna_nodes" "khulna_ways")
+FTA=( "khulna_raw_node" "khulna_raw_way")
 SNAPA=()
 STYLESA=( "cybergis_basic_point_blue" "cybergis_basic_line_blue" )
 for FT in "${FTA[@]}"
