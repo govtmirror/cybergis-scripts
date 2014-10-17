@@ -70,6 +70,7 @@ def run(args):
         'extent': extent,
         'mapping': mapping,
         'timeout': timeout
+        'extracts': None
     }))
     #==#
     gg._geogig_init_repo.run(ov({
