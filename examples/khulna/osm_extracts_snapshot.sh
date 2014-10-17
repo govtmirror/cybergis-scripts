@@ -22,7 +22,7 @@ DS=<Data Store>
 #===================#
 #Khulna, Bangladesh
 LG=khulna_$TIMESTAMP
-FTA=( khulna_basic_osm_buildings" "khulna_basic_osm_roads")
+FTA=( "khulna_basic_osm_buildings" "khulna_basic_osm_roads")
 SNAPA=()
 STYLESA= ( "cybergis_structure_buildings" "cybergis_roads_roads_minor")
 for FT in "${FTA[@]}"
