@@ -53,7 +53,9 @@ def run(args):
         'publish_layers': 0,
         'username': username,
         'password': password,
-        'verbose': verbose
+        'verbose': verbose,
+        'nodes': 0,
+        'ways': 0
     }))
     #==#
     gg._geogig_sync_osm.run(ov({
@@ -82,7 +84,9 @@ def run(args):
         'publish_layers': 1,
         'username': username,
         'password': password,
-        'verbose': verbose
+        'verbose': verbose,
+        'nodes': nodes,
+        'ways': ways
     }))                    
     print "=================================="
 
@@ -99,6 +103,8 @@ parser.add_argument('-ae', '--authoremail', help="The author email to use when m
 parser.add_argument("--extent", help="The extent of the OpenStreetMap extract. For example, basic:buildings_and_roads.")
 parser.add_argument("--mapping", help="The mapping of the OpenStreetMap extract.  For example, dominican_republic:santo_domingo.")
 parser.add_argument('-to', '--timeout', type=int, default=30, help="The number of seconds to wait for the osm download task to complete before cancelling.  Default is 30 seconds.")
+parser.add_argument('--nodes', default=0, action='count', help="If publishing layers, include nodes.")
+parser.add_argument('--ways', default=0, action='count', help="If publishing layers, include ways.")
 args = parser.parse_args()
 #==#
 run(args)
