@@ -6,6 +6,7 @@ import urllib2
 import argparse
 import time
 import os
+import sys
 import subprocess
 #==#
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'lib', 'cybergis')))
