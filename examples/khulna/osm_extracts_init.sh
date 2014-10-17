@@ -12,6 +12,11 @@ RB=/home/ubuntu/statedep_geogig_demo/repos/
 #===================#
 #Khulna
 EXTENT='bangladesh:khulna'
+#Khulna - Raw Nodes and Ways
+RN=khulna_raw
+REPO=$RB$RN
+rm -fr $REPO
+python $BIN/cybergis-script-geogig-osm-init.py  -v --path $REPO --name $RN --username $USER --password $PASS -gs $GS -ws $WS -to $TO --extent $EXTENT -an $AN -ae $AE --nodes --ways
 #----------#
 #Khulna - Basic
 RN=khulna_basic
