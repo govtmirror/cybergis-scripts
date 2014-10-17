@@ -1,6 +1,7 @@
 id	datastore	extent	mapping
-1	khulna_basic	bangladesh:khulna	basic:buildings_and_roads
-2	khulna_landuse	bangladesh:khulna	landuse:landuse_all
-3	khulna_medicalcenters	bangladesh:khulna	health:medical_centers
-4	khulna_schools	bangladesh:khulna	education:schools
-5	khulna_inlandwaters	bangladesh:khulna	inlandWaters:inland_waters
+1	khulna_raw	bangladesh:khulna	
+2	khulna_basic	bangladesh:khulna	basic:buildings_and_roads
+3	khulna_landuse	bangladesh:khulna	landuse:landuse_all
+4	khulna_medicalcenters	bangladesh:khulna	health:medical_centers
+5	khulna_schools	bangladesh:khulna	education:schools
+6	khulna_inlandwaters	bangladesh:khulna	inlandWaters:inland_waters
