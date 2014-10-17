@@ -43,7 +43,7 @@ def run(args):
     print "#==#"
     #==#
     print "Executing subroutines"
-   gg._geogig_init_repo.run(ov({
+    gg._geogig_init_repo.run(ov({
         'path': path,
         'name': name,
         'geoserver': geoserver,
