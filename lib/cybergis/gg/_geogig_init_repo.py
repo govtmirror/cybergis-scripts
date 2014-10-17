@@ -152,6 +152,9 @@ def run(args):
     geoserver = parse_url(args.geoserver)
     path = args.path
     workspace = args.workspace
+    #==#
+    include_nodes = args.nodes
+    include_ways = args.ways
     #url_repo = geoserver+'geogig/'+repo+'/'
     #==#
     auth = None
@@ -178,7 +181,16 @@ def run(args):
         url_repo = geoserver+'geogig/'+repo+'/'
         trees = getTrees(verbose, url_repo, auth)
         if trees:
-            trees = ([t['path'] for t in trees if (not t['path'] in ['node','way'])])
+
+            if nodes and ways:
+                trees = ([t['path'] for t in trees])
+            elif (not nodes) and ways:
+                trees = ([t['path'] for t in trees if (not t['path'] in ['node'])])
+            elif nodes and (not ways):
+                trees = ([t['path'] for t in trees if (not t['path'] in ['way'])])
+            else:
+                trees = ([t['path'] for t in trees if (not t['path'] in ['node','way'])])
+            
             for tree in trees:
                 try:
                     createLayer(verbose, geoserver, workspace, auth, datastore, tree, datastore)
