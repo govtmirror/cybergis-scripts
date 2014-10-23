@@ -39,16 +39,26 @@ def parse_url(url):
 
     
 def buildQueryString(layers, bbox, width, height):
-    qs = ""
-
-    qs += "FORMAT=image/gif;subtype=animated&format_options=gif_loop_continuosly:true&aparam=layers"
-    qs += "&SRS=EPSG%3A900913"
-    qs += "&BBOX="+bbox
-    qs += "&WIDTH="+width
-    qs += "&HEIGHT="+height
-    qs += "&avalues="+(",".join(layers))
-
+    qs = {
+        "FORMAT": "image/gif;subtype=animated",
+        "format_options": "gif_loop_continuosly:true",
+        "aparam": "layers",
+        "SRS": "EPSG:900913",
+        "BBOX": bbox,
+        "WIDTH": width,
+        "HEIGHT": height,
+        "avalue": (",".join(layers))
+    }
     return urllib.urlencode(qs)
+
+    #qs += "FORMAT=image/gif;subtype=animated&format_options=gif_loop_continuosly:true&aparam=layers"
+    #qs += "&SRS=EPSG%3A900913"
+    #qs += "&BBOX="+bbox
+    #qs += "&WIDTH="+width
+    #qs += "&HEIGHT="+height
+    #qs += "&avalues="+(",".join(layers))
+
+    #return qs
 
 def buildURL(geoserver, layers, bbox, width, height):
     if geoserver:
