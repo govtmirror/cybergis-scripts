@@ -47,7 +47,7 @@ def buildQueryString(layers, bbox, width, height):
         "BBOX": bbox,
         "WIDTH": width,
         "HEIGHT": height,
-        "avalue": (",".join(layers))
+        "avalues": (",".join(layers))
     }
     return urllib.urlencode(qs)
 
