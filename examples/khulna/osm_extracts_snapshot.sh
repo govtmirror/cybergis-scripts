@@ -42,6 +42,8 @@ LAYERS=$(echo $LAYERS | cut -c 2- )
 STYLES=$(printf ",%s" "${STYLESA[@]}")
 STYLES=$(echo $STYLES | cut -c 2- )
 python $BIN/cybergis-script-geoserver-publish-layergroup.py -gs $GS -ws $WS -lg $LG --layers "$LAYERS" --styles "$STYLES" --username $GS_USER --password $GS_PASS
+#!!! Need to create script to insert record into snapshots table/layer.
+#Animation function can then query a database for a list of layers and then create the animation from that.
 #===================#
 #===================#
 #Khulna, Bangladesh / Norma
