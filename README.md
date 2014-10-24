@@ -32,7 +32,7 @@ If you are doing an ITTC install, you need to install python bindings.  Execute 
 
 ```
 apt-get update
-apt-get install -y curl vim git
+apt-get install -y curl vim git unzip
 apt-get install -y libgeos-dev libproj-dev
 apt-get install -y gdal-bin python-gdal python-numpy
 #==#
@@ -45,13 +45,28 @@ For an Amazon RDS install, execute the following:
 
 ```
 apt-get update
-apt-get install -y curl vim git
+apt-get install -y curl vim git unzip
 apt-get install -y postgresql-client-common postgresql-client-9.1
 #==#
 cd /opt
 git clone https://github.com/state-hiu/cybergis-scripts.git cybergis-scripts.git
 cp cybergis-scripts.git/profile/cybergis-scripts.sh /etc/profile.d/
 ```
+
+For a full install, execute the following:
+
+```
+apt-get update
+apt-get install -y curl vim git unzip
+apt-get install -y postgresql-client-common postgresql-client-9.1
+apt-get install -y libgeos-dev libproj-dev
+apt-get install -y gdal-bin python-gdal python-numpy
+#==#
+cd /opt
+git clone https://github.com/state-hiu/cybergis-scripts.git cybergis-scripts.git
+cp cybergis-scripts.git/profile/cybergis-scripts.sh /etc/profile.d/
+```
+
 Logout and Login
 
 ## Usage
