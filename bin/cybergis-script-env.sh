@@ -183,6 +183,59 @@ maploom(){
   fi
 }
 
+geogig(){
+  echo "geogig"
+  if [[ $# -ne 2 ]]; then
+    echo "Usage: cybergis-script-env.sh geogig [install|reset]"
+  else
+    ENV=$1
+    CMD=$2
+
+    if [[ "$CMD" = "install" ]]; then
+      sudo apt-get update
+      #
+      sudo apt-get install -y unzip
+      #Download Builds
+      mkdir ~/ws
+      mkdir ~/ws/build
+      cd ~/ws/build
+      wget http://sourceforge.net/projects/geoserver/files/GeoServer/2.6-RC1/geoserver-2.6-RC1-bin.zip 
+      wget https://s3.amazonaws.com/hiu-build/geogig-cli-app-1.0-SNAPSHOT.zip
+      wget https://s3.amazonaws.com/hiu-build/gs-geogig-2.6-SNAPSHOT-shaded-plugin.jar
+      #
+      cd /opt
+      sudo git clone https://github.com/state-hiu/cybergis-osm-mappings.git cybergis-osm-mappings.git
+      sudo git clone https://github.com/state-hiu/cybergis-styles.git cybergis-styles.git
+      sudo git clone https://github.com/state-hiu/cybergis-client-examples.git cybergis-client-examples.git
+      #Install GeoGig Cli
+      sudo mkdir /opt/geogig
+      sudo unzip ~/ws/build/geogig-cli-app-1.0-SNAPSHOT.zip -d /opt/geogig
+      sudo cp /opt/cybergis-scripts.git/profile/geogig.sh /etc/profile.d/
+      #Install GeoServer
+      mkdir ~/ws/gs
+      unzip ~/ws/build/geoserver-2.6-RC1-bin.zip -d ~/ws/gs
+      cp ~/ws/build/gs-geogig-2.6-SNAPSHOT-shaded-plugin.jar ~/ws/gs/webapps/geoserver/WEB-INF/lib/
+      #Create Starting GeoServer in Background Script
+      echo "#!/bin/bash" >> ~/ws/start_in_background.sh
+      echo "~/ws/gs/bin/startup.sh 2>&1 > /dev/null &" >> ~/ws/start_in_background.sh
+      chmod 755 ~/ws/start_in_background.sh
+      #Make folder to store GeoGig Repositories
+      mkdir ~/ws/geogig
+      mkdir ~/ws/geogig/repo
+    elif [[ "$CMD" = "clear" ]]; then
+      # 
+      echo "clear"
+      rm -fr ~/ws
+      rm -fr ~/etc/profile.d/geogig.sh
+      sudo rm -fr /opt/geogig
+      #
+    else
+      echo "Usage: cybergis-script-env.sh geogig [install|clear]"
+    fi
+  fi
+
+}
+
 ittc(){
   echo "ittc"
   if [[ $# -ne 2 ]]; then
@@ -245,6 +298,15 @@ elif [[ "$ENV" = "ittc" ]]; then
         bash --login -c "ittc $ENV $CMD"
     fi
 
+elif [[ "$ENV" = "geogig" ]]; then
+
+    if [[ $# -ne 2 ]]; then
+        echo "Usage: cybergis-script-env.sh geogig [install|reset]"
+    else
+        export -f geogig
+        bash --login -c "geogig $ENV $CMD"
+    fi
+
 else
-    echo "Usage: cybergis-script-env.sh [geonode|rogue|maploom|ittc]"
+    echo "Usage: cybergis-script-env.sh [geonode|rogue|maploom|geogig|ittc]"
 fi
