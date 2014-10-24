@@ -17,7 +17,7 @@ The Rapid Opensource Geospatial User-Driven Enterprise (ROGUE) Joint Capabilitie
 
 These installation instructions are subject to change.  Right now, since there are non-debian package dependencies, you can really extract the scripts to whatever directory you want.  The instructions below are suggested as they mirror Linux best practices for external packages.  Please be careful when installing gdal-bin and python-gdal packages as they may require different version of some packages than other programs, such as the OpenGeo Suite.  It is recommended to test this and other GDAL scripts within a vagrant environment first.
 
-As root, for basic install execute the following:
+As root (`sudo su -`), for basic install execute the following:
 
 ```
 apt-get update
