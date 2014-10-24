@@ -193,7 +193,9 @@ geogig(){
     CMD=$2
 
     if [[ "$CMD" = "install" ]]; then
-      #sudo apt-get update
+      sudo apt-get update
+      #
+      sudo apt-get install -y openjdk-7-jdk
       #Download Builds
       mkdir ~/ws
       mkdir ~/ws/build
