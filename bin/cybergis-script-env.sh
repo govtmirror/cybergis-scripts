@@ -187,14 +187,13 @@ geogig(){
   echo "geogig"
   if [[ $# -ne 2 ]]; then
     echo "Usage: cybergis-script-env.sh geogig [install|reset]"
+    echo "Requires: unzip"
   else
     ENV=$1
     CMD=$2
 
     if [[ "$CMD" = "install" ]]; then
       sudo apt-get update
-      #
-      sudo apt-get install -y unzip
       #Download Builds
       mkdir ~/ws
       mkdir ~/ws/build
