@@ -17,24 +17,40 @@ The Rapid Opensource Geospatial User-Driven Enterprise (ROGUE) Joint Capabilitie
 
 These installation instructions are subject to change.  Right now, since there are non-debian package dependencies, you can really extract the scripts to whatever directory you want.  The instructions below are suggested as they mirror Linux best practices for external packages.  Please be careful when installing gdal-bin and python-gdal packages as they may require different version of some packages than other programs, such as the OpenGeo Suite.  It is recommended to test this and other GDAL scripts within a vagrant environment first.
 
-As root, execute the following commands:
+As root, for basic install execute the following:
+
 ```
 apt-get update
 apt-get install -y curl vim git
-apt-get install postgresql-client-common postgresql-client-9.1 libgeos-dev
-#Only install gdal and numpy if it is needed and won't conflict with a different installation.
-#gdal and numpy are only needed for cybergis-script-stretch.py, cybergis-script-burn-alpha.py, cybergis-script-hide-no-data.py, cybergis-script-pull-wfs.sh, cybergis-script-pull-arcgis.sh, and cybergis-script-pull-shapefile.sh
+#==#
+cd /opt
+git clone https://github.com/state-hiu/cybergis-scripts.git cybergis-scripts.git
+cp cybergis-scripts.git/profile/cybergis-scripts.sh /etc/profile.d/
+```
+
+If you are doing an ITTC install, you need to install python bindings.  Execute the following instead:
+
+```
+apt-get update
+apt-get install -y curl vim git
+apt-get install -y libgeos-dev libproj-dev
 apt-get install -y gdal-bin python-gdal python-numpy
 #==#
 cd /opt
 git clone https://github.com/state-hiu/cybergis-scripts.git cybergis-scripts.git
 cp cybergis-scripts.git/profile/cybergis-scripts.sh /etc/profile.d/
+```
+
+For an Amazon RDS install, execute the following:
+
+```
+apt-get update
+apt-get install -y curl vim git
+apt-get install -y postgresql-client-common postgresql-client-9.1
 #==#
-#For GeoGig operations, you need to have the GeoGig command line tools installed.
 cd /opt
-#TBD
-#TBD
-#TBD
+git clone https://github.com/state-hiu/cybergis-scripts.git cybergis-scripts.git
+cp cybergis-scripts.git/profile/cybergis-scripts.sh /etc/profile.d/
 ```
 Logout and Login
 
