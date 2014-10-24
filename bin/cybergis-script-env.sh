@@ -247,7 +247,8 @@ ittc(){
     if [[ "$CMD" = "install" ]]; then
       sudo apt-get update
       #
-      sudo apt-get install postgresql-client-common postgresql-client-9.1 libgeos-dev
+      #sudo apt-get install postgresql-client-common postgresql-client-9.1
+      sudo apt-get install -y libgeos-dev libproj-dev
       sudo apt-get install -y gdal-bin python-gdal python-numpy
       #
     elif [[ "$CMD" = "reset" ]]; then
