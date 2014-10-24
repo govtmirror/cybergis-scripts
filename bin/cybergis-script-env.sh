@@ -218,7 +218,8 @@ geogig(){
       cp ~/ws/build/gs-geogig-2.6-SNAPSHOT-shaded-plugin.jar ~/ws/gs/geoserver-2.6-RC1/webapps/geoserver/WEB-INF/lib/
       #Create Starting GeoServer in Background Script
       echo "#!/bin/bash" >> ~/ws/start_in_background.sh
-      echo "~/ws/gs/geoserver-2.6-RC1/bin/startup.sh 2>&1 > /dev/null &" >> ~/ws/start_in_background.sh
+      echo "cd ~/ws/gs/geoserver-2.6-RC1/"
+      echo "bash ./bin/startup.sh 2>&1 > /dev/null &" >> ~/ws/start_in_background.sh
       chmod 755 ~/ws/start_in_background.sh
       #Make folder to store GeoGig Repositories
       mkdir ~/ws/geogig
