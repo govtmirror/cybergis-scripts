@@ -30,7 +30,7 @@ def clone_template(repo_url, repo_branch):
 def create_chefrun(env):
 
     if not os.path.exists("/opt/chef-run"):
-        os.mkdirs("/opt/chef-run")
+        os.makedirs("/opt/chef-run")
         
     print "Copying files into config directory /opt/chef-run/"
     
