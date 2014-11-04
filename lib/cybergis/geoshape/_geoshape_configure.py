@@ -137,5 +137,5 @@ def run(args):
     if dna:
         with open(dna_path, "w") as file:
             file.write(dna)
-            
-     print "=================================="
+
+    print "=================================="
