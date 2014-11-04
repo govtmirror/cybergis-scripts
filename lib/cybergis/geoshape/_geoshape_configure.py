@@ -44,13 +44,15 @@ def create_chefrun(env):
     if env == "aws":
         shutil.move("/opt/chef-run/dna_aws.json", "/opt/chef-run/dna.json")
 
-def build_dna_standalone(file_data, fqdn, gs_data_url, gs_data_branch, banner_on, banner_text, banner_color_text, banner_color_background):
+def build_dna_standalone(file_data, fqdn, gn_project_url, gn_project_branch, gs_data_url, gs_data_branch, banner_on, banner_text, banner_color_text, banner_color_background):
 
     if file_data:
         data = None
         with open (file_data, "r") as f:
             data = f.read()
             data = data.replace('{{fqdn}}', fqdn)
+            data = data.replace('{{gn-project-url}}', gn_project_url)
+            data = data.replace('{{gn-project-branch}}', gn_project_branch)
             data = data.replace('{{gs-data-url}}', gs_data_url)
             data = data.replace('{{gs-data-branch}}', gs_data_branch)
             data = data.replace('{{banner-on}}', banner_on)
@@ -62,13 +64,15 @@ def build_dna_standalone(file_data, fqdn, gs_data_url, gs_data_branch, banner_on
     else:
         return None
         
-def build_application(file_data, fqdn, gs_data_url, gs_data_branch, banner_on, banner_text, banner_color_text, banner_color_background, db_host, db_ip, db_port, db_user, db_pass):
+def build_application(file_data, fqdn, gn_project_url, gn_project_branch, gs_data_url, gs_data_branch, banner_on, banner_text, banner_color_text, banner_color_background, db_host, db_ip, db_port, db_user, db_pass):
 
     if file_data:
         data = None
         with open (file_data, "r") as f:
             data = f.read()
             data = data.replace('{{fqdn}}', fqdn)
+            data = data.replace('{{gn-project-url}}', gn_project_url)
+            data = data.replace('{{gn-project-branch}}', gn_project_branch)
             data = data.replace('{{gs-data-url}}', gs_data_url)
             data = data.replace('{{gs-data-branch}}', gs_data_branch)
             data = data.replace('{{banner-on}}', banner_on)
@@ -96,6 +100,8 @@ def run(args):
     fqdn = args.fqdn
     gs_data_url = args.gs_data_url
     gs_data_branch = args.gs_data_branch
+    gn_project_url = args.gn_project_url
+    gn_project_branch = args.gn_project_branch
     #==#
     banner_on = "true" if args.banner == 1 else "false"
     banner_text = args.banner_text
@@ -121,6 +127,9 @@ def run(args):
     if not fqdn:
         print "Missing FQDN"
         return 1
+    if not (gn_project_url and gn_project_branch):
+        print "Missing downstream GeoNode repo"
+        return 1
     if not (gs_data_url and gs_data_branch):
         print "Missing GeoServer data baseline"
         return 1
@@ -132,11 +141,11 @@ def run(args):
     dna_path = "/opt/chef-run/dna.json"
     dna = None
     if env == "standalone":
-        dna = build_dna_standalone(dna_path, fqdn, gs_data_url, gs_data_branch, banner_on, banner_text, banner_color_text, banner_color_background)
+        dna = build_dna_standalone(dna_path, fqdn, gn_project_url, gn_project_branch, gs_data_url, gs_data_branch, banner_on, banner_text, banner_color_text, banner_color_background)
     elif env == "application":
-        dna = build_application(dna_path, fqdn, gs_data_url, gs_data_branch, banner_on, banner_text, banner_color_text, banner_color_background, db_host, db_ip, db_port, db_user, db_pass)
+        dna = build_application(dna_path, fqdn, gn_project_url, gn_project_branch, gs_data_url, gs_data_branch, banner_on, banner_text, banner_color_text, banner_color_background, db_host, db_ip, db_port, db_user, db_pass)
     elif env == "aws":
-        dna = build_application(dna_path, fqdn, gs_data_url, gs_data_branch, banner_on, banner_text, banner_color_text, banner_color_background, db_host, db_ip, db_port, db_user, db_pass)
+        dna = build_application(dna_path, fqdn, gn_project_url, gn_project_branch, gs_data_url, gs_data_branch, banner_on, banner_text, banner_color_text, banner_color_background, db_host, db_ip, db_port, db_user, db_pass)
     
     if dna:
         with open(dna_path, "w") as file:
