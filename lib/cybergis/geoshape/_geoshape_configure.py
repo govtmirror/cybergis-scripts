@@ -59,11 +59,11 @@ def build_dna_standalone(file_data, fqdn, gs_baseline, banner_on, banner_text, b
         with open (file_data, "r") as f:
             data = f.read()
             data = data.replace('{{fqdn}}', fqdn)
-            data = data.replace('{{gs_baseline}}', gs_baseline)
-            data = data.replace('{{banner_on}}', banner_on)
-            data = data.replace('{{banner_text}}', banner_text)
-            data = data.replace('{{banner_color_text}}', banner_color_text)
-            data = data.replace('{{banner_color_background}}', banner_color_background)
+            data = data.replace('{{gs-baseline}}', gs_baseline)
+            data = data.replace('{{banner-on}}', banner_on)
+            data = data.replace('{{banner-text}}', banner_text)
+            data = data.replace('{{banner-color-text}}', banner_color_text)
+            data = data.replace('{{banner-color-background}}', banner_color_background)
                 
         return data
     else:
@@ -76,15 +76,15 @@ def build_application(file_data, fqdn, gs_baseline, banner_on, banner_text, bann
         with open (file_data, "r") as f:
             data = f.read()
             data = data.replace('{{fqdn}}', fqdn)
-            data = data.replace('{{gs_baseline}}', gs_baseline)
-            data = data.replace('{{banner_on}}', banner_on)
-            data = data.replace('{{banner_text}}', banner_text)
-            data = data.replace('{{banner_color_text}}', banner_color_text)
-            data = data.replace('{{banner_color_background}}', banner_color_background)
-            data = data.replace('{{db_host}}', db_host)
-            data = data.replace('{{db_ip}}', db_ip)
-            data = data.replace('{{db_port}}', db_port)
-            data = data.replace('{{db_pass}}', db_pass)
+            data = data.replace('{{gs-baseline}}', gs_baseline)
+            data = data.replace('{{banner-on}}', banner_on)
+            data = data.replace('{{banner-text}}', banner_text)
+            data = data.replace('{{banner-color_text}}', banner_color_text)
+            data = data.replace('{{banner-color_background}}', banner_color_background)
+            data = data.replace('{{db-host}}', db_host)
+            data = data.replace('{{db-ip}}', db_ip)
+            data = data.replace('{{db-port}}', db_port)
+            data = data.replace('{{db-pass}}', db_pass)
                 
         return data
     else:
