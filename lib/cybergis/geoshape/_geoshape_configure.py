@@ -125,6 +125,17 @@ def run(args):
     #==#
     create_chefrun(env)
     #==#
+    if not fqdn:
+        print "Missing FQDN"
+        return 1
+    if not gs_baseline:
+        print "Missing GeoServer data baseline"
+        return 1
+    if env == "application" or env=="aws":
+        if not (db_host and db_ip and db_port and db_user and db_pass):
+            print "Missing databse value"
+            return 1
+    #==#
     dna_path = "/opt/chef-run/dna.json"
     dna = None
     if env == "standalone":
