@@ -8,7 +8,7 @@ import time
 import os
 import subprocess
 
-def buildDNA(env, fqdn, db_host, db_ip, db_port, db_pass, gs_baseline, banner_text, banner_color_text, banner_color_background):
+def buildDNA(env, fqdn, db_host, db_ip, db_port, db_pass, gs_baseline, banner_on, banner_text, banner_color_text, banner_color_background):
     
     file_data = None
     if env == "standalone":
@@ -28,6 +28,7 @@ def buildDNA(env, fqdn, db_host, db_ip, db_port, db_pass, gs_baseline, banner_te
                 .replace('{{db_port}}', db_port)
                 .replace('{{db_pass}}', db_pass)
                 .replace('{{gs_baseline}}', gs_baseline)
+                .replace('{{banner_on}}', banner_on)
                 .replace('{{banner_text}}', banner_text)
                 .replace('{{banner_color_text}}', banner_color_text)
                 .replace('{{banner_color_background}}', banner_color_background)
