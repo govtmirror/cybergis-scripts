@@ -26,9 +26,9 @@ parser.add_argument("--fqdn", default="localhost", help="The fqdn of GeoSHAPE.")
 parser.add_argument("--gs_baseline", default="master", help="The baseline geoserver_data version.")
 #==#
 parser.add_argument('--banner', default=0, action='count', help="Display a banner")
-parser.add_argument("--banner_text", help="The banner text.")
-parser.add_argument("--banner_color_text", help="The foreground/font color of the banner text.")
-parser.add_argument("--banner_color_background", help="The background color of the banner.")
+parser.add_argument("--banner_text", default="", help="The banner text.")
+parser.add_argument("--banner_color_text", default="", help="The foreground/font color of the banner text.")
+parser.add_argument("--banner_color_background", default="", help="The background color of the banner.")
 #==#
 #When env equals application or aws
 parser.add_argument("--db_host", help="The database host")
