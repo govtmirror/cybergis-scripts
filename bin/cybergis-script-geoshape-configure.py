@@ -23,6 +23,9 @@ parser.add_argument("--repo_branch", default="hiu_baseline", help="The  branch o
 #==#
 parser.add_argument("--fqdn", default="localhost", help="The fqdn of GeoSHAPE.")
 #==#
+parser.add_argument("--gn_project_url", default="https://github.com/state-hiu/rogue_geonode.git", help="The downstream GeoNode repo.")
+parser.add_argument("--gn_project_branch", default="master", help="The branch of the downstream GeoNode repo.")
+#==#
 parser.add_argument("--gs_data_url", default="https://github.com/state-hiu/geoserver_data.git", help="The baseline geoserver_data repo.")
 parser.add_argument("--gs_data_branch", default="master", help="The baseline geoserver_data branch.")
 #==#
