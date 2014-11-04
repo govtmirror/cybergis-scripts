@@ -9,14 +9,6 @@ import os
 import subprocess
 import shutil
 
-def install_dependencies():
-    print "If the server stalls on installing GEMS, run <source /usr/local/rvm/scripts/rvm; gem install dep-selector-libgecode -v '1.0.2'> from the command line and then run again."
-    #subprocess.Popen("source /usr/local/rvm/scripts/rvm; bundle install; berks install", cwd=path, shell=True)
-    p = subprocess.Popen(". /usr/local/rvm/scripts/rvm; bundle install; berks install;", shell=True)
-    #time.sleep(5)
-    print "Waiting for dependencies to finish installing"
-    p.communicate()
-    
 def clone_template(repo_url, repo_branch):
     #if not os.path.exists(path):
     #    os.makedirs(path)
@@ -121,8 +113,6 @@ def run(args):
     print "CyberGIS Script / cybergis-script-geoshape-configure.py"
     print "Configure GeoSHAPE instance"
     print "#==#"
-    #==#
-    install_dependencies()
     #==#
     clone_template(repo_url, repo_branch)
     #==#
