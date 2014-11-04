@@ -7,6 +7,7 @@ import argparse
 import time
 import os
 import subprocess
+import shutil
 
 def install_dependencies():
     print "If the server stalls on installing GEMS, run <source /usr/local/rvm/scripts/rvm; gem install dep-selector-libgecode -v '1.0.2'> from the command line and then run again."
@@ -26,21 +27,30 @@ def clone_template(repo_url, repo_branch):
     if os.path.exists("/opt/chef-run"):
         os.remove("/opt/chef-run")
 
-def create_chefrun():
+def create_chefrun(env):
+
     if not os.path.exists("/opt/chef-run"):
         os.mkdirs("/opt/chef-run")
+        
     print "Copying files into config directory /opt/chef-run/"
     
-    mkdir /opt/chef-run
-    echo "Copying files into config directory /opt/chef-run/"
-    cp -r /opt/rogue-chef-repo/solo/* /opt/chef-run/
-    cd /opt/chef-run
-    rm dna.json
-    rm dna_database.json
-    rm dna_standalone.json
-    rm dna_application.json
-    mv dna_aws.json dna.json
+    subprocess.call("cp -r /opt/rogue-chef-repo/solo/* /opt/chef-run/;", cwd="/opt", shell=True)
+    
+    os.remove("/opt/chef-run/dna.json")
+    os.remove("/opt/chef-run/dna_database.json")
+    if not (env == "standalone"):
+        os.remove("/opt/chef-run/dna_standalone.json")
+    if not (env == "application"):
+       os.remove("/opt/chef-run/dna_application.json")
+    if not (env == "aws"):
+        os.remove("/opt/chef-run/dna_aws.json")
 
+    if env == "standalone":
+        shutil.copyfile("/opt/chef-run/dna_standalone.json", "/opt/chef-run/dna.json")
+    if env == "application":
+        shutil.copyfile("/opt/chef-run/dna_application.json", "/opt/chef-run/dna.json")
+    if env == "aws":
+        shutil.copyfile("/opt/chef-run/dna_aws.json", "/opt/chef-run/dna.json")
 
 def build_dna_standalone(file_data, fqdn, gs_baseline, banner_on, banner_text, banner_color_text, banner_color_background):
 
@@ -113,11 +123,19 @@ def run(args):
     #==#
     clone_template(repo_url, repo_branch)
     #==#
-    file_data = None
+    create_chefrun(env)
+    #==#
+    dna_path = "/opt/chef-run/dna.json"
+    dna = None
     if env == "standalone":
-        file_data ="/opt/chef-run/dna/dna_standalone.json"
-    elif env == "aws":
-        file_data ="/opt/chef-run/dna/dna_aws.json"
+        dna = build_dna_standalone(dna_path, fqdn, gs_baseline, banner_on, banner_text, banner_color_text, banner_color_background)
     elif env == "application":
-        file_data ="/opt/chef-run/dna/dna_application.json"                
-    print "=================================="
+        dna = build_application(dna_path, fqdn, gs_baseline, banner_on, banner_text, banner_color_text, banner_color_background, db_host, db_ip, db_port, db_user, db_pass)
+    elif env == "aws":
+        dna = build_application(dna_path, fqdn, gs_baseline, banner_on, banner_text, banner_color_text, banner_color_background, db_host, db_ip, db_port, db_user, db_pass)
+    
+    if dna:
+        with open(dna_path, "w") as file:
+            file.write(dna)
+            
+     print "=================================="
