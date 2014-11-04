@@ -46,11 +46,11 @@ def create_chefrun(env):
         os.remove("/opt/chef-run/dna_aws.json")
 
     if env == "standalone":
-        shutil.copyfile("/opt/chef-run/dna_standalone.json", "/opt/chef-run/dna.json")
+        shutil.movefile("/opt/chef-run/dna_standalone.json", "/opt/chef-run/dna.json")
     if env == "application":
-        shutil.copyfile("/opt/chef-run/dna_application.json", "/opt/chef-run/dna.json")
+        shutil.movefile("/opt/chef-run/dna_application.json", "/opt/chef-run/dna.json")
     if env == "aws":
-        shutil.copyfile("/opt/chef-run/dna_aws.json", "/opt/chef-run/dna.json")
+        shutil.movefile("/opt/chef-run/dna_aws.json", "/opt/chef-run/dna.json")
 
 def build_dna_standalone(file_data, fqdn, gs_baseline, banner_on, banner_text, banner_color_text, banner_color_background):
 
