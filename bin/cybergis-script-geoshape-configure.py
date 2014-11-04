@@ -16,6 +16,8 @@ parser = argparse.ArgumentParser(description='Initialize GeoGig repository and o
 parser.add_argument('--verbose', '-v', default=0, action='count', help="Print out intermediate status messages.")
 #==#
 parser.add_argument("--env", default="standalone", help="The environment (standalone, application, or aws).")
+parser.add_argument("--repo_url", default="https://github.com/state-hiu/rogue-chef-repo.git", help="The source GeoSHAPE Chef repo.")
+parser.add_argument("--repo_branch", default="hiu_baseline", help="The  branch of the source GeoSHAPE Chef repo.")
 #==#
 parser.add_argument("--fqdn", default="localhost", help="The fqdn of GeoSHAPE.")
 #==#
