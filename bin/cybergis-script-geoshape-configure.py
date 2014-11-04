@@ -23,7 +23,8 @@ parser.add_argument("--repo_branch", default="hiu_baseline", help="The  branch o
 #==#
 parser.add_argument("--fqdn", default="localhost", help="The fqdn of GeoSHAPE.")
 #==#
-parser.add_argument("--gs_baseline", default="master", help="The baseline geoserver_data version.")
+parser.add_argument("--gs_data_url", default="https://github.com/state-hiu/geoserver_data.git", help="The baseline geoserver_data repo.")
+parser.add_argument("--gs_data_branch", default="master", help="The baseline geoserver_data branch.")
 #==#
 parser.add_argument('--banner', default=0, action='count', help="Display a banner")
 parser.add_argument("--banner_text", default="", help="The banner text.")
