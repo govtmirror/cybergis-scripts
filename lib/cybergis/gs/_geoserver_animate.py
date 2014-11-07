@@ -38,12 +38,12 @@ def parse_url(url):
     return url
 
     
-def buildQueryString(layers, bbox, width, height):
+def buildQueryString(layers, srs, bbox, width, height):
     qs = {
         "FORMAT": "image/gif;subtype=animated",
         "format_options": "gif_loop_continuosly:true",
         "aparam": "layers",
-        "SRS": "EPSG:900913",
+        "SRS": "EPSG:"+srs,
         "BBOX": bbox,
         "WIDTH": width,
         "HEIGHT": height,
@@ -60,9 +60,9 @@ def buildQueryString(layers, bbox, width, height):
 
     #return qs
 
-def buildURL(geoserver, layers, bbox, width, height):
+def buildURL(geoserver, layers, srs, bbox, width, height):
     if geoserver:
-        qs = buildQueryString(layers, bbox, width, height)
+        qs = buildQueryString(layers, srs, bbox, width, height)
         return geoserver + "wms/animate?" + qs
     else:
         return None
@@ -87,6 +87,7 @@ def run(args):
     width = args.width
     height = args.height
     #==#
+    srs = args.srs
     bbox = args.bbox
     #==#
     export_url = args.url
@@ -109,7 +110,7 @@ def run(args):
     #==#
     #Animate through layers
     try:
-        url = buildURL(geoserver, layers, bbox, width, height)
+        url = buildURL(geoserver, layers, srs, bbox, width, height)
         if export_url:
             print url
     except:
