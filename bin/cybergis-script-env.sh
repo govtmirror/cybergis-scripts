@@ -208,6 +208,7 @@ geogig(){
       sudo git clone https://github.com/state-hiu/cybergis-osm-mappings.git cybergis-osm-mappings.git
       sudo git clone https://github.com/state-hiu/cybergis-styles.git cybergis-styles.git
       sudo git clone https://github.com/state-hiu/cybergis-client-examples.git cybergis-client-examples.git
+      sudo git clone https://github.com/state-hiu/cybergis-osm-extractions.git cybergis-osm-extractions.git
       #Install GeoGig Cli
       sudo mkdir /opt/geogig
       sudo unzip ~/ws/build/geogig-cli-app-1.0-SNAPSHOT.zip -d /opt/geogig
