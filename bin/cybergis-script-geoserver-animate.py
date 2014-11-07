@@ -18,6 +18,7 @@ parser = argparse.ArgumentParser(description='')
 parser.add_argument('-gs', '--geoserver', help="The url of the target GeoServer.")
 #==#
 parser.add_argument('--layers', help="The layers to animate through.")
+parser.add_argument('--srs', default="4326", help="The SRS, such as 4326, 900913, etc.")
 parser.add_argument('--bbox', help="The bounding box to animate against.")
 #==#
 parser.add_argument('--width', help="The width of the output animated GIF in pixels.  These should be compatible with the bounding box.")
