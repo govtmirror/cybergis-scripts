@@ -1,3 +1,4 @@
+#!/usr/bin/python
 from base64 import b64encode
 from optparse import make_option
 import json
