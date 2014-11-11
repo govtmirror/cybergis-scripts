@@ -307,6 +307,7 @@ def parse_extracts(extracts_file, geoserver, auth, workspace, datastore):
             extracts_rows = extracts_string.split("\n")
             header = extracts_rows[0].strip().split("\t")
             iRepo = getIndex("repo",header)
+            iName = getIndex("name",header)
             iDataStore = getIndex("datastore",header)
             iExtent = getIndex("extent",header)
             iMapping = getIndex("mapping",header)
@@ -323,6 +324,8 @@ def parse_extracts(extracts_file, geoserver, auth, workspace, datastore):
                     extract.repo = row[iRepo]
                 elif iDataStore >= 0:
                     extract.repo = getRepoID(geoserver, auth, workspace, row[iDataStore])
+                elif iName >= 0:
+                    extract.repo = getRepoID(geoserver, auth, workspace, row[iName])
 
                 if iExtent >= 0:
                     extract.bbox = parse_bbox(row[iExtent])
