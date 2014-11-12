@@ -2,7 +2,7 @@
 import sys
 import os
 import time
-import datetime
+from datetime import datetime
 from multiprocessing import Process, Lock, Queue, cpu_count
 import struct
 import numpy
@@ -327,7 +327,7 @@ def initProcesses(count):
     return processes
 
 def run(args):
-    start=datetime.now()
+    start = datetime.now()
     #print args
     #==#
     verbose = args.verbose
