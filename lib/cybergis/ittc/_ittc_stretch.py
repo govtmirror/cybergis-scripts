@@ -152,22 +152,22 @@ class Line:
             self.m = None
             self.b = None
 
-        def min(self):
-            return self.x0
+    def min(self):
+        return self.x0
 
-        def max(self):
-            return self.x1
+    def max(self):
+        return self.x1
 
-        def contains(self, x):
-            return x>=self.x0 and x <=self.x1
+    def contains(self, x):
+        return x>=self.x0 and x <=self.x1
 
-        def calc(self, x):
-            if self.d != 0:
-                return int(round(self.m*x+self.b))
-            elif self.d == 0 and self.y1 == self.y0:
-                return self.y1
-            else:
-                return x
+    def calc(self, x):
+        if self.d != 0:
+            return int(round(self.m*x+self.b))
+        elif self.d == 0 and self.y1 == self.y0:
+            return self.y1
+        else:
+            return x
 
 class Lines:
 
