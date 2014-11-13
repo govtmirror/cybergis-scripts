@@ -28,6 +28,7 @@ def run(args):
     name = args.name
     geoserver = args.geoserver
     path = args.path
+    parent = args.parent
     workspace = args.workspace
     timeout = args.timeout
     #==#
@@ -40,6 +41,8 @@ def run(args):
     include_nodes = args.nodes
     include_ways = args.ways
     #==#
+    extracts = args.extracts
+    #==#
     print "=================================="
     print "#==#"
     print "CyberGIS Script / geogig_init_extract.py"
@@ -48,6 +51,7 @@ def run(args):
     #==#
     print "Executing subroutines"
     gg._geogig_init_repo.run(ov({
+        'parent': parent,
         'path': path,
         'name': name,
         'geoserver': geoserver,
@@ -58,7 +62,8 @@ def run(args):
         'password': password,
         'verbose': verbose,
         'nodes': 0,
-        'ways': 0
+        'ways': 0,
+        'extracts': extracts
     }))
     #==#
     gg._geogig_sync_osm.run(ov({
@@ -75,7 +80,7 @@ def run(args):
         'extent': extent,
         'mapping': mapping,
         'timeout': timeout,
-        'extracts': None
+        'extracts': extracts
     }))
     #==#
     gg._geogig_init_repo.run(ov({
@@ -94,7 +99,8 @@ def run(args):
     print "=================================="
 
 parser = argparse.ArgumentParser(description='Initialize GeoGig repository and optionally add to GeoServer instance.  If you want to add the GeoGig repo include the optional parameters.')
-parser.add_argument("--path", help="The location in the filesystem of the Geogig repository.")
+parser.add_argument("--path", help="The location in the filesystem of the GeoGig repositories.")
+parser.add_argument("--parent", help="The location in the filesystem that is parent to GeoGig repositories.")
 parser.add_argument("--name", help="The name of the GeoGig repo and data store in GeoServer.")
 parser.add_argument('-gs', '--geoserver', help="The url of the GeoServer servicing the GeoGig repository.")
 parser.add_argument('-ws', '--workspace', help="The GeoServer workspace to use for the data store.")
@@ -103,6 +109,7 @@ parser.add_argument("--password", help="The password to use for basic auth reque
 parser.add_argument('--verbose', '-v', default=0, action='count', help="Print out intermediate status messages.")
 parser.add_argument('-an', '--authorname', help="The author name to use when merging non-conflicting branches.")
 parser.add_argument('-ae', '--authoremail', help="The author email to use when merging non-conflicting branches.")
+parser.add_argument('--extracts', help="A tab seperated file (TSV) specifying the datastore, extent, and mapping for each extract.")
 parser.add_argument("--extent", help="The extent of the OpenStreetMap extract. For example, basic:buildings_and_roads.")
 parser.add_argument("--mapping", help="The mapping of the OpenStreetMap extract.  For example, dominican_republic:santo_domingo.")
 parser.add_argument('-to', '--timeout', type=int, default=30, help="The number of seconds to wait for the osm download task to complete before cancelling.  Default is 30 seconds.")

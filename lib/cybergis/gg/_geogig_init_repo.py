@@ -139,40 +139,65 @@ def getTrees(verbose, url, auth):
         print "Error Message: "+response['response']['error']
         return None
 
-def run(args):
-    #print args
-    #==#
-    verbose = args.verbose
-    #==#
-    publish_datastore = args.publish_datastore
-    publish_layers = args.publish_layers
-    #==#
-    name = args.name
-    datastore = name
-    geoserver = parse_url(args.geoserver)
-    path = args.path
-    workspace = args.workspace
-    #==#
-    nodes = args.nodes == 1 # Include Nodes?
-    ways = args.ways == 1 # Include Ways?
-    #url_repo = geoserver+'geogig/'+repo+'/'
-    #==#
-    auth = None
-    if args.username and args.password:
-      auth = b64encode('{0}:{1}'.format(args.username, args.password))
-    #==#
-    print "=================================="
-    print "#==#"
-    print "CyberGIS Script / geogig_init_repo.py"
-    print "Initialize GeoGig repository and optionally add to GeoServer instance."
-    print "#==#"
-    #==#
+class Extract(object):
+
+    def __init__(self):
+        self.name = None
+        self.data_store = None
+        self.path = None
+
+def getIndex(element,array):
+    try:
+        return array.index(element)
+    except:
+        return -1
+
+def parse_extracts(extracts_file, geoserver, auth, workspace, datastore):
+    if extracts_file:
+        extracts_string = None
+        with open (extracts_file, "r") as f:
+            extracts_string = f.read()
+        if extracts_string:
+            extracts_rows = extracts_string.split("\n")
+            header = extracts_rows[0].strip().split("\t")
+            iName = getIndex("name",header)
+            iDataStore = getIndex("datastore",header)
+            iPath = getIndex("path",header)
+            extracts_list = []
+            for i in range(1,len(extracts_rows)):
+                sRow = extracts_rows[i]
+                if not sRow:
+                    continue
+
+                row = sRow.split("\t")
+                extract = Extract()
+
+                if iDataStore >= 0:
+                    extract.data_store = row[iDataStore]
+
+                if iName >= 0:
+                    extract.name = row[iName]
+
+                if iPath >= 0:
+                    extract.path = row[iPath]
+
+                extracts_list.append(extract)
+
+            return extracts_list
+        else:
+            print "The extracts file is empty."
+            return None
+    else:
+        print "No extracts file specified."
+        return None
+
+def processRepo(name,path,datastore,geoserver,workspace,auth,publish_datastore,publish_layers,verbose):
     #Initialize GeoGig Repository
     if path:
         createRepo(path)
-    
+
     #Create GeoGig Data store in GeoServer
-    if publish_datastore > 0 and args.geoserver and args.workspace and args.name and args.path:
+    if publish_datastore > 0 and geoserver and workspace and name and path:
         createDataStore(verbose,geoserver,workspace,auth,name,path)
 
     #Publish GeoGig Trees as Layers
@@ -190,11 +215,62 @@ def run(args):
                 trees = ([t['path'] for t in trees if (not t['path'] in ['way'])])
             else:
                 trees = ([t['path'] for t in trees if (not t['path'] in ['node','way'])])
-            
+
             for tree in trees:
                 try:
                     createLayer(verbose, geoserver, workspace, auth, datastore, tree, datastore)
                 except:
                     print "Couldn't create layer from datastore "+datastore+" for tree "+tree+"."
-                    
+
+
+def run(args):
+    #print args
+    #==#
+    verbose = args.verbose
+    #==#
+    publish_datastore = args.publish_datastore
+    publish_layers = args.publish_layers
+    #==#
+    name = args.name
+    datastore = name
+    geoserver = parse_url(args.geoserver)
+    parent = args.parent
+    path = args.path
+    workspace = args.workspace
+    #==#
+    extracts_file = args.extracts
+    #==#
+    nodes = args.nodes == 1 # Include Nodes?
+    ways = args.ways == 1 # Include Ways?
+    #url_repo = geoserver+'geogig/'+repo+'/'
+    #==#
+    auth = None
+    if args.username and args.password:
+      auth = b64encode('{0}:{1}'.format(args.username, args.password))
+    #==#
+    print "=================================="
+    print "#==#"
+    print "CyberGIS Script / geogig_init_repo.py"
+    print "Initialize GeoGig repository and optionally add to GeoServer instance."
+    print "#==#"
+    #==#
+    if extracts_file:
+        extracts = parse_extracts(extracts_file, geoserver, auth, workspace, datastore)
+        if extracts:
+            for extract in extracts:
+                if extract.path:
+                    processRepo(extract.name,extract.path,geoserver,workspace,auth,publish_datastore,publish_layers,verbose)
+                elif extract.name and parent
+                    processRepo(extract.name,parent+os.sep+extract.name,geoserver,workspace,auth,publish_datastore,publish_layers,verbose)
+        else:
+            print "Extracts file was not parsed correctly."
+            return 1
+    else:
+        if path:
+            processRepo(extract.name,path,geoserver,workspace,auth,publish_datastore,publish_layers,verbose)
+        elif name and parent:
+            processRepo(extract.name,parent+os.sep+extract.name,geoserver,workspace,auth,publish_datastore,publish_layers,verbose)
+        else:
+            print "Need either path or name and parent"
+            return 1
     print "=================================="
