@@ -385,6 +385,7 @@ def processExtractForBoundingBox(extract,geoserver,auth,workspace,bbox,mapping,a
     #
     url_repo = geoserver+'geogig/'+extract.repo+'/'
     url_tasks = geoserver+'geogig/tasks'
+    print "BBOX: "+bbox
     #
     transID = -1
     try:
