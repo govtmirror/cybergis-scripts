@@ -261,6 +261,8 @@ def run(args):
                 if extract.path:
                     processRepo(extract.path,extract.datastore,geoserver,workspace,auth,publish_datastore,publish_layers,verbose)
                 elif extract.name and parent:
+                    if parent.endswith(os.sep):
+                        parent = parent[:-1]
                     processRepo(parent+os.sep+extract.name,extract.datastore,geoserver,workspace,auth,publish_datastore,publish_layers,verbose)
         else:
             print "Extracts file was not parsed correctly."
