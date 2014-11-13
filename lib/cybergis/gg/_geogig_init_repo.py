@@ -191,14 +191,14 @@ def parse_extracts(extracts_file, geoserver, auth, workspace, datastore):
         print "No extracts file specified."
         return None
 
-def processRepo(name,path,datastore,geoserver,workspace,auth,publish_datastore,publish_layers,verbose):
+def processRepo(path,datastore,geoserver,workspace,auth,publish_datastore,publish_layers,verbose):
     #Initialize GeoGig Repository
     if path:
         createRepo(path)
 
     #Create GeoGig Data store in GeoServer
-    if publish_datastore > 0 and geoserver and workspace and name and path:
-        createDataStore(verbose,geoserver,workspace,auth,name,path)
+    if publish_datastore > 0 and geoserver and workspace and datastore and path:
+        createDataStore(verbose,geoserver,workspace,auth,datastore,path)
 
     #Publish GeoGig Trees as Layers
     if publish_layers > 0:
@@ -232,7 +232,7 @@ def run(args):
     publish_layers = args.publish_layers
     #==#
     name = args.name
-    datastore = name
+    datastore = args.datastore
     geoserver = parse_url(args.geoserver)
     parent = args.parent
     path = args.path
@@ -267,9 +267,9 @@ def run(args):
             return 1
     else:
         if path:
-            processRepo(extract.name,path,geoserver,workspace,auth,publish_datastore,publish_layers,verbose)
+            processRepo(path,datastore,geoserver,workspace,auth,publish_datastore,publish_layers,verbose)
         elif name and parent:
-            processRepo(extract.name,parent+os.sep+extract.name,geoserver,workspace,auth,publish_datastore,publish_layers,verbose)
+            processRepo(parent+os.sep+extract.name,datastore,geoserver,workspace,auth,publish_datastore,publish_layers,verbose)
         else:
             print "Need either path or name and parent"
             return 1

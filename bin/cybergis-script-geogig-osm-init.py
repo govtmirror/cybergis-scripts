@@ -29,6 +29,7 @@ def run(args):
     geoserver = args.geoserver
     path = args.path
     parent = args.parent
+    datastore = args.datastore
     workspace = args.workspace
     timeout = args.timeout
     #==#
@@ -54,6 +55,7 @@ def run(args):
         'parent': parent,
         'path': path,
         'name': name,
+        'datastore': datastore,
         'geoserver': geoserver,
         'workspace': workspace,
         'publish_datastore': 1,
@@ -69,7 +71,7 @@ def run(args):
     gg._geogig_sync_osm.run(ov({
         'update': 'false',
         'repo':None,
-        'datastore': name,
+        'datastore': datastore,
         'geoserver': geoserver,
         'workspace': workspace,
         'username': username,
@@ -86,6 +88,7 @@ def run(args):
     gg._geogig_init_repo.run(ov({
         'path': None,
         'name': name,
+        'datstore': datastore,
         'geoserver': geoserver,
         'workspace': workspace,
         'publish_datastore': 0,
@@ -101,7 +104,8 @@ def run(args):
 parser = argparse.ArgumentParser(description='Initialize GeoGig repository and optionally add to GeoServer instance.  If you want to add the GeoGig repo include the optional parameters.')
 parser.add_argument("--path", help="The location in the filesystem of the GeoGig repositories.")
 parser.add_argument("--parent", help="The location in the filesystem that is parent to GeoGig repositories.")
-parser.add_argument("--name", help="The name of the GeoGig repo and data store in GeoServer.")
+parser.add_argument("--name", help="The name of the GeoGig repo within the file system.")
+parser.add_argument('-ds', '--datastore', help="The name of the GeoGig datastore in GeoServer.")
 parser.add_argument('-gs', '--geoserver', help="The url of the GeoServer servicing the GeoGig repository.")
 parser.add_argument('-ws', '--workspace', help="The GeoServer workspace to use for the data store.")
 parser.add_argument("--username", help="The username to use for basic auth requests.")
