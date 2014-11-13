@@ -143,7 +143,7 @@ class Extract(object):
 
     def __init__(self):
         self.name = None
-        self.data_store = None
+        self.datastore = None
         self.path = None
 
 def getIndex(element,array):
@@ -173,7 +173,7 @@ def parse_extracts(extracts_file, geoserver, auth, workspace, datastore):
                 extract = Extract()
 
                 if iDataStore >= 0:
-                    extract.data_store = row[iDataStore]
+                    extract.datastore = row[iDataStore]
 
                 if iName >= 0:
                     extract.name = row[iName]
