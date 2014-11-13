@@ -312,7 +312,7 @@ def getIndex(element,array):
         elements.append(element)
     elif isinstance(element, list):
         elements.extend(element)
-    else
+    else:
         return index
 
     for element in elements:
