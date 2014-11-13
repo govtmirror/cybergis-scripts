@@ -259,9 +259,9 @@ def run(args):
         if extracts:
             for extract in extracts:
                 if extract.path:
-                    processRepo(extract.name,extract.path,geoserver,workspace,auth,publish_datastore,publish_layers,verbose)
+                    processRepo(extract.path,extract.datastore,geoserver,workspace,auth,publish_datastore,publish_layers,verbose)
                 elif extract.name and parent:
-                    processRepo(extract.name,parent+os.sep+extract.name,geoserver,workspace,auth,publish_datastore,publish_layers,verbose)
+                    processRepo(parent+os.sep+extract.name,extract.datastore,geoserver,workspace,auth,publish_datastore,publish_layers,verbose)
         else:
             print "Extracts file was not parsed correctly."
             return 1
@@ -269,7 +269,7 @@ def run(args):
         if path:
             processRepo(path,datastore,geoserver,workspace,auth,publish_datastore,publish_layers,verbose)
         elif name and parent:
-            processRepo(parent+os.sep+extract.name,datastore,geoserver,workspace,auth,publish_datastore,publish_layers,verbose)
+            processRepo(parent+os.sep+name,datastore,geoserver,workspace,auth,publish_datastore,publish_layers,verbose)
         else:
             print "Need either path or name and parent"
             return 1
