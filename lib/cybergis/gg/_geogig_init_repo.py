@@ -266,18 +266,11 @@ def run(args):
             print "Extracts file was not parsed correctly."
             return 1
     else:
-        extract = Extract()
-        if repo:
-            extract.repo = repo
-        if datastore:
-            extract.repo = getRepoID(geoserver, auth, workspace, datastore)
-        if bbox:
-            extract.bbox = bbox
-        if mapping:
-            extract.mapping = mapping
-
-        if validateExtract(extract,bbox,update):
-            processExtract(extract,geoserver,auth,workspace,bbox,mapping,authorname,authoremail,timeout,update,verbose)
-
- 
+        if path:
+            processRepo(extract.name,path,geoserver,workspace,auth,publish_datastore,publish_layers,verbose)
+        elif name and parent:
+            processRepo(extract.name,parent+os.sep+extract.name,geoserver,workspace,auth,publish_datastore,publish_layers,verbose)
+        else:
+            print "Need either path or name and parent"
+            return 1
     print "=================================="

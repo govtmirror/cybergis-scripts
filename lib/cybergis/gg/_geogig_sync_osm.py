@@ -278,6 +278,18 @@ def parse_bbox(extent):
     else:
         return None
 
+def parse_bbox_list(extents):
+    if isinstance(extents, basestring):
+        extents_list = extents.split(";")
+        bbox_list = []
+        for extent in extents_list:
+            bbox = parse_bbox(extent)
+            if bbox:
+                bbox_list.append(bbox)
+        return bbox_list
+    else:
+        return None
+
 def parse_mapping(ns_mapping):
     if ns_mapping:
         file_mapping = "/opt/cybergis-osm-mappings.git/mappings/"+ns_mapping.replace(":","/")+".json"
@@ -289,14 +301,28 @@ class Extract(object):
 
     def __init__(self):
         self.repo = None
-        self.bbox = None
+        self.bbox_list = None
         self.mapping = None
 
 def getIndex(element,array):
-    try:
-        return array.index(element)
-    except:
-        return -1
+    index = -1
+    elements = []
+
+    if isinstance(element, basestring)
+        elements.append(element)
+    elif isinstance(element, list)
+        elements.extend(element)
+    else
+        return index
+
+    for element in elements:
+        try:
+            index = array.index(element)
+            break
+        except:
+            index = -1
+
+    return index
 
 def parse_extracts(extracts_file, geoserver, auth, workspace, datastore):
     if extracts_file:
@@ -309,7 +335,7 @@ def parse_extracts(extracts_file, geoserver, auth, workspace, datastore):
             iRepo = getIndex("repo",header)
             iName = getIndex("name",header)
             iDataStore = getIndex("datastore",header)
-            iExtent = getIndex("extent",header)
+            iExtent = getIndex(["extent","extents"],header)
             iMapping = getIndex("mapping",header)
             extracts_list = []
             for i in range(1,len(extracts_rows)):
@@ -328,7 +354,7 @@ def parse_extracts(extracts_file, geoserver, auth, workspace, datastore):
                     extract.repo = getRepoID(geoserver, auth, workspace, row[iName])
 
                 if iExtent >= 0:
-                    extract.bbox = parse_bbox(row[iExtent])
+                    extract.bbox_list = parse_bbox_list(row[iExtent])
 
                 if iMapping >= 0:
                     extract.mapping = parse_mapping(row[iMapping])
@@ -343,19 +369,19 @@ def parse_extracts(extracts_file, geoserver, auth, workspace, datastore):
         print "No extracts file specified."
         return None
 
-def validateExtract(extract,bbox,update):
+def validateExtract(extract,bbox_list,update):
     if extract.repo:
         if update:
             return True
         else:
-            if bbox or extract.bbox:
+            if bbox_list or extract.bbox_list:
                 return True
             else:
                 return False
     else:
         return False
 
-def processExtract(extract,geoserver,auth,workspace,bbox,mapping,authorname,authoremail,timeout,update,verbose):
+def processExtractForBoundingBox(extract,geoserver,auth,workspace,bbox,mapping,authorname,authoremail,timeout,update,verbose):
     #
     url_repo = geoserver+'geogig/'+extract.repo+'/'
     url_tasks = geoserver+'geogig/tasks'
@@ -375,7 +401,7 @@ def processExtract(extract,geoserver,auth,workspace,bbox,mapping,authorname,auth
             branch = checkout(verbose, url_repo, auth, 'master', transID)
             if not branch:
                 raise Exception('An error occurred when checking out master.  Cancelling task.')
-            taskID = downloadFromOSM(verbose, url_repo, auth, transID, update, extract.mapping or mapping, extract.bbox or bbox)
+            taskID = downloadFromOSM(verbose, url_repo, auth, transID, update, extract.mapping or mapping, bbox)
         except Exception:
             taskID = -1
             endTransaction(verbose,url_repo, auth, True, transID)
@@ -396,6 +422,16 @@ def processExtract(extract,geoserver,auth,workspace,bbox,mapping,authorname,auth
     except Exception:
         pass
 
+def processExtract(extract,geoserver,auth,workspace,bbox_list,mapping,authorname,authoremail,timeout,update,verbose):
+    if extract.bbox_list:
+        for bbox in extract.bbox_list:
+            processExtractForBoundingBox(extract,geoserver,auth,workspace,bbox,mapping,authorname,authoremail,timeout,update,verbose)
+    elif bbox_list
+        for bbox in bbox_list:
+            processExtractForBoundingBox(extract,geoserver,auth,workspace,bbox,mapping,authorname,authoremail,timeout,update,verbose)
+    else:
+        processExtractForBoundingBox(extract,geoserver,auth,workspace,None,mapping,authorname,authoremail,timeout,update,verbose)
+
 def run(args):
     #==#
     verbose = args.verbose
@@ -415,7 +451,7 @@ def run(args):
       auth = b64encode('{0}:{1}'.format(args.username, args.password))
     #==#
     update = args.update in ["1","y","t","true"]
-    bbox = parse_bbox(args.extent)
+    bbox_list = parse_bbox_list(args.extents)
     mapping = parse_mapping(args.mapping)
     print "=================================="
     print "#==#"
@@ -427,8 +463,8 @@ def run(args):
         extracts = parse_extracts(extracts_file, geoserver, auth, workspace, datastore)
         if extracts:
             for extract in extracts:
-                if validateExtract(extract,bbox,update):
-                    processExtract(extract,geoserver,auth,workspace,bbox,mapping,authorname,authoremail,timeout,update,verbose)
+                if validateExtract(extract,bbox_list,update):
+                    processExtract(extract,geoserver,auth,workspace,bbox_list,mapping,authorname,authoremail,timeout,update,verbose)
         else:
             print "Extracts file was not parsed correctly."
             return 1
@@ -438,11 +474,11 @@ def run(args):
             extract.repo = repo
         if datastore:
             extract.repo = getRepoID(geoserver, auth, workspace, datastore)
-        if bbox:
-            extract.bbox = bbox
+        if bbox_list:
+            extract.bbox_list = bbox_list
         if mapping:
             extract.mapping = mapping
 
-        if validateExtract(extract,bbox,update):
-            processExtract(extract,geoserver,auth,workspace,bbox,mapping,authorname,authoremail,timeout,update,verbose)
+        if validateExtract(extract,bbox_list,update):
+            processExtract(extract,geoserver,auth,workspace,bbox_list,mapping,authorname,authoremail,timeout,update,verbose)
     print "=================================="
