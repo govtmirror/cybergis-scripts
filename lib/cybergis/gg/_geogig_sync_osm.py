@@ -308,9 +308,9 @@ def getIndex(element,array):
     index = -1
     elements = []
 
-    if isinstance(element, basestring)
+    if isinstance(element, basestring):
         elements.append(element)
-    elif isinstance(element, list)
+    elif isinstance(element, list):
         elements.extend(element)
     else
         return index
