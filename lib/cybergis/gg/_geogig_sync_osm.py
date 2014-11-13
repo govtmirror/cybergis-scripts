@@ -426,7 +426,7 @@ def processExtract(extract,geoserver,auth,workspace,bbox_list,mapping,authorname
     if extract.bbox_list:
         for bbox in extract.bbox_list:
             processExtractForBoundingBox(extract,geoserver,auth,workspace,bbox,mapping,authorname,authoremail,timeout,update,verbose)
-    elif bbox_list
+    elif bbox_list:
         for bbox in bbox_list:
             processExtractForBoundingBox(extract,geoserver,auth,workspace,bbox,mapping,authorname,authoremail,timeout,update,verbose)
     else:
