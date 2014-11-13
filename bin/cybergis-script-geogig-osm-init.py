@@ -36,7 +36,7 @@ def run(args):
     username = args.username
     password = args.password
     #==#
-    extent = args.extent
+    extents = args.extents
     mapping = args.mapping
     #==#
     include_nodes = args.nodes
@@ -79,7 +79,7 @@ def run(args):
         'verbose': verbose,
         'authorname':authorname,
         'authoremail': authoremail,
-        'extent': extent,
+        'extents': extents,
         'mapping': mapping,
         'timeout': timeout,
         'extracts': extracts
@@ -114,8 +114,8 @@ parser.add_argument('--verbose', '-v', default=0, action='count', help="Print ou
 parser.add_argument('-an', '--authorname', help="The author name to use when merging non-conflicting branches.")
 parser.add_argument('-ae', '--authoremail', help="The author email to use when merging non-conflicting branches.")
 parser.add_argument('--extracts', help="A tab seperated file (TSV) specifying the datastore, extent, and mapping for each extract.")
-parser.add_argument("--extent", help="The extent of the OpenStreetMap extract. For example, basic:buildings_and_roads.")
-parser.add_argument("--mapping", help="The mapping of the OpenStreetMap extract.  For example, dominican_republic:santo_domingo.")
+parser.add_argument("--extents", help="The extents of the OpenStreetMap extract. For example, dominican_republic:santo_domingo or guinea:guiea;liberia:liberia.")
+parser.add_argument("--mapping", help="The mapping of the OpenStreetMap extract.  For example, basic:bulding_and_roads.")
 parser.add_argument('-to', '--timeout', type=int, default=30, help="The number of seconds to wait for the osm download task to complete before cancelling.  Default is 30 seconds.")
 parser.add_argument('--nodes', default=0, action='count', help="If publishing layers, include nodes.")
 parser.add_argument('--ways', default=0, action='count', help="If publishing layers, include ways.")
