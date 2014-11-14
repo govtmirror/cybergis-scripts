@@ -89,7 +89,7 @@ def run(args):
         'parent': parent,
         'path': None,
         'name': name,
-        'datstore': datastore,
+        'datastore': datastore,
         'geoserver': geoserver,
         'workspace': workspace,
         'publish_datastore': 0,
