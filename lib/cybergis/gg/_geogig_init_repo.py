@@ -191,7 +191,7 @@ def parse_extracts(extracts_file, geoserver, auth, workspace, datastore):
         print "No extracts file specified."
         return None
 
-def processRepo(path,datastore,geoserver,workspace,auth,publish_datastore,publish_layers,verbose):
+def processRepo(path,datastore,geoserver,workspace,auth,publish_datastore,publish_layers,nodes,ways,verbose):
     #Initialize GeoGig Repository
     if path:
         createRepo(path)
@@ -259,21 +259,21 @@ def run(args):
         if extracts:
             for extract in extracts:
                 if extract.path:
-                    processRepo(extract.path,extract.datastore,geoserver,workspace,auth,publish_datastore,publish_layers,verbose)
+                    processRepo(extract.path,extract.datastore,geoserver,workspace,auth,publish_datastore,publish_layers,nodes,ways,verbose)
                 elif extract.name and parent:
                     if parent.endswith(os.sep):
                         parent = parent[:-1]
                     path_abs = parent+os.sep+extract.name
                     print path_abs
-                    processRepo(path_abs,extract.datastore,geoserver,workspace,auth,publish_datastore,publish_layers,verbose)
+                    processRepo(path_abs,extract.datastore,geoserver,workspace,auth,publish_datastore,publish_layers,nodes,ways,verbose)
         else:
             print "Extracts file was not parsed correctly."
             return 1
     else:
         if path:
-            processRepo(path,datastore,geoserver,workspace,auth,publish_datastore,publish_layers,verbose)
+            processRepo(path,datastore,geoserver,workspace,auth,publish_datastore,publish_layers,nodes,ways,verbose)
         elif name and parent:
-            processRepo(parent+os.sep+name,datastore,geoserver,workspace,auth,publish_datastore,publish_layers,verbose)
+            processRepo(parent+os.sep+name,datastore,geoserver,workspace,auth,publish_datastore,publish_layers,nodes,ways,verbose)
         else:
             print "Need either path or name and parent"
             return 1
