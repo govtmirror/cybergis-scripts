@@ -98,7 +98,8 @@ def run(args):
         'password': password,
         'verbose': verbose,
         'nodes': include_nodes,
-        'ways': include_ways
+        'ways': include_ways,
+        'extracts': extracts
     }))                    
     print "=================================="
 
