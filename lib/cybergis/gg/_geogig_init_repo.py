@@ -262,7 +262,7 @@ def run(args):
                     processRepo(extract.path,extract.datastore,geoserver,workspace,auth,publish_datastore,publish_layers,verbose)
                 elif extract.name and parent:
                     if parent.endswith(os.sep):
-                        parent = parent[:-1
+                        parent = parent[:-1]
                     path_abs = parent+os.sep+extract.name
                     print path_abs
                     processRepo(path_abs,extract.datastore,geoserver,workspace,auth,publish_datastore,publish_layers,verbose)
