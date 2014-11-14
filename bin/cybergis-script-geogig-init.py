@@ -20,6 +20,7 @@ parser.add_argument('-ws', '--workspace', help="The GeoServer workspace to use f
 parser.add_argument("--username", help="The username to use for basic auth requests.")
 parser.add_argument("--password", help="The password to use for basic auth requests.")
 parser.add_argument('--verbose', '-v', default=0, action='count', help="Print out intermediate status messages.")
+parser.add_argument('--create_repo', default=0, action='count', help="Create repository if given path")
 parser.add_argument("--publish_datastore", default=0, action='count', help="Publish datastore in GeoServer for GeoGig repository")
 parser.add_argument('--publish_layers', default=0, action='count', help="Publish layers from GeoGig data store")
 parser.add_argument('--nodes', default=0, action='count', help="If publishing layers, include nodes.")

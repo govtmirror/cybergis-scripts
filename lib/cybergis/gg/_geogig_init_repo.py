@@ -191,9 +191,9 @@ def parse_extracts(extracts_file, geoserver, auth, workspace, datastore):
         print "No extracts file specified."
         return None
 
-def processRepo(path,datastore,geoserver,workspace,auth,publish_datastore,publish_layers,nodes,ways,verbose):
+def processRepo(path,datastore,geoserver,workspace,auth,create_repo,publish_datastore,publish_layers,nodes,ways,verbose):
     #Initialize GeoGig Repository
-    if path:
+    if create_repo > 0 and path:
         createRepo(path)
 
     #Create GeoGig Data store in GeoServer
@@ -228,6 +228,7 @@ def run(args):
     #==#
     verbose = args.verbose
     #==#
+    create_repo = args.create_repo
     publish_datastore = args.publish_datastore
     publish_layers = args.publish_layers
     #==#
@@ -259,21 +260,21 @@ def run(args):
         if extracts:
             for extract in extracts:
                 if extract.path:
-                    processRepo(extract.path,extract.datastore,geoserver,workspace,auth,publish_datastore,publish_layers,nodes,ways,verbose)
+                    processRepo(extract.path,extract.datastore,geoserver,workspace,auth,create_repo,publish_datastore,publish_layers,nodes,ways,verbose)
                 elif extract.name and parent:
                     if parent.endswith(os.sep):
                         parent = parent[:-1]
                     path_abs = parent+os.sep+extract.name
                     print path_abs
-                    processRepo(path_abs,extract.datastore,geoserver,workspace,auth,publish_datastore,publish_layers,nodes,ways,verbose)
+                    processRepo(path_abs,extract.datastore,geoserver,workspace,auth,create_repo,publish_datastore,publish_layers,nodes,ways,verbose)
         else:
             print "Extracts file was not parsed correctly."
             return 1
     else:
         if path:
-            processRepo(path,datastore,geoserver,workspace,auth,publish_datastore,publish_layers,nodes,ways,verbose)
+            processRepo(path,datastore,geoserver,workspace,auth,create_repo,publish_datastore,publish_layers,nodes,ways,verbose)
         elif name and parent:
-            processRepo(parent+os.sep+name,datastore,geoserver,workspace,auth,publish_datastore,publish_layers,nodes,ways,verbose)
+            processRepo(parent+os.sep+name,datastore,geoserver,workspace,auth,create_repo,publish_datastore,publish_layers,nodes,ways,verbose)
         else:
             print "Need either path or name and parent"
             return 1
