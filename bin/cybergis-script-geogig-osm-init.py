@@ -85,7 +85,7 @@ def run(args):
         'extracts': extracts
     }))
     #==#
-    gg._geogig_init_repo.run(ov(
+    gg._geogig_init_repo.run(ov({
         'parent': parent,
         'path': None,
         'name': name,
