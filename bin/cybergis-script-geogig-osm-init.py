@@ -93,6 +93,7 @@ def run(args):
         'datastore': datastore,
         'geoserver': geoserver,
         'workspace': workspace,
+        'create_repo': 0,
         'publish_datastore': 0,
         'publish_layers': 1,
         'username': username,
