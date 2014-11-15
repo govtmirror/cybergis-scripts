@@ -1,4 +1,4 @@
-INSERT INTO ittc_snapshot_layers
+INSERT INTO {{table}}
 (
   source_repo,
   source_workspace,
