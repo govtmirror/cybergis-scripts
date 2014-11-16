@@ -134,17 +134,24 @@ def run(args):
                     s3 = S3Connection(aws_access_key_id, aws_secret_access_key)
                     bucket = s3.get_bucket(s3_bucket)
                     key = bucket.get_key(s3_key)
+                    s3_go = False
                     if (not (key is None)) and key.exists():
                         if s3_overwrite > 0:
-                            fd = urllib.urlopen(url)
-                            image = io.BytesIO(fd.read())
-                            key.set_contents_from_file(image)
+                            s3_go = True
+                            bucket.delete_key(s3_key)
+                            key = bucket.new_key(s3_key)
                         else:
                             print "Key already exists in bucket."
                     else:
                         key = bucket.new_key(s3_key)
+                        s3_go = True
+
+                    if s3_go and key:
                         fd = urllib.urlopen(url)
                         image = io.BytesIO(fd.read())
+                        key.content_type = 'image/gif'
+                        AWS_HEADERS = {'Cache-Control': str('no-cache, no-store, must-revalidate','Pragma':'no-cache','Expires':'0')}
+                        key.update_metadata(AWS_HEADERS)
                         key.set_contents_from_file(image)
                 else:
                     print "You need to specify an S3 Bucket"
