@@ -92,10 +92,18 @@ def run(args):
     #==#
     export_url = args.url
     export_file = args.file
+    export_s3 = args.s3
     #==#
     auth = None
     if args.username and args.password:
       auth = b64encode('{0}:{1}'.format(args.username, args.password))
+    #==#
+    aws_access_key_id = args.aws_access_key_id
+    aws_secret_access_key = args.aws_secret_access_key
+    #==#
+    s3_overwrite = args.s3_overwrite
+    s3_bucket = args.s3_bucket
+    s3_key = args.s3_key
     #==#
     print "=================================="
     print "#==#"
@@ -111,8 +119,38 @@ def run(args):
     #Animate through layers
     try:
         url = buildURL(geoserver, layers, srs, bbox, width, height)
-        if export_url:
+        if export_url > 0:
             print url
+
+        if export_s3 > 0:
+            if aws_access_key_id and aws_secret_access_key:
+                if s3_bucket:
+                    #==#
+                    from boto.s3.connection import S3Connection
+                    from boto.s3.key import Key
+                    from PIL import Image
+                    import io
+                    #==#
+                    s3 = S3Connection(aws_access_key_id, aws_secret_access_key)
+                    bucket = s3.get_bucket(s3_bucket)
+                    key = bucket.get_key(s3_key)
+                    if key.exists():
+                        if s3_overwrite > 0:
+                            fd = urllib.urlopen(url)
+                            image = io.BytesIO(fd.read())
+                            key.set_contents_from_file(image)
+                        else:
+                            print "Key already exists in bucket."
+                    else:
+                        key = bucket.new_key(s3_key)
+                        fd = urllib.urlopen(url)
+                        image = io.BytesIO(fd.read())
+                        key.set_contents_from_file(image)
+                else:
+                    print "You need to specify an S3 Bucket"
+            else:
+                print "Missing AWS Credentials (Access Key ID and Secret Access Key)"
+
     except:
         print "Couldn't animate through layers "+args.layers+"."
         raise
