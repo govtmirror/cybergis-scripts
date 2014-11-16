@@ -35,7 +35,7 @@ parser.add_argument('--s3', default=0, action='count', help="Upload animation di
 #==#
 parser.add_argument('--aws_access_key_id', help="AWS API Key ID.")
 parser.add_argument('--aws_secret_access_key', help="AWS API Key Secret.")
-parser.add_argument('--s3_overwrite', help="Overwrite object in S3 if it already exists.")
+parser.add_argument('--s3_overwrite', defaeult=0, action='count', help="Overwrite object in S3 if it already exists.")
 parser.add_argument('--s3_bucket', help="The AWS S3 Bucket to upload the animation")
 parser.add_argument('--s3_key', help="The AWS S3 Key for the animation (filename).")
 #==#
