@@ -150,7 +150,8 @@ def run(args):
                         fd = urllib.urlopen(url)
                         image = io.BytesIO(fd.read())
                         key.content_type = 'image/gif'
-                        AWS_HEADERS = {'Cache-Control': str('no-cache, no-store, must-revalidate'),'Pragma': str('no-cache'),'Expires':str('0')}
+                        key.cache_control = str('no-cache, no-store, must-revalidate')
+                        AWS_HEADERS = {'Pragma': str('no-cache'),'Expires':str('0')}
                         key.update_metadata(AWS_HEADERS)
                         key.set_contents_from_file(image)
                 else:
