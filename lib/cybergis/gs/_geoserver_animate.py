@@ -134,7 +134,7 @@ def run(args):
                     s3 = S3Connection(aws_access_key_id, aws_secret_access_key)
                     bucket = s3.get_bucket(s3_bucket)
                     key = bucket.get_key(s3_key)
-                    if key.exists():
+                    if (not (key is none)) and key.exists():
                         if s3_overwrite > 0:
                             fd = urllib.urlopen(url)
                             image = io.BytesIO(fd.read())
