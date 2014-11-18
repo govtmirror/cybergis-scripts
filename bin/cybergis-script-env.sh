@@ -116,7 +116,12 @@ geonode_install(){
   workon geonode
   #===============#
   #Install Django Dependencies
-  pip install pillow django-tastypie django-taggit django-jsonfield django-downloadview
+  pip install pillow
+  pip install pinax-theme-bootstrap==3.0a11 pinax-theme-bootstrap-account==1.0b2
+  pip install django-tastypie django-autocomplete-light django-mptt
+  pip install django-taggit django-taggit-templatetags django-modeltranslation
+  pip install django-jsonfield django-downloadview django-pagination django-friendly-tag-loader django-extensions
+  pip install django-geoexplorer django-leaflet 
   #
   #===============#
   #Install GDAL
