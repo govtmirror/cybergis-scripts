@@ -260,6 +260,8 @@ class LookUpTables:
         elif filename.endswith(".qml"):
             file = open(filename,"r")
             dom = parse(file)
+            minGray = -1
+            maxGray = -1
             minRed = -1
             maxRed = -1
             minGreen = -1
@@ -270,7 +272,10 @@ class LookUpTables:
                 for node in nRasterRenderer.childNodes:
                     #print node.toxml()
                     if node.nodeType != node.TEXT_NODE:
-                        if node.tagName=="redContrastEnhancement":
+                        if node.tagName=="contrastEnhancement":
+                            minGray = float(node.getElementsByTagName("minValue")[0].firstChild.nodeValue)
+                            maxGray = float(node.getElementsByTagName("maxValue")[0].firstChild.nodeValue)
+                        elif node.tagName=="redContrastEnhancement":
                             minRed = float(node.getElementsByTagName("minValue")[0].firstChild.nodeValue)
                             maxRed = float(node.getElementsByTagName("maxValue")[0].firstChild.nodeValue)
                         elif node.tagName=="greenContrastEnhancement":
@@ -280,6 +285,8 @@ class LookUpTables:
                             minBlue = float(node.getElementsByTagName("minValue")[0].firstChild.nodeValue)
                             maxBlue = float(node.getElementsByTagName("maxValue")[0].firstChild.nodeValue)
 
+            if minGray!=-1 and maxGray!=-1:
+                self.bps_list[0].extend(self.buildBreakPoints(minGray,maxGray))
             if minRed!=-1 and maxRed!=-1:
                 self.bps_list[0].extend(self.buildBreakPoints(minRed,maxRed))
             if minGreen!=-1 and maxGreen!=-1:
