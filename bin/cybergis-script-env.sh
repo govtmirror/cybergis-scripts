@@ -1,5 +1,6 @@
 #!/bin/bash
-#This script is a work in development and is not stable.
+#This script is a work in development and is stable,
+#but may change to stay up to date with other projects.
 #This script requires curl and git to be installed
 #Run this script using root's login shell under: sudo su -
 
@@ -8,8 +9,6 @@ DATE=$(date)
 ENV=$1
 CMD=$2
 #==================================#
-#####################
-###!!!!!! Still under development.  Not stable!!!!!!!!!!!!!##############
 geonode(){
   echo "geonode"
   if [[ $# -ne 2 ]]; then
