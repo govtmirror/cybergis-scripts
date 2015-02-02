@@ -264,6 +264,98 @@ ittc(){
   fi
 }
 
+ckan_prod(){
+  echo "ckan_prod"
+  if [[ $# -ne 2 ]]; then
+    echo "Usage: cybergis-script-env.sh ckan_prod [install|reset]"
+  else
+    ENV=$1
+    CMD=$2
+    #
+    if [[ "$CMD" = "install" ]]; then
+      #Derived from http://ckan.readthedocs.org/en/latest/maintaining/installing/install-from-package.html
+      sudo apt-get update
+      #
+      sudo apt-get install -y nginx apache2 libapache2-mod-wsgi libpq5
+      #
+      cd ~
+      wget http://packaging.ckan.org/python-ckan_2.2_amd64.deb
+      sudo dpkg -i python-ckan_2.2_amd64.deb
+      #
+      sudo a2enmod wsgi
+      sudo service apache2 restart
+      #
+      sudo apt-get install -y postgresql solr-jetty
+    elif [[ "$CMD" = "reset" ]]; then
+      # 
+      echo "reset"
+      sudo service apache2 restart
+      sudo service nginx restart
+      #
+    else
+      echo "Usage: cybergis-script-env.sh ittc [install|reset]"
+    fi
+  fi
+}
+
+ckan(){
+  echo "ckan"
+  if [[ $# -ne 2 ]]; then
+    echo "Usage: cybergis-script-env.sh ckan [install|reset]"
+  else
+    ENV=$1
+    CMD=$2
+    #
+    if [[ "$CMD" = "install" ]]; then
+      #Derived from http://ckan.readthedocs.org/en/latest/maintaining/installing/install-from-source.html
+      sudo apt-get update
+      #
+      sudo apt-get install python-dev postgresql libpq-dev python-pip python-virtualenv git-core solr-jetty openjdk-6-jdk
+      #
+      #
+      sudo -u postgres createuser -S -D -R -P ckan_default
+      sudo -u postgres createdb -O ckan_default ckan_default -E utf-8
+      #
+      sudo mkdir -p /etc/ckan/default
+      sudo chown -R `whoami` /etc/ckan/
+      cd /usr/lib/ckan/default/src/ckan
+      paster make-config ckan /etc/ckan/default/development.ini
+      #
+      #
+      sudo service jetty start
+      #
+      sudo mv /etc/solr/conf/schema.xml /etc/solr/conf/schema.xml.bak
+      sudo ln -s /usr/lib/ckan/default/src/ckan/ckan/config/solr/schema.xml /etc/solr/conf/schema.xml
+      sudo service jetty restart
+      #
+      cd /usr/lib/ckan/default/src/ckan
+      paster db init -c /etc/ckan/default/development.ini
+      #
+      ln -s /usr/lib/ckan/default/src/ckan/who.ini /etc/ckan/default/who.ini
+      #
+      cd /usr/lib/ckan/default/src/ckan
+      paster serve /etc/ckan/default/development.ini
+    elif [[ "$CMD" = "reset" ]]; then
+      # 
+      echo "reset"
+      #
+      source ~/.bash_aliases
+      workon ckan
+      source ~/.venvs/ckan/bin/activate
+      #
+      cd ~/geonode
+      paver stop
+      paver reset
+      #paver reset_hard
+      paver setup
+      paver start -b 0.0.0.0:8000
+      #
+    else
+      echo "Usage: cybergis-script-env.sh ittc [install|reset]"
+    fi
+  fi
+}
+
 if [[ "$ENV" = "geonode" ]]; then
     
     if [[ $# -ne 2 ]]; then
