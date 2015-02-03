@@ -285,7 +285,15 @@ if [[ "$ENV" = "geonode" ]]; then
     else
         export -f geonode_install
         export -f geonode
-        bash --login -c "geonode $ENV $CMD '${3}'"
+        if [[ "$CMD" = "install" ]]; then
+            bash --login -c "geonode $ENV $CMD"
+        elif [[ "$ENV" = "reset" ]]; then
+            if [[ $# -eq 2 ]]; then
+                bash --login -c "geonode $ENV $CMD"
+            else
+                bash --login -c "geonode $ENV $CMD '${3}'"
+            fi
+        fi
     fi
     
 elif [[ "$ENV" = "rogue" ]]; then
