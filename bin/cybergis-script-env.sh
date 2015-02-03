@@ -38,7 +38,7 @@ geonode(){
       if [[ $# -ne 3 ]]; then
         paver setup
       else
-        paver setup --geoserver ${3}
+        paver setup geoserver=${3}
       fi
       paver start -b 0.0.0.0:8000
       #
