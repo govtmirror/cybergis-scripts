@@ -287,7 +287,7 @@ if [[ "$ENV" = "geonode" ]]; then
         export -f geonode
         if [[ "$CMD" = "install" ]]; then
             bash --login -c "geonode $ENV $CMD"
-        elif [[ "$ENV" = "reset" ]]; then
+        elif [[ "$CMD" = "reset" ]]; then
             if [[ $# -eq 2 ]]; then
                 bash --login -c "geonode $ENV $CMD"
             else
