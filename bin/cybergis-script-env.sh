@@ -11,7 +11,7 @@ CMD=$2
 #==================================#
 geonode(){
   echo "geonode"
-  if [ $# -ne 2 ] && [ $# -ne 3 ]; then
+  if [ $# -ne 2 ] && [ $# -ne 4 ]; then
     echo "Usage: cybergis-script-env.sh geonode [install|reset]"
   else
     ENV=$1
@@ -35,10 +35,10 @@ geonode(){
       paver stop
       #paver reset
       paver reset_hard
-      if [[ $# -ne 3 ]]; then
+      if [[ $# -ne 4 ]]; then
         paver setup
       else
-        paver setup --geoserver "${3}"
+        paver setup --geoserver "${3}" --jetty "${4}"
       fi
       paver start -b 0.0.0.0:8000
       #
@@ -277,11 +277,11 @@ ittc(){
 
 if [[ "$ENV" = "geonode" ]]; then
     
-    if [ $# -ne 2 ] && [ $# -ne 3 ]; then
+    if [ $# -ne 2 ] && [ $# -ne 4 ]; then
         echo "Usage: cybergis-script-env.sh geonode [install|reset]"
         echo "or"
-        echo "Usage: cybergis-script-env.sh geonode reset geoserver_url"
-        echo "GeoServer URL can be remote or local file (file:///.../...)"
+        echo "Usage: cybergis-script-env.sh geonode reset geoserver_url jetty_url"
+        echo "GeoServer and Jetty urls can be remote or local file (file:///.../...)"
     else
         export -f geonode_install
         export -f geonode
@@ -291,7 +291,7 @@ if [[ "$ENV" = "geonode" ]]; then
             if [[ $# -eq 2 ]]; then
                 bash --login -c "geonode $ENV $CMD"
             else
-                bash --login -c "geonode $ENV $CMD '${3}'"
+                bash --login -c "geonode $ENV $CMD '${3}' '${4}'"
             fi
         fi
     fi
