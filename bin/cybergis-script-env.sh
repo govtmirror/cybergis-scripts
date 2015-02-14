@@ -259,16 +259,28 @@ ittc(){
     CMD=$2
     #
     if [[ "$CMD" = "install" ]]; then
-      sudo apt-get update
+      #sudo apt-get update
       #
       #sudo apt-get install postgresql-client-common postgresql-client-9.1
-      sudo apt-get install -y libgeos-dev libproj-dev
-      sudo apt-get install -y gdal-bin python-gdal python-numpy
+      #sudo apt-get install -y libgeos-dev libproj-dev
+      #sudo apt-get install -y gdal-bin python-gdal python-numpy
       #
     elif [[ "$CMD" = "reset" ]]; then
       # 
       echo "reset"
       #
+      sudo rabbitmqctl stop_app
+      sudo rabbitmqctl reset
+      sudo rabbitmqctl start_app
+      #
+      memcached -vv -m 128 -p 11211 -d
+      memcached -vv -m 1024 -p 11212 -d
+      memcached -vv -m 128 -p 11213 -d
+      #
+      sudo service mongod restart
+      #
+      cd ~/ittc/ittc
+      celery -A ittc worker -P gevent --loglevel=error --concurrency=40 -n worker1.%h
     else
       echo "Usage: cybergis-script-env.sh ittc [install|reset]"
     fi
