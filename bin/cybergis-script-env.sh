@@ -259,8 +259,25 @@ ittc(){
     CMD=$2
     #
     if [[ "$CMD" = "install" ]]; then
-      #sudo apt-get update
       #
+      sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
+      echo 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' | sudo tee /etc/apt/sources.list.d/mongodb.list
+      #
+      sudo apt-get update
+      #
+      sudo apt-get install -y curl vim git nginx
+      sudo apt-get install -y memcached zlib1g-dev libjpeg-dev rabbitmq-server
+      sudo apt-get install -y libapache2-mod-python python-dev python-pip
+      sudo apt-get install -y mongodb-org
+      #
+      cd ~/ittc
+      sudo pip install -r requirements.txt
+      #Pin Current Version of MongoDB
+      echo "mongodb-org hold" | sudo dpkg --set-selections
+      echo "mongodb-org-server hold" | sudo dpkg --set-selections
+      echo "mongodb-org-shell hold" | sudo dpkg --set-selections
+      echo "mongodb-org-mongos hold" | sudo dpkg --set-selections
+      echo "mongodb-org-tools hold" | sudo dpkg --set-selections
       #sudo apt-get install postgresql-client-common postgresql-client-9.1
       #sudo apt-get install -y libgeos-dev libproj-dev
       #sudo apt-get install -y gdal-bin python-gdal python-numpy
@@ -279,8 +296,6 @@ ittc(){
       #
       sudo service mongod restart
       #
-      cd ~/ittc/ittc
-      celery -A ittc worker -P gevent --loglevel=error --concurrency=40 -n worker1.%h
     else
       echo "Usage: cybergis-script-env.sh ittc [install|reset]"
     fi
