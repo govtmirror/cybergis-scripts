@@ -41,212 +41,22 @@ install_bundler(){
   #
 }
 
-conf_application(){
-  if [ $# -ne 8 ] && [ $# -ne 11 ]; then
-    echo "Usage: cybergis-script-rogue.sh prod conf_application <fqdn> <db_host> <db_ip> <db_port> <db_pass> <gs_baseline>"
-    echo "or"
-    echo "Usage: cybergis-script-rogue.sh prod conf_application <fqdn> <db_host> <db_ip> <db_port> <db_pass> <gs_baseline> <banner_text> <banner_color_text> <banner_color_background>"
+install_gems(){
+  echo "gems"
+  if [[ $# -ne 2 ]]; then
+    echo "Usage: cybergis-script-rogue.sh $INIT_ENV $INIT_CMD"
   else
     INIT_ENV=$1
     INIT_CMD=$2
-    FQDN=$3
-    DB_HOST=$4
-    DB_IP=$5
-    DB_PORT=$6
-    DB_PASS=${7}
-    GS_BASELINE=$8
     #
-    DB_PASS="$(echo "$DB_PASS" | sed -e 's/[()&]/\\&/g')"
-    #
-    if [[ $# -eq 8 ]]; then
-      BANNER_ON="false"
-      BANNER_TEXT=""
-      BANNER_COLOR_TEXT=""
-      BANNER_COLOR_BACKGROUND=""
-    else
-      BANNER_ON="true"
-      BANNER_TEXT=${9}
-      BANNER_COLOR_TEXT=${10}
-      BANNER_COLOR_BACKGROUND=${11}
-    fi
-    #==#
-    cd /opt
-    if [ ! -d "/opt/rogue-chef-repo" ]; then
-      git clone https://github.com/state-hiu/rogue-chef-repo.git
-    fi
     cd /opt/rogue-chef-repo
-    git checkout -b hiu_baseline origin/hiu_baseline
-    git pull origin hiu_baseline
-    if [ -d "/opt/chef-run" ]; then
-      rm -fr /opt/chef-run
-    fi
-    #
-    #Install GEM Dependencies if missing.
-    echo "If the server stalls on installing GEMS, run <source /usr/local/rvm/scripts/rvm; gem install dep-selector-libgecode -v '1.0.2'> from the command line and then run again."
     source /usr/local/rvm/scripts/rvm
     bundle install
     berks install
-    #==#
-    mkdir /opt/chef-run
-    echo "Copying files into config directory /opt/chef-run/"
-    cp -r /opt/rogue-chef-repo/solo/* /opt/chef-run/
-    cd /opt/chef-run
-    rm dna.json
-    rm dna_database.json
-    rm dna_standalone.json
-    mv dna_application.json dna.json
-    #==#
-    sed -i "s/{{fqdn}}/$FQDN/g" dna.json
-    sed -i "s/{{db-host}}/$DB_HOST/g" dna.json
-    if [[ "$DB_IP" == "false" ]]; then
-      sed -i "s/{{db-ip}}/false/g" dna.json
-    else
-      sed -i "s/{{db-ip}}/\"$DB_IP\"/g" dna.json
-    fi
-    sed -i "s/{{db-pass}}/$DB_PASS/g" dna.json
-    sed -i "s/{{db-port}}/$DB_PORT/g" dna.json
-    sed -i "s/{{gs-baseline}}/$GS_BASELINE/g" dna.json
-    #==#
-    sed -i "s/{{banner-on}}/$BANNER_ON/g" dna.json
-    sed -i "s/{{banner-color-text}}/$BANNER_COLOR_TEXT/g" dna.json
-    sed -i "s/{{banner-color-background}}/$BANNER_COLOR_BACKGROUND/g" dna.json
-    sed -i "s/{{banner-text}}/$BANNER_TEXT/g" dna.json
+    #
   fi
 }
 
-conf_aws(){
-  if [ $# -ne 8 ] && [ $# -ne 11 ]; then
-    echo "Usage: cybergis-script-rogue.sh prod conf_aws <fqdn> <db_host> <db_ip> <db_port> <db_pass> <gs_baseline>"
-    echo "or"
-    echo "Usage: cybergis-script-rogue.sh prod conf_aws <fqdn> <db_host> <db_ip> <db_port> <db_pass> <gs_baseline> <banner_text> <banner_color_text> <banner_color_background>"
-  else
-    INIT_ENV=$1
-    INIT_CMD=$2
-    FQDN=$3
-    DB_HOST=$4
-    DB_IP=$5
-    DB_PORT=$6
-    DB_PASS=${7}
-    GS_BASELINE=$8
-    #
-    DB_PASS="$(echo "$DB_PASS" | sed -e 's/[()&]/\\&/g')"
-    #
-    if [[ $# -eq 8 ]]; then
-      BANNER_ON="false"
-      BANNER_TEXT=""
-      BANNER_COLOR_TEXT=""
-      BANNER_COLOR_BACKGROUND=""
-    else
-      BANNER_ON="true"
-      BANNER_TEXT=${9}
-      BANNER_COLOR_TEXT=${10}
-      BANNER_COLOR_BACKGROUND=${11}
-    fi
-    #==#
-    cd /opt
-    if [ ! -d "/opt/rogue-chef-repo" ]; then
-      git clone https://github.com/state-hiu/rogue-chef-repo.git
-    fi
-    cd /opt/rogue-chef-repo
-    git checkout -b hiu_baseline origin/hiu_baseline
-    git pull origin hiu_baseline
-    if [ -d "/opt/chef-run" ]; then
-      rm -fr /opt/chef-run
-    fi
-    #
-    #Install GEM Dependencies if missing.
-    echo "If the server stalls on installing GEMS, run <source /usr/local/rvm/scripts/rvm; gem install dep-selector-libgecode -v '1.0.2'> from the command line and then run again."
-    source /usr/local/rvm/scripts/rvm
-    bundle install
-    berks install
-    #==#
-    mkdir /opt/chef-run
-    echo "Copying files into config directory /opt/chef-run/"
-    cp -r /opt/rogue-chef-repo/solo/* /opt/chef-run/
-    cd /opt/chef-run
-    rm dna.json
-    rm dna_database.json
-    rm dna_standalone.json
-    rm dna_application.json
-    mv dna_aws.json dna.json
-    #==#
-    sed -i "s/{{fqdn}}/$FQDN/g" dna.json
-    sed -i "s/{{db-host}}/$DB_HOST/g" dna.json
-    if [[ "$DB_IP" == "false" ]]; then
-      sed -i "s/{{db-ip}}/false/g" dna.json
-    else
-      sed -i "s/{{db-ip}}/\"$DB_IP\"/g" dna.json
-    fi
-    sed -i "s/{{db-pass}}/$DB_PASS/g" dna.json
-    sed -i "s/{{db-port}}/$DB_PORT/g" dna.json
-    sed -i "s/{{gs-baseline}}/$GS_BASELINE/g" dna.json
-    #==#
-    sed -i "s/{{banner-on}}/$BANNER_ON/g" dna.json
-    sed -i "s/{{banner-color-text}}/$BANNER_COLOR_TEXT/g" dna.json
-    sed -i "s/{{banner-color-background}}/$BANNER_COLOR_BACKGROUND/g" dna.json
-    sed -i "s/{{banner-text}}/$BANNER_TEXT/g" dna.json
-  fi
-}
-
-conf_standalone(){
-  if [ $# -ne 4 ] && [ $# -ne 7 ]; then
-    echo "Usage: cybergis-script-rogue.sh prod conf_standalone <fqdn> <gs_baseline>"
-    echo "or"
-    echo "Usage: cybergis-script-rogue.sh prod conf_standalone <fqdn> <gs_baseline> <banner_text> <banner_color_text> <banner_color_background>"
-  else
-    echo "test"
-    INIT_ENV=$1
-    INIT_CMD=$2
-    FQDN=$3
-    GS_BASELINE=$4
-    #==#
-    if [[ $# -eq 4 ]]; then
-      BANNER_ON="false"
-      BANNER_TEXT=""
-      BANNER_COLOR_TEXT=""
-      BANNER_COLOR_BACKGROUND=""
-    else
-      BANNER_ON="true"
-      BANNER_TEXT=${5}
-      BANNER_COLOR_TEXT=${6}
-      BANNER_COLOR_BACKGROUND=${7}
-    fi
-    #==#
-    cd /opt
-    if [ ! -d "/opt/rogue-chef-repo" ]; then
-      git clone https://github.com/state-hiu/rogue-chef-repo.git
-    fi
-    cd /opt/rogue-chef-repo
-    git checkout -b hiu_baseline origin/hiu_baseline
-    git pull origin hiu_baseline
-    if [ -d "/opt/chef-run" ]; then
-      rm -fr /opt/chef-run
-    fi
-    #
-    #Install GEM Dependencies if missing.
-    echo "If the server stalls on installing GEMS, run <gem install dep-selector-libgecode -v '1.0.2'> from the command line and then run again."
-    source /usr/local/rvm/scripts/rvm
-    bundle install
-    berks install
-    #==#
-    mkdir /opt/chef-run
-    echo "Copying files into config directory /opt/chef-run/"
-    cp -r /opt/rogue-chef-repo/solo/* /opt/chef-run/
-    cd /opt/chef-run
-    rm dna.json
-    rm dna_database.json
-    rm dna_application.json
-    mv dna_standalone.json dna.json
-    #==#
-    sed -i "s/{{fqdn}}/$FQDN/g" dna.json
-    sed -i "s/{{gs-baseline}}/$GS_BASELINE/g" dna.json
-    #==#
-    sed -i "s/{{banner-on}}/$BANNER_ON/g" dna.json
-    sed -i "s/{{banner-color-text}}/$BANNER_COLOR_TEXT/g" dna.json
-    sed -i "s/{{banner-color-background}}/$BANNER_COLOR_BACKGROUND/g" dna.json
-    sed -i "s/{{banner-text}}/$BANNER_TEXT/g" dna.json
-  fi
-}
 
 provision(){
   echo "provision"
@@ -255,6 +65,11 @@ provision(){
   else
     INIT_ENV=$1
     INIT_CMD=$2
+    #
+    cd /opt/rogue-chef-repo
+    source /usr/local/rvm/scripts/rvm
+    bundle install
+    berks install
     #
     cd /opt/chef-run
     chmod 755 provision.sh
@@ -569,48 +384,15 @@ if [[ "$INIT_ENV" = "prod" ]]; then
             bash --login -c install_bundler
         fi
 
-    elif [[ "$INIT_CMD" == "conf_application" ]]; then
+    elif [[ "$INIT_CMD" == "gems" ]]; then
 
-        if [ $# -ne 8 ] && [ $# -ne 11 ]; then
-            echo "Usage: cybergis-script-rogue.sh prod conf_application <fqdn> <db_host> <db_ip> <db_port> <db_pass> <gs_baseline>"
-            echo "or"
-            echo "Usage: cybergis-script-rogue.sh prod conf_application <fqdn> <db_host> <db_ip> <db_port> <db_pass> <gs_baseline> <banner_text> <banner_color_text> <banner_color_background>"
-        elif [[ $# -eq 8 ]]; then
-            export -f conf_application
-            bash --login -c "conf_application $INIT_ENV $INIT_CMD '${3}' '${4}' '${5}' '${6}' '${7}' '${8}'"
-        elif [[ $# -eq 11 ]]; then
-            export -f conf_application
-            bash --login -c "conf_application $INIT_ENV $INIT_CMD '${3}' '${4}' '${5}' '${6}' '${7}' '${8}' '${9}' '${10}' '${11}'"
+        if [[ $# -ne 2 ]]; then
+            echo "Usage: cybergis-script-rogue.sh $INIT_ENV $INIT_CMD"
+        else
+            export -f install_gems
+            bash --login -c "install_gems $INIT_ENV $INIT_CMD"
         fi
 
-    elif [[ "$INIT_CMD" == "conf_aws" ]]; then
-
-        if [ $# -ne 8 ] && [ $# -ne 11 ]; then
-            echo "Usage: cybergis-script-rogue.sh prod conf_aws <fqdn> <db_host> <db_ip> <db_port> <db_pass> <gs_baseline>"
-            echo "or"
-            echo "Usage: cybergis-script-rogue.sh prod conf_aws <fqdn> <db_host> <db_ip> <db_port> <db_pass> <gs_baseline> <banner_text> <banner_color_text> <banner_color_background>"
-        elif [[ $# -eq 8 ]]; then
-            export -f conf_aws
-            bash --login -c "conf_aws $INIT_ENV $INIT_CMD '${3}' '${4}' '${5}' '${6}' '${7}' '${8}'"
-        elif [[ $# -eq 11 ]]; then
-            export -f conf_aws
-            bash --login -c "conf_aws $INIT_ENV $INIT_CMD '${3}' '${4}' '${5}' '${6}' '${7}' '${8}' '${9}' '${10}' '${11}'"
-        fi
-    
-    elif [[ "$INIT_CMD" == "conf_standalone" ]]; then
-
-        if [ $# -ne 4 ] && [ $# -ne 7 ]; then
-            echo "Usage: cybergis-script-rogue.sh prod conf_standalone <fqdn> <gs_baseline>"
-            echo "or"
-            echo "Usage: cybergis-script-rogue.sh prod conf_standalone <fqdn> <gs_baseline> <banner_text> <banner_color_text> <banner_color_background>"
-        elif [[ $# -eq 4 ]]; then
-            export -f conf_standalone
-            bash --login -c "conf_standalone $INIT_ENV $INIT_CMD '${3}' '${4}'"
-        elif [[ $# -eq 7 ]]; then
-            export -f conf_standalone
-            bash --login -c "conf_standalone $INIT_ENV $INIT_CMD '${3}' '${4}' '${5}' '${6}' '${7}'"
-        fi
-    
     
     elif [[ "$INIT_CMD" == "provision" ]]; then
         
@@ -687,9 +469,9 @@ if [[ "$INIT_ENV" = "prod" ]]; then
             bash --login -c "osm $INIT_ENV $INIT_CMD \"$3\" \"$4\" \"$5\" \"$6\""
         fi
     else
-        echo "Usage: cybergis-script-rogue.sh prod [use|rvm|bundler|conf_application|conf_standalone|conf_aws|provision|server|remote|remote2|aws|sns|cron|cron2|osm]"
+        echo "Usage: cybergis-script-rogue.sh prod [use|rvm|bundler|gems|provision|server|remote|remote2|aws|sns|cron|cron2|osm]"
     fi
 else
-    echo "Usage: cybergis-script-rogue.sh [prod|dev] [use|rvm|bundler|conf_application|conf_standalone|conf_aws|provision|server|remote|remote2|aws|sns|cron|cron2|osm]"
+    echo "Usage: cybergis-script-rogue.sh [prod|dev] [use|rvm|bundler|gems|provision|server|remote|remote2|aws|sns|cron|cron2|osm]"
 fi
 
