@@ -42,7 +42,6 @@ install_bundler(){
 }
 
 install_gems(){
-  echo "gems"
   if [[ $# -ne 2 ]]; then
     echo "Usage: cybergis-script-rogue.sh $INIT_ENV $INIT_CMD"
   else
@@ -56,6 +55,7 @@ install_gems(){
     USE_SYSTEM_GECODE=1 gem install dep-selector-libgecode -v '1.0.2'
     bundle install
     berks install
+    berks vendor /opt/chef-run/cookbooks
     #
   fi
 }
