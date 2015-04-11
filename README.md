@@ -28,6 +28,8 @@ git clone https://github.com/state-hiu/cybergis-scripts.git cybergis-scripts.git
 cp cybergis-scripts.git/profile/cybergis-scripts.sh /etc/profile.d/
 ```
 
+After installing, you can log out and log back in or add the scripts to the path immediately with: `source /etc/profile.d/cybergis-scripts.sh`.
+
 If you are doing an ITTC install, you need to install python bindings.  Execute the following instead:
 
 ```
