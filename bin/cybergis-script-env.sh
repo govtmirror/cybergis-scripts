@@ -272,6 +272,10 @@ ittc(){
       #
       cd ~/ittc
       sudo pip install -r requirements.txt
+      # For some reason celery doesn't install these properly.
+      sudo pip install https://github.com/celery/py-amqp/zipball/master
+      sudo pip install https://github.com/celery/billiard/zipball/master
+      sudo pip install https://github.com/celery/kombu/zipball/master
       #Pin Current Version of MongoDB
       echo "mongodb-org hold" | sudo dpkg --set-selections
       echo "mongodb-org-server hold" | sudo dpkg --set-selections
@@ -281,6 +285,10 @@ ittc(){
       #sudo apt-get install postgresql-client-common postgresql-client-9.1
       #sudo apt-get install -y libgeos-dev libproj-dev
       #sudo apt-get install -y gdal-bin python-gdal python-numpy
+      #
+      cd ~/ittc
+      sudo mkdir -p /var/www/ittc/static
+      sudo python manage.py collectstatic
       #
     elif [[ "$CMD" = "reset" ]]; then
       # 
