@@ -268,6 +268,7 @@ ittc(){
       sudo apt-get install -y curl vim git nginx
       sudo apt-get install -y memcached zlib1g-dev libjpeg-dev rabbitmq-server
       sudo apt-get install -y libapache2-mod-python python-dev python-pip
+      sudo apt-get install -y supervisor
       sudo apt-get install -y mongodb-org
       #
       cd ~/ittc
@@ -289,6 +290,8 @@ ittc(){
       sudo rabbitmqctl stop_app
       sudo rabbitmqctl reset
       sudo rabbitmqctl start_app
+      # This will kill all currently running memcached processes, including any defaults out of /etc 
+      sudo killall memcached
       #
       memcached -vv -m 128 -p 11211 -d
       memcached -vv -m 1024 -p 11212 -d
@@ -296,6 +299,18 @@ ittc(){
       #
       sudo service mongod restart
       #
+      #sudo killall supervisord
+      #supervisord -c supervisord.conf
+      #supervisorctl -c supervisord.conf stop memcached-1
+      #supervisorctl -c supervisord.conf stop memcached-2
+      #supervisorctl -c supervisord.conf stop memcached-3
+      #supervisorctl -c supervisord.conf stop celery
+      #supervisorctl -c supervisord.conf stop gunicorn
+      #supervisorctl -c supervisord.conf start memcached-1
+      #supervisorctl -c supervisord.conf start memcached-2
+      #supervisorctl -c supervisord.conf start memcached-3
+      #supervisorctl -c supervisord.conf start celery
+      #supervisorctl -c supervisord.conf start gunicorn
     else
       echo "Usage: cybergis-script-env.sh ittc [install|reset]"
     fi
