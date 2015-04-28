@@ -9,6 +9,21 @@ INIT_CMD=$1
 
 #==================================#
 
+provision_volume(){
+  echo "format_volume"
+  if [[ $# -ne 3 ]]; then
+    echo "Usage: cybergis-script-ec2.sh provision_volume <device> <mount_point>"
+  else
+    INIT_CMD=$1
+    DEVICE=$2
+    MOUNT=$3
+    #
+    sudo mkfs -t ext4 $DEVICE
+    CMD1="echo '$DEVICE	$MOUNT	auto	defaults,nobootwait	0	2' >> /etc/fstab"
+    sudo bash --login -c "$CMD1"
+    sudo mount -a
+  fi
+}
 add_swap(){
   echo "add_swap"
   if [[ $# -ne 3 ]]; then
@@ -54,15 +69,24 @@ resize_volume(){
   fi
 }
 
-if [[ "$INIT_CMD" == "resize" ]]; then
+if [[ "$INIT_CMD" == "provision_volume" ]]; then
         
+    if [[ $# -ne 3 ]]; then
+        echo "Usage: cybergis-script-ec2.sh $INIT_CMD <device> <mount_point>"
+    else
+        export -f provision_volume
+        bash --login -c "provision_volume $INIT_CMD '${2}' '${3}'"
+    fi
+
+elif [[ "$INIT_CMD" == "resize" ]]; then
+
     if [[ $# -ne 2 ]]; then
-        echo "Usage: cybergis-script-ec2.sh $INIT_CMD <dev>"
+        echo "Usage: cybergis-script-ec2.sh $INIT_CMD <device>"
     else
         export -f resize_volume
         bash --login -c "resize_volume $INIT_CMD '${2}'"
     fi
-    
+
 elif [[ "$INIT_CMD" == "swap" ]]; then
     
     if [[ $# -ne 3 ]]; then
@@ -82,5 +106,5 @@ elif [[ "$INIT_CMD" == "delete_swap" ]]; then
     fi
     
 else
-    echo "Usage: cybergis-script-ec2.sh [resize|swap|delete_swap]"
+    echo "Usage: cybergis-script-ec2.sh [provision_volume|resize|swap|delete_swap]"
 fi
