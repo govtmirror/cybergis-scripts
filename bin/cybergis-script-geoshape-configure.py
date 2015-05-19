@@ -43,4 +43,4 @@ parser.add_argument("--db_pass", help="The database password")
 #==#
 args = parser.parse_args()
 #==#
-geoshape._geoshape_configure.run(args)
+cybergis_geoshape._geoshape_configure.run(args)
