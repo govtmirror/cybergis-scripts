@@ -11,7 +11,7 @@ import sys
 import subprocess
 #==#
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'lib', 'cybergis')))
-import geoshape._geoshape_configure
+import cybergis_geoshape._geoshape_configure
 #==#
 parser = argparse.ArgumentParser(description='Initialize GeoGig repository and optionally add to GeoServer instance.  If you want to add the GeoGig repo include the optional parameters.')
 #==#
