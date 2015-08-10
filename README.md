@@ -92,13 +92,15 @@ cybergis-script-env.sh [geonode|ittc]
 ### EC2
 
 ```
-cybergis-script-ec2.sh [prod|dev] [resize|swap|delete_swap]
+cybergis-script-ec2.sh [provision_volume|resize|swap|delete_swap]
 
-    cybergis-script-ec2.sh prod resize <dev>
+    cybergis-script-ec2.sh provision_volume <device> <mount_point>
+
+    cybergis-script-ec2.sh resize <dev>
     
-    cybergis-script-ec2.sh prod swap <size> <file>
+    cybergis-script-ec2.sh swap <size> <file>
     
-    cybergis-script-ec2.sh prod delete_swap <file>
+    cybergis-script-ec2.sh delete_swap <file>
 ```
 
 ### GeoServer
