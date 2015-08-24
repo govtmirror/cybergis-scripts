@@ -48,11 +48,11 @@ install_gems(){
     INIT_ENV=$1
     INIT_CMD=$2
     #
-    echo "If the server stalls on installing GEMS, run <gem install dep-selector-libgecode -v '1.0.3'> from the command line and then run again."
+    echo "If the server stalls on installing GEMS, run <USE_SYSTEM_GECODE=1 gem install dep-selector-libgecode -v '1.0.2'> from the command line and then run again."
     cd /opt/rogue-chef-repo
     source /usr/local/rvm/scripts/rvm
     apt-get install -y libgecode-dev
-    USE_SYSTEM_GECODE=1 gem install dep-selector-libgecode -v '1.0.3'
+    USE_SYSTEM_GECODE=1 gem install dep-selector-libgecode -v '1.0.2'
     bundle install
     berks install
     berks vendor /opt/chef-run/cookbooks
