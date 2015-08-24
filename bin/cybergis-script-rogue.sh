@@ -51,7 +51,21 @@ install_gems(){
     echo "If the server stalls on installing GEMS, run <USE_SYSTEM_GECODE=1 gem install dep-selector-libgecode -v '1.0.2'> from the command line and then run again."
     cd /opt/rogue-chef-repo
     source /usr/local/rvm/scripts/rvm
-    apt-get install -y libgecode-dev
+    ############
+    # lib gecode 14.04 fixes
+    #apt-get install -y libgecode-dev
+    mkdir /opt/gecode
+    cd /opt/gecode
+    wget http://ubuntu.cs.utah.edu/ubuntu/pool/main/b/boost1.46/libboost1.46-dev_1.46.1-7ubuntu3_amd64.deb
+    wget http://ubuntu.cs.utah.edu/ubuntu/pool/main/b/boost-defaults/libboost-dev_1.48.0.2_amd64.deb
+    wget http://ubuntu.cs.utah.edu/ubuntu/pool/universe/g/gecode/libgecode30_3.7.1-3_amd64.deb
+    wget http://ubuntu.cs.utah.edu/ubuntu/pool/universe/g/gecode/libgecodegist30_3.7.1-3_amd64.deb
+    wget http://ubuntu.cs.utah.edu/ubuntu/pool/universe/g/gecode/libgecodeflatzinc30_3.7.1-3_amd64.deb
+    wget http://ubuntu.cs.utah.edu/ubuntu/pool/universe/g/gecode/libgecode-dev_3.7.1-3_amd64.deb
+    dpkg -i libgecode-dev_3.7.1-3_amd64.deb
+    apt-get -f install
+    ############
+    cd /opt/rogue-chef-repo
     USE_SYSTEM_GECODE=1 gem install dep-selector-libgecode -v '1.0.2'
     bundle install
     berks install
