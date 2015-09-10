@@ -62,6 +62,7 @@ install_gems(){
     wget http://ubuntu.cs.utah.edu/ubuntu/pool/universe/g/gecode/libgecodegist30_3.7.1-3_amd64.deb
     wget http://ubuntu.cs.utah.edu/ubuntu/pool/universe/g/gecode/libgecodeflatzinc30_3.7.1-3_amd64.deb
     wget http://ubuntu.cs.utah.edu/ubuntu/pool/universe/g/gecode/libgecode-dev_3.7.1-3_amd64.deb
+    dpkg -i *.deb
     dpkg -i libgecode-dev_3.7.1-3_amd64.deb
     apt-get -f install
     ############
