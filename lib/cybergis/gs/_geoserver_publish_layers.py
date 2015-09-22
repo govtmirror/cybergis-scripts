@@ -96,7 +96,7 @@ def run(args):
     #==#
     print "=================================="
     print "#==#"
-    print "CyberGIS Script / cybergis-scrit-geoserver-publish-layers.py"
+    print "CyberGIS Script / cybergis-scripts-geoserver-publish-layers.py"
     print "Publish PostGIS Table as Layer"
     print "#==#"
     #==#
