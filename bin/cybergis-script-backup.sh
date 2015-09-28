@@ -13,11 +13,10 @@ backup_repos(){
     OUTPUT=$3
     #
     mkdir -p $OUTPUT
-    cd $OUTPUT
     while read line; do
         NAME=$(cat $MANIFEST | cut -f1)
         SOURCE=$(cat $MANIFEST | cut -f2)
-        git clone $SOURCE $NAME
+        git clone $SOURCE $OUTPUT/$NAME
     done <$MANIFEST
   fi
 }
