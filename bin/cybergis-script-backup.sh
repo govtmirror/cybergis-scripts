@@ -12,12 +12,38 @@ backup_repos(){
     MANIFEST=$2
     OUTPUT=$3
     #
+    CWD=${PWD}
     mkdir -p $OUTPUT
-    while read line; do
-        NAME=$(cat $MANIFEST | cut -f1)
-        SOURCE=$(cat $MANIFEST | cut -f2)
-        git clone $SOURCE $OUTPUT/$NAME
-    done <$MANIFEST
+    IFS=$'\n' 
+    for LINE in `cat $MANIFEST`; do
+        if [[ ${LINE:0:1} == "#" ]]; then
+            continue
+        fi
+        if [[ $LINE == "" ]]; then
+            continue
+        fi
+        cd $CWD
+        echo "-------------------------------"
+        NAME=$(echo $LINE | cut -f1)
+        SOURCE=$(echo $LINE | cut -f2)
+        echo "Cloning $SOURCE to $OUTPUT/$NAME"
+        if [ ! -d $OUTPUT/$NAME ]; then
+            git clone $SOURCE $OUTPUT/$NAME
+        fi
+        cd $OUTPUT/$NAME
+        git checkout master
+        for branch in `git branch -a | grep remotes | grep -v HEAD | grep -v master`; do
+            BRANCH_TRIMMED="$(echo -e "${branch}" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
+            BRANCH_NAME=${BRANCH_TRIMMED##*/}
+            if git show-ref --verify --quiet "refs/heads/$BRANCH_NAME"; then
+                echo "Branch $BRANCH_NAME already exists"
+            else
+                git branch --track $BRANCH_NAME $BRANCH_TRIMMED
+            fi
+        done
+        git fetch --all 
+        git pull --all
+    done
   fi
 }
 
