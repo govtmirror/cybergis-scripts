@@ -73,6 +73,14 @@ Logout and Login
 
 ## Usage
 
+### Backup
+
+```
+cybergis-script-backups.sh [repos]
+
+    cybergis-script-backup.sh repos manifest output
+```
+
 ### Development Environments
 
 ```
@@ -166,7 +174,15 @@ cybergis-script-pull-arcgis.sh <service> <field> <dbname> <dbuser> <dbpass> <tab
 cybergis-script-pull-shapefile.sh <url> <shapefile> <dbname> <dbuser> <dbpass> <table>
 ```
 
+## Examples
 
+```
+#!/bin/bash
+DATE=$(date "+%Y%m%d")
+mkdir -p backup
+cybergis-script-backup.sh repos /opt/cybergis-scripts.git/resources/state-hiu-repos-manifest.txt "backup/$DATE"
+tar -czvf "state-hiu-repos-backup-$DATE.tar.gz" "backup/$DATE"
+```
 
 ## Contributing
 
