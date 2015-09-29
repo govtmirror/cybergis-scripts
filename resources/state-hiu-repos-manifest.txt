@@ -1,0 +1,44 @@
+# Websites
+state-hiu.github.io.git	https://github.com/state-hiu/state-hiu.github.io.git
+hiu.state.gov.git	https://github.com/state-hiu/hiu.state.gov.git
+Mapgive.git	https://github.com/state-hiu/Mapgive.git
+mapgive-in-a-box.git	https://github.com/state-hiu/mapgive-in-a-box.git
+
+# MapGive Events
+osmgeoweek.git	https://github.com/state-hiu/osmgeoweek.git
+osmgeoweek-2015.git	https://github.com/state-hiu/osmgeoweek-2015.git
+mapgive-field-project-cusco.git	https://github.com/state-hiu/mapgive-field-project-cusco.git
+mapoff.git	https://github.com/state-hiu/mapoff.git
+earth-obs-day.git	https://github.com/state-hiu/earth-obs-day.git
+connect-camp-maps.git	https://github.com/state-hiu/connect-camp-maps.git
+
+# CyberGIS
+cybergis-guides	https://github.com/state-hiu/cybergis-guides.git
+cybergis-scripts.git	https://github.com/state-hiu/cybergis-scripts.git
+cybergis-client.git	https://github.com/state-hiu/cybergis-client.git
+cybergis-osm-extractions.git	https://github.com/state-hiu/cybergis-osm-extractions.git
+cybergis-osm-mappings.git	https://github.com/state-hiu/cybergis-osm-mappings.git
+cybergis-styles.git	https://github.com/state-hiu/cybergis-styles.git
+cybergis-licenses.git	https://github.com/state-hiu/cybergis-licenses.git
+cybergis-commons.git	https://github.com/state-hiu/cybergis-commons.git
+cybergis-client-spec.git	https://github.com/state-hiu/cybergis-client-spec.git
+cybergis-client-examples.git	https://github.com/state-hiu/cybergis-client-examples.git
+cybergis-client-templates.git	https://github.com/state-hiu/cybergis-client-templates.git
+cybergis-client-library.git	https://github.com/state-hiu/cybergis-client-library.git
+image_request.git	https://github.com/state-hiu/image_request.git
+image_app.git	https://github.com/state-hiu/image_app.git
+
+# ITTC
+ittc-fabric.git	https://github.com/state-hiu/ittc-fabric.git
+ittc-server-django.git	https://github.com/state-hiu/ittc-server-django.git
+
+# ROGUE-JCTD Clones
+rogue-chef-repo	https://github.com/state-hiu/rogue-chef-repo.git
+rogue-cookbook.git	https://github.com/state-hiu/rogue-cookbook.git
+rogue_geonode.git	https://github.com/state-hiu/rogue_geonode.git
+MapLoom.git	https://github.com/state-hiu/MapLoom.git
+geonode.git	https://github.com/state-hiu/geonode.git
+geoserver_data.git	https://github.com/state-hiu/geoserver_data.git
+
+# Other
+osm-history-outputs.git	https://github.com/state-hiu/osm-history-outputs.git
