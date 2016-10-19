@@ -27,7 +27,7 @@ class Tasks(object):
 
     def get(self,task):
         return self.tasks[task]
-		
+
 class RenderSubprocess(object):
 
     def __init__(self, processID, processName, queue, tasks):
@@ -40,7 +40,7 @@ class RenderSubprocess(object):
         self.strip_stretched = None
         self.task = None
         self.tries = 3
-        
+
     def run(self):
         while not exitFlag:
     	    if self.strip is None:
@@ -176,9 +176,9 @@ class Lines:
         for i in range(len(bps)-1):
             if (not (bps[i] is None)) and (not (bps[i+1] is None)):
                 self.lines.append(Line(bps[i],bps[i+1]))
-	
+
     def size(self):
-        return len(self.lines)	
+        return len(self.lines)
 
     def min(self):
         return self.lines[0].min()
@@ -204,7 +204,7 @@ class LookUpTable:
 
         for i in range(0,256):
             self.table.append(self.lines.calc(i))
-		
+
 class LookUpTable2:
 
     def __init__(self,bps_red,bps_green,bps_blue):
@@ -338,6 +338,7 @@ def run(args):
     #print args
     #==#
     verbose = args.verbose
+    force = args.force
     #==#
     inputFile = args.input
     breakPointsFile = args.breakpoints
@@ -368,7 +369,7 @@ def run(args):
     if not os.path.exists(breakPointsFile):
         print "Breakpoints file does not exist."
         return 0
-    if os.path.exists(outputFile):
+    if force == 0 and os.path.exists(outputFile):
         print "Output file already exists."
         return 0
     #==#
@@ -386,6 +387,10 @@ def run(args):
     outputFormat = "HFA"
     w = inputDataset.RasterXSize
     h = inputDataset.RasterYSize
+    if force > 0 and os.path.isfile(outputFile):
+        if verbose > 0:
+            print "Deleting existing output file at ", outputFile
+        os.remove(outputFile)
     outputDataset = initDataset(outputFile,outputFormat,w,h,numberOfBands)
     outputDataset.SetGeoTransform(list(inputDataset.GetGeoTransform()))
     outputDataset.SetProjection(inputDataset.GetProjection())
@@ -395,12 +400,23 @@ def run(args):
         for b in range(numberOfBands):
             print "Stretching Band "+str(b+1)
             lut = numpy.array(lookUpTables.tables[b].table)
+            if verbose > 0:
+                print "Lookup Table (lut): "
+                print lut
             inBand = inputDataset.GetRasterBand(b+1)
             outBand = outputDataset.GetRasterBand(b+1)
 
             r = rows
+
+            if verbose > 0:
+                print "Processing", r, "rows at a time."
+                print "Processing", int(inBand.YSize/r), "batches of rows."
+
             for y in range(int(inBand.YSize/r)):
                 outBand.WriteArray(lut[inBand.ReadAsArray(0,y*r,inBand.XSize,r,inBand.XSize,r)],0,y*r)
+
+            if verbose > 0:
+                print "Processing",(inBand.YSize%r),"residual rows."
 
             y0 = inBand.YSize/rows
             for y in range(inBand.YSize%r):
@@ -431,7 +447,7 @@ def run(args):
                 tasks.add(task)
             for y in range(inBand.YSize%r):
                 task = b+1, inBand, outBand, lut, y0, y, r, 2
-                tasks.add(task)		
+                tasks.add(task)
 
             print "tasks in main queue: "+str(len(tasks.tasks))
             #Add tasks to queue
