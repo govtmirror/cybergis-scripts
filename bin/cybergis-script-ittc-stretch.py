@@ -23,6 +23,7 @@ parser.add_argument('-r', '--rows', default='256', help="The number of rows to l
 parser.add_argument('-t', '--threads', default='1', help="The maximum number of threads to activate.  Default = 1.")
 #
 parser.add_argument('--verbose', '-v', default=0, action='count', help="Print out intermediate status messages.")
+parser.add_argument('--force', '-f', default=0, action='count', help="Force.  Replace existing output file if exists.")
 #
 args = parser.parse_args()
 #==#
